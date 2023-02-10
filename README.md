@@ -1,11 +1,8 @@
-# React Eel GUI App
-
-![](./sample.png)
+# Senior Project Generic Team Name :D
 
 ## Install
 
-You'll need to have installed the latest version of nodejs.
-
+You'll need to have installed the latest version of nodejs. (https://nodejs.org/en/)
 You’ll need to have Python >= 3.6, Eel, pyinstaller.
 
 ```
@@ -13,17 +10,9 @@ $ python3 -m pip install eel
 $ python3 -m pip install pyinstaller
 ```
 
-## Develop on GUI
+## Setup Development Enviroment
 
 ```
-$ yarn install (type these in console)
+$ yarn install
 $ yarn start
 ```
-
-## Build as GUI App
-
-```
-$ yarn build (i think this only works on linux, just type the command individually)
-```
-
-check `dist/react-eel-app`
