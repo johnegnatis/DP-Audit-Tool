@@ -3,6 +3,7 @@
 ## Install
 
 You'll need to have installed the latest version of nodejs. (https://nodejs.org/en/)
+
 You’ll need to have Python >= 3.6, Eel, pyinstaller.
 
 ```
