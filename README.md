@@ -17,3 +17,7 @@ $ python3 -m pip install pyinstaller
 $ yarn install
 $ yarn start
 ```
+
+## Notes
+
+https://github.com/python-eel/Eel/issues/654

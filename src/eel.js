@@ -1,6 +1,6 @@
 export const eel = window["eel"];
 
-eel.expose(hello);
-function hello(x) {
-  console.log(x);
+eel.expose(getPDFData);
+async function getPDFData(path) {
+  return await eel.getPDFData(path)()
 }

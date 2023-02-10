@@ -1,7 +1,10 @@
 # coding: utf-8
-import eel
-import sys
+import sys, io
+sys.stdout = io.StringIO() # to fix --no console
+sys.stderr = io.StringIO() # https://github.com/python-eel/Eel/issues/654
+
 import pdfplumber
+import eel
 
 @eel.expose
 def getPDFData(pdfData):
@@ -22,9 +25,13 @@ def getPDFData(pdfData):
 
 
 if __name__ == '__main__':
-    if sys.argv[1] == '--develop':
-        eel.init('client')
-        eel.start({"port": 3000}, host="localhost", port=8888)
-    else:
+    try:
+        if sys.argv[1] == '--develop': # got index out of range
+            eel.init('client')
+            eel.start({"port": 3000}, host="localhost", port=8888)
+        else:
+            eel.init('build')
+            eel.start('index.html', host="localhost", port=8888)
+    except IndexError:
         eel.init('build')
-        eel.start('index.html')
+        eel.start('index.html', host="localhost", port=8888)

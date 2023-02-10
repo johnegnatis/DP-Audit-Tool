@@ -5,10 +5,6 @@ import { Button, Upload } from 'antd';
 import { eel } from "./eel.js";
 import { UploadOutlined } from '@ant-design/icons';
 
-async function getPDFData(path) {
-  return await eel.getPDFData(path)()
-}
-
 const App = () => { 
     const [pdfData, setPDFData] = useState();
     eel.set_host("ws://localhost:8888");
@@ -41,11 +37,11 @@ const App = () => {
             onChange={(info) => {
               // TODO: find out how to extract real path from file obj
               // TODO: set loading to stop, no need to load
-              getPDFData(info.file.name)
+              eel.getPDFData(info.file.name)()
                 .then(result => {
                   setPDFData(result);
                 }).catch(() => {
-                  setPDFData('ERROR');
+                  setPDFData('File not found. Make sure that the pdf is in the same directory as ./src');
                 });
             }}
             customRequest={() => {}}
