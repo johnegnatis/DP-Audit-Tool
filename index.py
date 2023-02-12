@@ -26,7 +26,7 @@ def getPDFData(pdfData):
 
 if __name__ == '__main__':
     try:
-        if sys.argv[1] == '--develop': # got index out of range
+        if sys.argv[1] == '--develop':  # TODO: I dont understand Python,  how can we make it so this does not go out of range w.o a try: block
             eel.init('client')
             eel.start({"port": 3000}, host="localhost", port=8888)
         else:
