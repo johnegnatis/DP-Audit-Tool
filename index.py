@@ -3,25 +3,22 @@ import sys, io
 sys.stdout = io.StringIO() # to fix --no console
 sys.stderr = io.StringIO() # https://github.com/python-eel/Eel/issues/654
 
-import pdfplumber
 import eel
+from scripts.getDataFromTranscript import getDataFromTranscriptMethod
+from scripts.makeDegreePlan import makeDegreePlanMethod
+from scripts.doAudit import doAuditMethod
 
 @eel.expose
-def getPDFData(pdfData):
-    data = ''
-    with pdfplumber.open(pdfData) as pdf:
-        for page in pdf.pages:
-            current_page = page
-            kwargs = { 
-                'keep_blank_chars': True,
-                'use_text_flow': False,
-                'horizontal_ltr': True,
-                'vertical_ttb': True,
-                'extra_attrs': [],
-                'split_at_punctuation': False
-                }
-            data += current_page.extract_text(x_tolerance=3, y_tolerance=3, layout=False, x_density=7.25, y_density=13, **kwargs) + '\n'
-    return data
+def getDataFromTranscript(pdfData):
+    return getDataFromTranscriptMethod(pdfData)
+
+@eel.expose
+def MakeDegreePlan(studentObject):
+    makeDegreePlanMethod(studentObject)
+
+@eel.expose
+def DoAudit(studentObject):
+    doAuditMethod(studentObject)
 
 
 if __name__ == '__main__':
