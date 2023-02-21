@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
-import { Button, Upload } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
+import { Button } from 'antd';
+import { extractErrorMessage } from '../../utils/methods';
 import { eel } from '../../utils/eel';
 
 function DisplayPDF() {
@@ -26,7 +26,8 @@ function DisplayPDF() {
         <Button onClick={() => eel.getDataFromTranscript()().then((result) => {
           setPDFData(result)
         }).catch((error) => {
-          console.log('error: ' + error);
+          console.log(error);
+          setPDFData(error.errorText && extractErrorMessage(error.errorText))
         })}>Select PDF</Button>
       </div>
       <div style={{ padding: '50px', overflowY: 'auto', height: '40vh' }}>

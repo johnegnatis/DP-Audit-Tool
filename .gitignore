@@ -17,6 +17,7 @@
 .env.test.local
 .env.production.local
 Senior-Project.spec
+*.pdf
 
 npm-debug.log*
 yarn-debug.log*
