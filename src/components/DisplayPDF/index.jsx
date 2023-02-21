@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
-import { Button, Upload } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
+import { Button } from 'antd';
+import { extractErrorMessage } from '../../utils/methods';
 import { eel } from '../../utils/eel';
 
 function DisplayPDF() {
@@ -23,25 +23,12 @@ function DisplayPDF() {
   return (
     <div className="App-intro">
       <div style={{ display: 'flex', justifyContent: 'center', height: '10vh' }}>
-        <Upload
-          name="file"
-          maxCount={1}
-          onChange={(info) => {
-            // TODO: find out how to extract real path from file obj
-            // TODO: set loading to stop, no need to load
-            eel.getDataFromTranscript(info.file.name)()
-              .then((result) => {
-                setPDFData(result);
-              }).catch(() => {
-                setPDFData('File not found. Make sure that the pdf is in the same directory as ./src');
-              });
-          }}
-          customRequest={() => {}}
-        >
-          <Button icon={<UploadOutlined />}>
-            Click to Upload a PDF ( place pdf in ./project )
-          </Button>
-        </Upload>
+        <Button onClick={() => eel.getDataFromTranscript()().then((result) => {
+          setPDFData(result)
+        }).catch((error) => {
+          console.log(error);
+          setPDFData(error.errorText && extractErrorMessage(error.errorText))
+        })}>Select PDF</Button>
       </div>
       <div style={{ padding: '50px', overflowY: 'auto', height: '40vh' }}>
         {lines}
