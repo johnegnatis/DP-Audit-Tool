@@ -9,8 +9,8 @@ from scripts.makeDegreePlan import makeDegreePlanMethod
 from scripts.doAudit import doAuditMethod
 
 @eel.expose
-def getDataFromTranscript(pdfData):
-    return getDataFromTranscriptMethod(pdfData)
+def getDataFromTranscript():
+    return getDataFromTranscriptMethod()
 
 @eel.expose
 def MakeDegreePlan(studentObject):
@@ -22,13 +22,9 @@ def DoAudit(studentObject):
 
 
 if __name__ == '__main__':
-    try:
-        if sys.argv[1] == '--develop':  # TODO: I dont understand Python,  how can we make it so this does not go out of range w.o a try: block
-            eel.init('client')
-            eel.start({"port": 3000}, host="localhost", port=8888)
-        else:
-            eel.init('build')
-            eel.start('index.html', host="localhost", port=8888)
-    except IndexError:
+    if (len(sys.argv) > 1 and sys.argv[1] == '--develop'):
+        eel.init('client')
+        eel.start({"port": 3000}, host="localhost", port=8888)
+    else:
         eel.init('build')
         eel.start('index.html', host="localhost", port=8888)
