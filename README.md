@@ -13,6 +13,7 @@ You’ll need to have Python >= 3.6, Eel, pyinstaller.
 ```
 $ pip install eel
 $ pip install pyinstaller
+$ pip install tk
 $ pip list (make sure eel and pyinstaller appear)
 
 ```
