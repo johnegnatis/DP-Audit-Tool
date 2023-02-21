@@ -1,8 +1,18 @@
 import pdfplumber
+from tkinter import filedialog
+from tkinter import *
 
-def getDataFromTranscriptMethod(pdfData):
+def getDataFromTranscriptMethod():
+
+    # asks user for file path
+    # TODO: ensure file is a PDF using tkinter library, if not send error and quit
+    root = Tk()
+    root.withdraw()
+    root.wm_attributes('-topmost', 1)
+    file_path = filedialog.askopenfilename()
+
     data = ''
-    with pdfplumber.open(pdfData) as pdf:
+    with pdfplumber.open(file_path) as pdf:
         for page in pdf.pages:
             current_page = page
             kwargs = { 
