@@ -1,15 +1,25 @@
 import pdfplumber
 from tkinter import filedialog
 from tkinter import *
+import json
+from scripts.objects import * # must be absolute path
 
 def getDataFromTranscriptMethod():
-    # asks user for file path
-    # TODO: ensure file is a PDF using tkinter library, if not send error and quit
+
+
     root = Tk()
     root.withdraw()
     root.wm_attributes('-topmost', 1)
     file_path = filedialog.askopenfilename(filetypes=(("PDF Files", "*.pdf"),("All Files", "*.*")))
-    
+
+    classes = []
+    for x in range(4):
+        myClass = Class('core', 'cs1000', 'fall 2020', '4.0')
+        classes.append(myClass)
+
+    studentObj = Student('John', 44, True, False, '1/1/2020', '1/1/2023', classes)
+    return studentObj.packStudentObject()
+
     try:
         data = ''
         with pdfplumber.open(file_path) as pdf:
@@ -24,8 +34,7 @@ def getDataFromTranscriptMethod():
                     'split_at_punctuation': False
                     }
                 data += current_page.extract_text(x_tolerance=3, y_tolerance=3, layout=False, x_density=7.25, y_density=13, **kwargs) + '\n'
-        # TODO: Extract Student Object from data, and return a JSON string
         return data
 
     except:
-        raise Exception("This does not appear to be a PDF file. Please try again")
+        raise Exception("This file cannot be read. Ensure that it is a PDF file and please try again.")

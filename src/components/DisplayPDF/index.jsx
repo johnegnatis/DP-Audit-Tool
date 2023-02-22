@@ -6,6 +6,8 @@ import { eel } from '../../utils/eel';
 function DisplayPDF() {
   const [pdfData, setPDFData] = useState();
   const lines = useMemo(() => {
+    // console.log(JSON.stringify(JSON.stringify(pdfData)))
+    console.log(JSON.parse(pdfData || '{}'));
     const array = [];
     if (Array.isArray(pdfData)) {
       pdfData.forEach((data) => {
@@ -28,7 +30,7 @@ function DisplayPDF() {
         }).catch((error) => {
           console.log(error);
           setPDFData(error.errorText && extractErrorMessage(error.errorText))
-        })}>Select PDF</Button>
+        })}>Import PDF</Button>
       </div>
       <div style={{ padding: '50px', overflowY: 'auto', height: '40vh' }}>
         {lines}
