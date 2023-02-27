@@ -1,47 +1,65 @@
+@import "variables.scss";
+
 .navigation-bar {
-    background-color: $navigation-bg;
-    color: $grey;
-    position: sticky;
-    top: 0;
-    z-index: 1;
-    width: 100%;
-    height: 40px;
+  background-color: $navigation-bg;
+  color: $grey;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  width: 100%;
+  height: $navbar-height;
+  display: flex;
+  flex-direction: row;
+
+  .plus-icon,
+  .help-icon {
+    cursor: pointer;
+    width: clamp($navbar-height, $navbar-height, $navbar-height);
+    height: clamp($navbar-height, $navbar-height, $navbar-height);
+
+    &.plus-icon:not(.selected) {
+      background: $app-bg;
+    }
+    &.help-icon {
+      border-left: 1px $app-bg solid;
+    }
+
+    display: flex;
+    span {
+      font-size: 24px;
+      width: 100%;
+      justify-self: center;
+      align-self: center;
+      text-align: center;
+    }
+  }
+
+  nav {
+    height: 100%;
+    width: calc(100% - $navbar-height * 2);
+    list-style: none;
     display: flex;
     flex-direction: row;
-  
-    .plus-icon {
-      cursor: pointer;
-      width: clamp(40px, 40px, 40px);
-      height: clamp(40px, 40px, 40px);
-      background: $app-bg;
-      display: flex;
-      span {
-        font-size: 24px;
-        width: 100%;
-        justify-self: center;
-        align-self: center;
-        text-align: center;
+
+    div {
+      &.selected {
+        background: $app-bg;
       }
-    }
-  
-    ul {
-      height: 100%;
-      width: 100%;
-      list-style: none;
+      cursor: pointer;
+      padding: 0px 20px;
+      border: 1px $app-bg solid;
+      border-top: none;
+      border-bottom: none;
       display: flex;
-      flex-direction: row;
-  
-      li {
+      align-items: center;
+      overflow-x: hidden;
+
+      span {
         line-height: 18.6px;
-        cursor: pointer;
-        text-align: left;
-        padding: 16px 20px;
-        border: 1px $app-bg solid;
-        border-top: none;
-        border-bottom: none;
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
       }
     }
   }
+}

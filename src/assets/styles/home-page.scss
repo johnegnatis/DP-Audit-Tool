@@ -1,55 +1,58 @@
+@import "variables.scss";
+
+$home-padding-top: 10vh;
 .home-page-root {
-    min-width: 100%;
-    height: calc(100% - 80px);
+  min-width: 100%;
+  height: calc(100% - $home-padding-top - $navbar-height);
+  display: flex;
+  justify-content: center;
+
+  .home-page {
+    padding-top: $home-padding-top;
+    min-height: 100%;
+    width: 600px;
     display: flex;
-    justify-content: center;
-  
-    .home-page {
-      padding-top: 40px;
-      min-height: 100%;
-      width: 600px;
+    flex-direction: column;
+    align-items: center;
+
+    div {
+      display: flex;
+      justify-content: center;
+      text-align: center;
+      padding-block: 15px;
+    }
+    .title {
+      font-size: 36px;
+      font-weight: 700;
+      line-height: 38.7px;
+      color: $orange;
+      font-family: "Modesto Text";
+      letter-spacing: 0.055em;
+    }
+    .upload-box {
+      cursor: pointer;
+      width: calc(100% - 100px);
+      height: 216px;
+      background: $upload-box-bg;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-  
-      div {
-        display: flex;
-        justify-content: center;
-        text-align: center;
-        padding-block: 15px;
-      }
-      .title {
-        font-size: 36px;
+      border: 1px $orange dashed;
+      border-radius: 5px;
+      font-size: 20px;
+
+      .info {
+        color: $main-text;
         font-weight: 700;
-        line-height: 38.7px;
-        letter-spacing: 5.5%;
-        color: $orange;
+        padding-block: 10px;
       }
-      .upload-box {
-        cursor: pointer;
-        width: calc(100% - 100px);
-        height: 216px;
-        background: $upload-box-bg;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        border: 1px $orange dashed;
-        border-radius: 5px;
-        font-size: 20px;
-  
-        .info {
-          color: $main-text;
-          font-weight: 700;
-          padding-block: 10px;
-        }
-        .info-subtitle {
-          color: $grey;
-          font-weight: 400;
-        }
-      }
-      .create-button {
-        padding-top: 50px;
+      .info-subtitle {
+        color: $grey;
+        font-weight: 400;
       }
     }
+    .create-button {
+      padding-top: 50px;
+    }
   }
+}
