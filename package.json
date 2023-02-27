@@ -8,7 +8,6 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-hooks-global-state": "^2.1.0",
-    "react-router-dom": "^6.8.1",
     "react-scripts": "5.0.1",
     "sass": "^1.58.0"
   },
@@ -17,7 +16,7 @@
     "start:js": "react-scripts start",
     "start:eel": "python index.py --develop",
     "john-start:eel-static": "start dist/Senior-Project.exe",
-    "build": "npm-run-all build:*",
+    "build": "npm-run-all kill-port build:*",
     "build:js": "react-scripts build",
     "build:eel": "python -m eel index.py build --onefile --noconsole --name Senior-Project",
     "move-pdf": "xcopy \".\\*.pdf\" \".\\dist\" /y",
@@ -25,7 +24,8 @@
     "clean:build": "rmdir /s /q build 2>NUL",
     "clean:dist": "rmdir /s /q dist 2>NUL",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "kill-port": "npx kill-port 8888"
   },
   "devDependencies": {
     "@iconify/react": "^4.1.0",

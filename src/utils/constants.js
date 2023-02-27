@@ -3,6 +3,6 @@ export const iconNames = {
     checkbox: 'material-symbols:check-circle-outline-rounded',
 }
 
-export const path = {
-    homePage: '/',
+export const pages = {
+    homePage: 'home-page',
 }

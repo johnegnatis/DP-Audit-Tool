@@ -31,7 +31,7 @@ const HomePage = () => {
   };
   console.log(studentObject);
 
-  if (error) return <div>HANDLE ERROR </div> // TODO: handle error for not parsed PDF
+  if (error) return <div>HANDLE ERROR</div> // TODO: handle error for not parsed PDF
 
   return (
     <div className="home-page-root">
