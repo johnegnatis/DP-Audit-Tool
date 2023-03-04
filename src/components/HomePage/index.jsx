@@ -20,17 +20,17 @@ const HomePage = () => {
     eel
       .getDataFromTranscript()()
       .then((result) => {
+        console.log(JSON.parse(result))
         setStudentObject(result);
         setLoading(false);
       })
       .catch((error) => {
+        console.log(error);
         setError(error.errorText && extractErrorMessage(error.errorText));
         setStudentObject();
         setLoading(false);
       });
   };
-  console.log(studentObject);
-
   if (error) return <div>HANDLE ERROR</div> // TODO: handle error for not parsed PDF
 
   return (
