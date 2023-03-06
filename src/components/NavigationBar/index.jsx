@@ -3,26 +3,29 @@ import { useGlobalState, setGlobalState } from "../GlobalState";
 
 const NavigationBar = () => {
   const [students] = useGlobalState("students");
-  const [selected] = useGlobalState("selected");
-
+  const [selectedId] = useGlobalState("selectedId");
   return (
     <header className="navigation-bar">
       <div
-        className={`plus-icon ${!!selected && "selected"}`}
-        onClick={() => setGlobalState("selected", "")}
+        className={`plus-icon ${!!selectedId && "selected-id"}`}
+        onClick={() => setGlobalState("selectedId", "")}
       >
         <span>+</span>
       </div>
       <nav>
-        {students.map((student, index) => (
-          <div
-            className={`${selected === student && "selected"}`}
+        {students.map((studentObj, index) => {
+          if (!studentObj.student) return;
+          const name = studentObj.student.name;
+          const studentId = studentObj.student.studentId;
+          return (
+            <div
+            className={`${selectedId === studentId && "selected-id"}`}
             key={index}
-            onClick={() => setGlobalState("selected", student)}
+            onClick={() => setGlobalState("selectedId", studentId)}
           >
-            <span>{student}</span>
+            <span>{name}</span>
           </div>
-        ))}
+        )})}
       </nav>
       <div className="help-icon">
         <span>?</span>

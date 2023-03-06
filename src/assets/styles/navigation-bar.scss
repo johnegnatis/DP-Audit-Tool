@@ -17,7 +17,7 @@
     width: clamp($navbar-height, $navbar-height, $navbar-height);
     height: clamp($navbar-height, $navbar-height, $navbar-height);
 
-    &.plus-icon:not(.selected) {
+    &.plus-icon:not(.selected-id) {
       background: $app-bg;
     }
     &.help-icon {
@@ -42,7 +42,7 @@
     flex-direction: row;
 
     div {
-      &.selected {
+      &.selected-id {
         background: $app-bg;
       }
       cursor: pointer;

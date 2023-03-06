@@ -1,0 +1,69 @@
+@import "variables.scss";
+@import "colors.scss";
+
+$padding-root-var: 30px;
+.degree-plan-root {
+  min-width: calc(100% - 2 * $padding-root-var);
+  height: calc(100% - 2 * $padding-root-var - $navbar-height);
+  display: flex;
+  justify-content: left;
+  padding: $padding-root-var;
+
+  .degree-plan {
+    width: 100%;
+    .title {
+      font-weight: 700;
+      font-size: 28px;
+      line-height: 32.2px;
+      text-transform: uppercase;
+      padding-bottom: 20px;
+    }
+    .subtitle {
+      font-weight: 700;
+      size: 20px;
+      line-height: 20px;
+    }
+
+    .general-info {
+      width: 100%;
+      padding-bottom: 10px;
+      border-bottom: 1px $grey solid;
+      margin-bottom: 20px;
+
+      .row {
+        padding-bottom: 10px;
+        .left {
+          text-align: right;
+          span {
+            vertical-align: middle;
+            padding: 2px;
+            font-weight: 400;
+            font-size: 16px;
+            &.asterisk {
+              color: $red;
+            }
+          }
+        }
+      }
+    }
+
+    .core-courses {
+        .course-info {
+            color: $grey;
+            font-weight: 700;
+            font-size: 16px;
+            padding-top: 5px;
+        }
+        
+    }
+  }
+}
+
+pre {
+  white-space: pre-wrap; /* Since CSS 2.1 */
+  white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+  white-space: -pre-wrap; /* Opera 4-6 */
+  white-space: -o-pre-wrap; /* Opera 7 */
+  word-wrap: break-word; /* Internet Explorer 5.5+ */
+  width: 80%;
+}

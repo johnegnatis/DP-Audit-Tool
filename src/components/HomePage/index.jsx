@@ -1,37 +1,55 @@
 import UTDLogo from "../../assets/images/utd-home-logo.png";
 import { Button } from "antd";
 import { Icon } from "@iconify/react";
-import { iconNames } from "../../utils/constants";
+import { iconNames, pages } from "../../utils/constants";
 import React, { useState } from "react";
 import { eel } from "../../utils/eel";
 import { extractErrorMessage } from "../../utils/methods";
+import { useGlobalState, setGlobalState } from "../GlobalState";
 
 const HomePage = () => {
-  const [studentObject, setStudentObject] = useState(); // TODO: put this in global state, nav bar uses name only
+  const [globalStudents] = useGlobalState("students");
+
+  const [tempStudents, setTempStudents] = useState([]); // TODO: put this in global state, nav bar uses name only
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [counter, setCounter] = useState(-1);
 
   const handleUploadClick = () => {
-    if (studentObject || loading) {
-      setStudentObject();
+    if (loading) {
       return;
     }
     setLoading(true);
     eel
       .getDataFromTranscript()()
       .then((result) => {
-        console.log(JSON.parse(result))
-        setStudentObject(result);
+        result = JSON.parse(result);
+        const studentObj = {
+          page: pages.degreePlan,
+          student: result,
+        };
+        studentObj.student.studentId = studentObj.student.studentId || counter;
+        setTempStudents((students) => {
+          if (students) return [studentObj, ...students];
+          return [studentObj];
+        });
+        setCounter((counter) => counter - 1);
         setLoading(false);
       })
       .catch((error) => {
-        console.log(error);
         setError(error.errorText && extractErrorMessage(error.errorText));
-        setStudentObject();
+        setTempStudents();
         setLoading(false);
       });
   };
-  if (error) return <div>HANDLE ERROR</div> // TODO: handle error for not parsed PDF
+
+  const handleCreateDocumentClick = () => {
+    setGlobalState('students', [...tempStudents, ...globalStudents]);
+    if (tempStudents && tempStudents.length > 0 && tempStudents[0].student && tempStudents[0].student.studentId) {
+      setGlobalState('selectedId', tempStudents[0].student.studentId);
+    } 
+  };
+  if (error) return <div>HANDLE ERROR</div>; // TODO: handle error for not parsed PDF
 
   return (
     <div className="home-page-root">
@@ -44,20 +62,24 @@ const HomePage = () => {
         </div>
         <div onClick={handleUploadClick} className={`upload-box`}>
           <Icon
-            icon={!!studentObject ? iconNames.checkbox : iconNames.file}
+            icon={!!false ? iconNames.checkbox : iconNames.file}
             className="icon orange medium"
           />
           <span className="info">
-            {!!studentObject
+            {!!false
               ? "(Implement File Name Here).pdf"
               : "Student Transcript or Degree Plan"}
           </span>
           <span className="info-subtitle">
-            {!!studentObject ? "Click again to remove" : "Click to Upload."}
+            {!!false ? "Click again to remove" : "Click to Upload."}
           </span>
         </div>
         <div className="create-button">
-          <Button className="button orange-bg" size="large">
+          <Button
+            onClick={handleCreateDocumentClick}
+            className="button orange-bg"
+            size="large"
+          >
             CREATE DOCUMENTS
           </Button>
         </div>

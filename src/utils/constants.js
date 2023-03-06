@@ -5,4 +5,6 @@ export const iconNames = {
 
 export const pages = {
     homePage: 'home-page',
+    degreePlan: 'degree-plan',
+    notFound: 'not-found',
 }
