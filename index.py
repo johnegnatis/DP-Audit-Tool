@@ -9,6 +9,7 @@ import eel, os
 from scripts.getDataFromTranscript import getDataFromTranscriptMethod
 from scripts.makeDegreePlan import makeDegreePlanMethod
 from scripts.doAudit import doAuditMethod
+from scripts.getFilePaths import getFilePathsMethod
 
 @eel.expose
 def getDataFromTranscript():
@@ -22,6 +23,10 @@ def MakeDegreePlan(studentObject):
 def DoAudit(studentObject):
     doAuditMethod(studentObject)
 
+@eel.expose
+def getFilePaths():
+    return getFilePathsMethod()
+
 if __name__ == '__main__':
     if (len(sys.argv) > 1 and sys.argv[1] == '--develop'):
         eel.init('client')
@@ -29,3 +34,5 @@ if __name__ == '__main__':
     else:
         eel.init('build')
         eel.start('index.html', host="localhost", port=8888)
+
+

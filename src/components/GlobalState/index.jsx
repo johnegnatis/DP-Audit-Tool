@@ -11,7 +11,7 @@ const { setGlobalState, useGlobalState } = createGlobalState({
     { page: pages.degreePlan, student: { name: "Areeba Nandwani", studentId: 115} },
     { page: pages.degreePlan, student: { name: "Sai Gonuguntla", studentId: 116} },
   ],
-  selectedId: 111,
+  selectedId: '',
   // page represent the routing page we are on. to switch to a different page is as simple as changing the global state
 });
 

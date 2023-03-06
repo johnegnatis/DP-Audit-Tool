@@ -20,6 +20,7 @@ const HomePage = () => {
       return;
     }
     setLoading(true);
+    // eel.getFilePaths()().then((result) => { console.log(result)})
     eel
       .getDataFromTranscript()()
       .then((result) => {
