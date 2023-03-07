@@ -9,48 +9,138 @@ import { useGlobalState, setGlobalState } from "../GlobalState";
 
 const HomePage = () => {
   const [globalStudents] = useGlobalState("students");
-
-  const [tempStudents, setTempStudents] = useState([]); // TODO: put this in global state, nav bar uses name only
+  const [fileStudentList, setFileStudentList] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
-  const [counter, setCounter] = useState(-1);
+  const [negativeIndex, setNegativeIndex] = useState(-1);
 
   const handleUploadClick = () => {
     if (loading) {
       return;
     }
     setLoading(true);
-    // eel.getFilePaths()().then((result) => { console.log(result)})
     eel
-      .getDataFromTranscript()()
+      .getFilePaths()()
+      .then((fileList) => {
+        if (!fileList) return;
+        const promises = fileList.map((file, index) =>
+          getEelResponse(file, negativeIndex - index)
+        );
+        setNegativeIndex((num) => num - promises.length);
+        Promise.all(promises).then((students) => {
+          const fileStudentsToAdd = [];
+          students &&
+            students.forEach((studentObj, index) => {
+              if (!studentObj) {
+                fileStudentsToAdd.push({
+                  file: fileList[index],
+                  status: "error",
+                  student: null,
+                });
+              } else {
+                fileStudentsToAdd.push({
+                  file: fileList[index],
+                  status: "success",
+                  student: studentObj,
+                });
+              }
+            });
+          setFileStudentList((arr) => [...fileStudentsToAdd, ...arr]);
+        });
+      });
+    setLoading(false);
+  };
+
+  const getEelResponse = (filePath, index) => {
+    return eel
+      .getDataFromTranscript(filePath)()
       .then((result) => {
-        result = JSON.parse(result);
         const studentObj = {
           page: pages.degreePlan,
-          student: result,
+          student: JSON.parse(result),
         };
-        studentObj.student.studentId = studentObj.student.studentId || counter;
-        setTempStudents((students) => {
-          if (students) return [studentObj, ...students];
-          return [studentObj];
-        });
-        setCounter((counter) => counter - 1);
-        setLoading(false);
+        studentObj.student.studentId = studentObj.student.studentId || index;
+        return studentObj;
       })
       .catch((error) => {
-        setError(error.errorText && extractErrorMessage(error.errorText));
-        setTempStudents();
-        setLoading(false);
+        // TODO: add error handling to method
+        // setError(error.errorText && extractErrorMessage(error.errorText));
+        return null;
       });
   };
 
   const handleCreateDocumentClick = () => {
-    setGlobalState('students', [...tempStudents, ...globalStudents]);
-    if (tempStudents && tempStudents.length > 0 && tempStudents[0].student && tempStudents[0].student.studentId) {
-      setGlobalState('selectedId', tempStudents[0].student.studentId);
-    } 
+    const tempStudents = fileStudentList.map((obj) => {
+      if (obj.student) return obj.student;
+    });
+    console.log(tempStudents);
+    setGlobalState("students", [...tempStudents, ...globalStudents]);
+    if (
+      tempStudents &&
+      tempStudents.length > 0 &&
+      tempStudents[0].student &&
+      tempStudents[0].student.studentId
+    ) {
+      setGlobalState("selectedId", tempStudents[0].student.studentId);
+    }
   };
-  if (error) return <div>HANDLE ERROR</div>; // TODO: handle error for not parsed PDF
+
+  const removeElement = (fileName) => {
+    setFileStudentList((arr) => arr.filter((obj) => obj.file !== fileName));
+  };
+
+  const getUploadBox = () => {
+    if (fileStudentList.length <= 0) {
+      return (
+        <div onClick={handleUploadClick} className="upload-box">
+          <Icon icon={iconNames.file} className="icon orange medium" />
+          <span className="info">Student Transcript or Degree Plan</span>
+          <span className="info-subtitle">Click to Upload.</span>
+        </div>
+      );
+    } else if (loading) {
+      return (
+        <div onClick={handleUploadClick} className="upload-box">
+          <span>Loading</span>
+        </div>
+      );
+    } else {
+      return (
+        <div className="upload-box-list">
+          {fileStudentList.map((fileObj, index) => {
+            const fileName =
+              fileObj &&
+              fileObj.file.split("/")[fileObj.file.split("/").length - 1];
+            const status =
+              fileObj && fileObj.status === "success" ? (
+                <Icon icon={iconNames.checkbox} className="icon orange small" />
+              ) : (
+                <Icon icon={iconNames.redX} className="icon red small" />
+              );
+            return (
+              <span className="file-element border" key={index}>
+                <Icon icon={iconNames.checkbox} className="icon orange small" />
+                <span>{fileName}</span>
+                <Icon
+                  icon={iconNames.trash}
+                  className="icon orange small pointer"
+                  onClick={() => removeElement(fileObj.file)}
+                />
+              </span>
+            );
+          })}
+          <span
+            className="file-element pointer"
+            key={-1}
+            onClick={() => handleUploadClick()}
+          >
+            <Icon icon={iconNames.plus} className="icon grey small" />
+            <span>Add File</span>
+            <Icon icon={iconNames.checkbox} className="icon small hide" />
+          </span>
+        </div>
+      );
+    }
+  };
 
   return (
     <div className="home-page-root">
@@ -61,20 +151,7 @@ const HomePage = () => {
         <div className="title">
           UTD CS/SE Graduate Advising Degree Plan and Audit Tool
         </div>
-        <div onClick={handleUploadClick} className={`upload-box`}>
-          <Icon
-            icon={!!false ? iconNames.checkbox : iconNames.file}
-            className="icon orange medium"
-          />
-          <span className="info">
-            {!!false
-              ? "(Implement File Name Here).pdf"
-              : "Student Transcript or Degree Plan"}
-          </span>
-          <span className="info-subtitle">
-            {!!false ? "Click again to remove" : "Click to Upload."}
-          </span>
-        </div>
+        {getUploadBox()}
         <div className="create-button">
           <Button
             onClick={handleCreateDocumentClick}

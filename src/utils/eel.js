@@ -6,6 +6,6 @@ async function getDataFromTranscript() {
 }
 
 eel.expose(getFilePaths);
-async function getFilePaths() {
-  return await eel.getFilePaths()();
+async function getFilePaths(filePath) {
+  return await eel.getFilePaths(filePath)();
 }

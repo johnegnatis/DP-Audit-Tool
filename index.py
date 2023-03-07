@@ -2,8 +2,8 @@
 
 import sys, io
 # Uncomment for NO-CONSOLE
-sys.stdout = io.StringIO() # to fix --no console
-sys.stderr = io.StringIO() # https://github.com/python-eel/Eel/issues/654
+# sys.stdout = io.StringIO() # to fix --no console
+# sys.stderr = io.StringIO() # https://github.com/python-eel/Eel/issues/654
 
 import eel, os
 from scripts.getDataFromTranscript import getDataFromTranscriptMethod
@@ -12,8 +12,8 @@ from scripts.doAudit import doAuditMethod
 from scripts.getFilePaths import getFilePathsMethod
 
 @eel.expose
-def getDataFromTranscript():
-    return getDataFromTranscriptMethod()
+def getDataFromTranscript(filePath):
+    return getDataFromTranscriptMethod(filePath)
 
 @eel.expose
 def MakeDegreePlan(studentObject):

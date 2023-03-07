@@ -1,6 +1,4 @@
 import pdfplumber
-from tkinter import filedialog
-from tkinter import *
 import json
 from scripts.objects import Class, Student, StudentEncoder
 import re
@@ -11,8 +9,8 @@ from collections import namedtuple
 #TODO: EXTRACT SEMESTER ADMITTED, COURSES: ATTEMPTED CREDITS
 # - fix extractions
 
-def getDataFromTranscriptMethod():
-
+def getDataFromTranscriptMethod(file_path):
+    print(file_path)
     line_items = []
     sem_col = re.compile(r'^\d{4}\s')
     class_col = re.compile(r'^[A-Za-z0-9]+\s[0-9]+ .*')
@@ -27,10 +25,10 @@ def getDataFromTranscriptMethod():
     semester = ""
     data = namedtuple('data', 'semester course_num course_name attempted_credits grade')
 
-    root = Tk()
-    root.withdraw()
-    root.wm_attributes('-topmost', 1)
-    file_path = filedialog.askopenfilename(filetypes=(("PDF Files", "*.pdf"),("All Files", "*.*")))
+    # root = Tk()
+    # root.withdraw()
+    # root.wm_attributes('-topmost', 1)
+    # file_path = filedialog.askopenfilename(filetypes=(("PDF Files", "*.pdf"),("All Files", "*.*")))
 
     # try: REMOVED TRY TO CATCH ERROR IN CONSOLE
     classes = []

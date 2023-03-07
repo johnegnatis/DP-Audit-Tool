@@ -1,4 +1,5 @@
 @import "variables.scss";
+@import "colors.scss";
 
 $home-padding-top: 10vh;
 .home-page-root {
@@ -33,6 +34,7 @@ $home-padding-top: 10vh;
       cursor: pointer;
       width: calc(100% - 100px);
       height: 216px;
+      min-height: 216px;
       background: $upload-box-bg;
       display: flex;
       flex-direction: column;
@@ -49,6 +51,47 @@ $home-padding-top: 10vh;
       .info-subtitle {
         color: $grey;
         font-weight: 400;
+      }
+    }
+    .upload-box-list {
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding-right: 20px;
+      width: calc(100% - 100px);
+      height: 216px;
+      min-height: 216px;
+      background: $upload-box-bg;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      border: 1px $orange dashed;
+      border-radius: 5px;
+      font-size: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: start;
+      align-items: flex-start;
+
+      .file-element {
+        margin: 10px;
+        width: 100%;
+        height: 45px;
+        &.border {
+          border-bottom: 1px $grey solid;
+          padding-bottom: 10px;
+        }
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        span {
+          width: 80%;
+          font-weight: 700;
+          font-size: 20px;
+          text-align: left;
+        }
+        &.pointer {
+          cursor: pointer;
+        }
       }
     }
     .create-button {

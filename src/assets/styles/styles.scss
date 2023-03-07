@@ -33,8 +33,24 @@ body {
   &.orange {
     color: $orange;
   }
+  &.red {
+    color: $red;
+  }
   &.medium {
     width: 50px;
     height: auto;
+  }
+  &.small {
+    width: 36px;
+    height: auto;
+  }
+  &.grey {
+    color: $grey;
+  }
+  &.hide {
+    visibility: hidden;
+  }
+  &.pointer {
+    cursor: pointer;
   }
 }
