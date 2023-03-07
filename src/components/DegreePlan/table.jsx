@@ -5,14 +5,14 @@ export const columns = [
     },
     {
       title: 'Course Title',
-      dataIndex: 'courseTitle',
-      key: 'courseTitle',
+      dataIndex: 'name',
+      key: 'name',
       width: '45%',
     },
     {
       title: 'Course Num',
-      dataIndex: 'name',
-      key: 'name',
+      dataIndex: 'number',
+      key: 'number',
     },
     {
       title: 'UTD Sem',
@@ -20,13 +20,13 @@ export const columns = [
       key: 'semester',
     },
     {
-        title: 'Transfer',
-        dataIndex: 'transfer',
-        key: 'transfer',
-      },
-      {
-        title: 'Grade',
-        dataIndex: 'grade',
-        key: 'grade',
-      },  
+      title: 'Transfer',
+      dataIndex: 'transfer',
+      key: 'transfer',
+    },
+    {
+      title: 'Grade',
+      dataIndex: 'grade',
+      key: 'grade',
+    },  
 ];

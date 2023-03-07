@@ -21,7 +21,7 @@ const formatGrid = (layout, x1, x2) => {
   };
 
   // x1 and x2 must sum to 12, x1 is 1st and 3rd box, x2 is 2nd and 4th box
-  const formatHalfGrid = (layout, x1, x2) => {
+  const formatHalfGrid = (layout, x1, x2, x3, x4) => {
     return (
       <div className="grid">
         {layout.map((row, index) => {
@@ -33,10 +33,10 @@ const formatGrid = (layout, x1, x2) => {
               <Col className="left" span={x1} pull={x2}>
                 {row.cell_one}
               </Col>
-              <Col className="right" span={x2} push={x1}>
+              <Col className="right" span={x4} push={x3}>
                 {row.cell_four}
               </Col>
-              <Col className="left" span={x1} pull={x2}>
+              <Col className="left" span={x3} pull={x4}>
                 {row.cell_three}
               </Col>
             </Row>

@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
-
 import dayjs from "dayjs";
+
 export function useCustomReset(pageChangeSignal, student) {
     const defaults = {
         name: student.student.name,
@@ -27,6 +27,7 @@ export function useCustomReset(pageChangeSignal, student) {
       const [fastTrack, setFastTrack] = useState(defaults.fastTrack);
       const [thesis, setThesis] = useState(defaults.thesis);
       const [signature, setSignature] = useState(defaults.signature)
+      const [coreClasses, setCoreClasses] = useState(defaults.coreClasses)
     
       useEffect(() => {
         setName(defaults.name);

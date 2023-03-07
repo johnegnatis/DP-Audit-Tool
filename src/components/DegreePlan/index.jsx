@@ -42,7 +42,8 @@ const DegreePlan = (student) => {
         <div className="general-info">
           <h2 className="subtitle">General Information</h2>
           {formatGrid(fullLayout, 5, 19)}
-          {formatHalfGrid(halfLayout, 5, 7)}
+          {formatHalfGrid(halfLayout, 5,5,9,5)}
+          {/* TODO: at high zooms, some text overlaps here */}
         </div>
         <div>
           <h2 className="subtitle">Core Courses</h2>

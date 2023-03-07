@@ -19,16 +19,17 @@ class Student:
     def unpackStudentObject(self):
         return json.loads(self)
 
-options = {
-        'required': 'required',
-        'core': 'core',
-        'elective': 'elective',
-        'prerequisite': 'prerequisite',
-    }
+transferOptions = {
+    'fast_track': 'fastTrack',
+    'transfer': 'transfer',
+    '': '',
+}
 
 class Class:
-    def __init__(self, type, name, semester, grade):
-        self.type = options[type]
+    def __init__(self, name, number, semester, transfer, grade, attempted_credits):
         self.name = name
+        self.number = number
         self.semester = semester
+        self.transfer = transferOptions[transfer]
         self.grade = grade
+        self.attempted_credits = attempted_credits

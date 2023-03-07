@@ -43,6 +43,7 @@ $right-width: calc(100% - $left-width);
             padding: 2px;
             font-weight: 400;
             font-size: 16px;
+            white-space: nowrap;
             &.asterisk {
               color: $red;
             }
@@ -95,6 +96,5 @@ $right-width: calc(100% - $left-width);
     width: $right-width;
     position: sticky;
     height: 100%;
-    overflow-y: scroll;
   }
 }
