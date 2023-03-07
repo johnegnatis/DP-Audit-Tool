@@ -4,6 +4,7 @@ export const iconNames = {
     redX: 'ph:x-circle-bold',
     plus: 'material-symbols:add-rounded',
     trash: 'ph:trash-bold', 
+    checkboxMinus: 'bxs:checkbox-minus',
 }
 
 export const pages = {

@@ -35,7 +35,7 @@ $home-padding-top: 10vh;
       width: calc(100% - 100px);
       height: 216px;
       min-height: 216px;
-      background: $upload-box-bg;
+      background: $lighter-grey;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -44,7 +44,7 @@ $home-padding-top: 10vh;
       font-size: 20px;
 
       .info {
-        color: $main-text;
+        color: $dark-grey;
         font-weight: 700;
         padding-block: 10px;
       }
@@ -60,7 +60,7 @@ $home-padding-top: 10vh;
       width: calc(100% - 100px);
       height: 216px;
       min-height: 216px;
-      background: $upload-box-bg;
+      background: $lighter-grey;
       display: flex;
       flex-direction: column;
       align-items: center;

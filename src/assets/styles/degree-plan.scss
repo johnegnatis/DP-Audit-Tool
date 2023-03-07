@@ -2,15 +2,18 @@
 @import "colors.scss";
 
 $padding-root-var: 30px;
+$left-width: 75%;
+$right-width: calc(100% - $left-width);
 .degree-plan-root {
   min-width: calc(100% - 2 * $padding-root-var);
-  height: calc(100% - 2 * $padding-root-var - $navbar-height);
+  height: calc(100% - $navbar-height);
   display: flex;
   justify-content: left;
-  padding: $padding-root-var;
 
   .degree-plan {
-    width: 100%;
+    padding: $padding-root-var;
+    overflow-y: scroll;
+    width: $left-width;
     .title {
       font-weight: 700;
       font-size: 28px;
@@ -22,6 +25,7 @@ $padding-root-var: 30px;
       font-weight: 700;
       size: 20px;
       line-height: 20px;
+      padding-block: 10px;
     }
 
     .general-info {
@@ -47,23 +51,50 @@ $padding-root-var: 30px;
       }
     }
 
-    .core-courses {
-        .course-info {
-            color: $grey;
-            font-weight: 700;
-            font-size: 16px;
-            padding-top: 5px;
-        }
+    .course-info {
+        color: $grey;
+        font-weight: 700;
+        font-size: 16px;
+        padding-top: 5px;
+        padding-bottom: 10px;
+    }
         
+    table {
+      border-bottom: 1px $grey solid;
+
+      * {
+        color: $dark-grey;
+      }
+      th {
+        background: $light-grey;
+        font-weight: 700;
+        font-size: 16px;
+      }
+      td {
+        font-size: 16px;
+      }
+    }
+
+    .signature {
+      display: flex;
+      align-items: center;
+      padding-inline: 15%;
+      padding-top: 40px;
+      span {
+        white-space: nowrap;
+        padding-right: 3px;
+      }
+    }
+    .generate-button {
+      padding-block: 30px;
+      display: flex;
+      justify-content: center;
     }
   }
-}
-
-pre {
-  white-space: pre-wrap; /* Since CSS 2.1 */
-  white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
-  white-space: -pre-wrap; /* Opera 4-6 */
-  white-space: -o-pre-wrap; /* Opera 7 */
-  word-wrap: break-word; /* Internet Explorer 5.5+ */
-  width: 80%;
+  .search-bar {
+    width: $right-width;
+    position: sticky;
+    height: 100%;
+    overflow-y: scroll;
+  }
 }

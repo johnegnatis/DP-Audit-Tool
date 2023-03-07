@@ -4,12 +4,7 @@ import { pages } from "../../utils/constants";
 const { setGlobalState, useGlobalState } = createGlobalState({
   // this will hold all the student object displayed on the taskbar
   students: [
-    { page: pages.degreePlan, student: { name: "John Egnatis", studentId: 111, dates: { expectedGraduation: '12/01/2023', semesterAdmitted: '06/09/2020' }} },
-    { page: pages.degreePlan, student: { name: "Zia Kim", studentId: 112} },
-    { page: pages.degreePlan, student: { name: "Haniyyah Hamid", studentId: 113} },
-    { page: pages.degreePlan, student: { name: "Jared Hightower", studentId: 114} },
-    { page: pages.degreePlan, student: { name: "Areeba Nandwani", studentId: 115} },
-    { page: pages.degreePlan, student: { name: "Sai Gonuguntla", studentId: 116} },
+    { page: pages.degreePlan, student: { name: "Generic Student", studentId: 111, dates: { expectedGraduation: '12/01/2023', semesterAdmitted: '06/09/2020' }} },
   ],
   selectedId: '',
   // page represent the routing page we are on. to switch to a different page is as simple as changing the global state

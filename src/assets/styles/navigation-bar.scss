@@ -1,7 +1,7 @@
 @import "variables.scss";
 
 .navigation-bar {
-  background-color: $navigation-bg;
+  background-color: $light-grey;
   color: $grey;
   position: sticky;
   top: 0;
@@ -18,10 +18,10 @@
     height: clamp($navbar-height, $navbar-height, $navbar-height);
 
     &.plus-icon:not(.selected-id) {
-      background: $app-bg;
+      background: $white;
     }
     &.help-icon {
-      border-left: 1px $app-bg solid;
+      border-left: 1px $white solid;
     }
 
     display: flex;
@@ -43,11 +43,11 @@
 
     div {
       &.selected-id {
-        background: $app-bg;
+        background: $white;
       }
       cursor: pointer;
       padding: 0px 20px;
-      border: 1px $app-bg solid;
+      border: 1px $white solid;
       border-top: none;
       border-bottom: none;
       display: flex;

@@ -2,10 +2,11 @@ import UTDLogo from "../../assets/images/utd-home-logo.png";
 import { Button } from "antd";
 import { Icon } from "@iconify/react";
 import { iconNames, pages } from "../../utils/constants";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { eel } from "../../utils/eel";
 import { extractErrorMessage } from "../../utils/methods";
 import { useGlobalState, setGlobalState } from "../GlobalState";
+import { getEelResponse } from "./apiHelper";
 
 const HomePage = () => {
   const [globalStudents] = useGlobalState("students");
@@ -13,7 +14,7 @@ const HomePage = () => {
   const [loading, setLoading] = useState(false);
   const [negativeIndex, setNegativeIndex] = useState(-1);
 
-  const handleUploadClick = () => {
+  const handleUploadClick = useCallback(() => {
     if (loading) {
       return;
     }
@@ -22,6 +23,7 @@ const HomePage = () => {
       .getFilePaths()()
       .then((fileList) => {
         if (!fileList) return;
+        // TODO: handle same file uploaded error
         const promises = fileList.map((file, index) =>
           getEelResponse(file, negativeIndex - index)
         );
@@ -45,28 +47,10 @@ const HomePage = () => {
               }
             });
           setFileStudentList((arr) => [...fileStudentsToAdd, ...arr]);
+          setLoading(false);
         });
       });
-    setLoading(false);
-  };
-
-  const getEelResponse = (filePath, index) => {
-    return eel
-      .getDataFromTranscript(filePath)()
-      .then((result) => {
-        const studentObj = {
-          page: pages.degreePlan,
-          student: JSON.parse(result),
-        };
-        studentObj.student.studentId = studentObj.student.studentId || index;
-        return studentObj;
-      })
-      .catch((error) => {
-        // TODO: add error handling to method
-        // setError(error.errorText && extractErrorMessage(error.errorText));
-        return null;
-      });
-  };
+  }, [loading, eel, negativeIndex, setLoading]);
 
   const handleCreateDocumentClick = () => {
     const tempStudents = fileStudentList.map((obj) => {
@@ -89,18 +73,18 @@ const HomePage = () => {
   };
 
   const getUploadBox = () => {
-    if (fileStudentList.length <= 0) {
+    if (loading && fileStudentList.length <= 0) {
+      return (
+        <div onClick={handleUploadClick} className="upload-box">
+          <span>Loading...</span>
+        </div>
+      );
+    } else if (fileStudentList.length <= 0) {
       return (
         <div onClick={handleUploadClick} className="upload-box">
           <Icon icon={iconNames.file} className="icon orange medium" />
           <span className="info">Student Transcript or Degree Plan</span>
           <span className="info-subtitle">Click to Upload.</span>
-        </div>
-      );
-    } else if (loading) {
-      return (
-        <div onClick={handleUploadClick} className="upload-box">
-          <span>Loading</span>
         </div>
       );
     } else {
