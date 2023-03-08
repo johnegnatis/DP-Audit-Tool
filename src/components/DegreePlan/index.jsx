@@ -50,12 +50,12 @@ const DegreePlan = (student) => {
           <h3 className="course-info">15 credit Hours / 3.19 grade point required (HARDCODED)</h3>
           <Table columns={columns} dataSource={student.student.classes}/>
           <h2 className="subtitle">One of the Following Courses</h2>
-          <Table columns={columns} dataSource={student.student.classes}/> 
+          <Table columns={columns} dataSource={[]}/> 
           <h2 className="subtitle">Approved 6000 Level Courses</h2>
           <h3 className="course-info">15 credit Hours / 3.19 grade point required (HARDCODED)</h3>
-          <Table columns={columns} dataSource={student.student.classes}/> 
+          <Table columns={columns} dataSource={[]}/> 
           <h2 className="subtitle">Prerequisites</h2>
-          <Table columns={columns} dataSource={student.student.classes}/> 
+          <Table columns={columns} dataSource={[]}/> 
           <div className="signature">
             <span>Academic Advisor Signature : </span>
             {getForm(signature, setSignature)}

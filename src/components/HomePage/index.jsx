@@ -22,7 +22,10 @@ const HomePage = () => {
     eel
       .getFilePaths()()
       .then((fileList) => {
-        if (!fileList) return;
+        if (!fileList) {
+          setLoading(false);
+          return;
+        }
         // TODO: handle same file uploaded error
         const promises = fileList.map((file, index) =>
           getEelResponse(file, negativeIndex - index)
@@ -56,7 +59,6 @@ const HomePage = () => {
     const tempStudents = fileStudentList.map((obj) => {
       if (obj.student) return obj.student;
     });
-    console.log(tempStudents);
     setGlobalState("students", [...tempStudents, ...globalStudents]);
     if (
       tempStudents &&

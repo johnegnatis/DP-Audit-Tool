@@ -2,7 +2,6 @@ import pdfplumber
 import json
 from scripts.objects import Class, Student, StudentEncoder
 import re
-import pdfplumber
 import pandas as pd
 from collections import namedtuple
 
@@ -37,16 +36,18 @@ def getDataFromTranscriptMethod(file_path):
     data_list = text.split('\n')
     foundSemAdmitted = 0
     for line in data_list:
+        line = " ".join(line.split())
+
         if re.compile(r'^Name').match(line): # STUDENT NAME
-            name = line.split(" ")
+            name = line.split()
             student_name = " ".join(name[1:len(name)])
             
         if re.compile(r'^Student ID').match(line): # STUDENT ID
-            id = line.split(" ")
+            id = line.split()
             student_id = "".join(id[2])
             
         if re.compile(r'^\d{4}\-\d{2}\-\d{2}\:\s.*Major$').match(line): # STUDENT MAJOR
-            x = line.split(" ")
+            x = line.split()
             major = " ".join(x[1:len(x) - 1])
             
         if re.compile(r'^Beginning of Graduate Record').match(line): # helper to find semester_admitted
@@ -56,21 +57,21 @@ def getDataFromTranscriptMethod(file_path):
             if foundSemAdmitted == 1:
                 semester_admitted = line
                 foundSemAdmitted = 0
-            #x = line.split(" ")
+            #x = line.split()
             semester = line
         
         if re.compile(r'^Combined Cum GPA').match(line): # TOTAL COMBINED COMULATIVE GPA
-            x = line.split(" ")
+            x = line.split()
             combined_cumulative_GPA = x[3]
 
         if class_col.match(line): # COURSE PREFIX + CODE, COURSE NAME/DESCRIPTION, ATTEMPTED CREDITS, GRADE
-            new_class_col= line.split(" ")
+            new_class_col= line.split()
             course_prefix = " ".join(new_class_col[0:1])
             course_code = " ".join(new_class_col[1:2])
             course_num = " ".join(new_class_col[0:2])
 
             temp = new_class_col[(len(new_class_col)-4)]
-            if( not(temp[0] == "3" or temp[0]=="0" or temp[0]=="1") ): # if grade is blank (class is being currently attempted)
+            if( not(temp) or not(temp[0] == "3" or temp[0]=="0" or temp[0]=="1") ): # if grade is blank (class is being currently attempted)
                 course_name = " ".join(new_class_col[2:len(new_class_col)-3])
                 grade = ""
                 attempted_credits = "".join(new_class_col[(len(new_class_col)-3):(len(new_class_col)-2)])
@@ -78,7 +79,7 @@ def getDataFromTranscriptMethod(file_path):
                 course_name = " ".join(new_class_col[2:len(new_class_col)-4])
                 grade = "".join(new_class_col[(len(new_class_col)-2):(len(new_class_col)-1)])
                 attempted_credits = "".join(new_class_col[(len(new_class_col)-4):(len(new_class_col)-3)])
-            myClass = Class('name', course_num, semester, '', grade, 1)
+            myClass = Class(course_name, course_num, semester, '', grade, 1)
             classes.append(myClass)
             line_items.append(data(semester, course_prefix, course_code, course_name, attempted_credits, grade))
     

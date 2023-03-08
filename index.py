@@ -1,16 +1,12 @@
-# coding: utf-8
-
 import sys, io
-# Uncomment for NO-CONSOLE
-# sys.stdout = io.StringIO() # to fix --no console
-# sys.stderr = io.StringIO() # https://github.com/python-eel/Eel/issues/654
+DEVELOPMENT = len(sys.argv) > 1 and sys.argv[1] == '--develop'
 
-import eel, os
-# from scripts.getDataFromTranscript import getDataFromTranscriptMethod
-# from scripts.makeDegreePlan import makeDegreePlanMethod
-# from scripts.doAudit import doAuditMethod
-# from scripts.getFilePaths import getFilePathsMethod
-import scripts
+# redirects python script output for build version
+if (DEVELOPMENT == False):
+    sys.stdout = io.StringIO() # to fix --no console
+    sys.stderr = io.StringIO() # https://github.com/python-eel/Eel/issues/654
+
+import eel, os, scripts
 
 @eel.expose
 def getDataFromTranscript(filePath):
@@ -28,14 +24,15 @@ def DoAudit(studentObject):
 def getFilePaths():
     return scripts.getFilePathsMethod()
 
-try:
-    if __name__ == '__main__':
-        if (len(sys.argv) > 1 and sys.argv[1] == '--develop'):
+if __name__ == '__main__':
+    if (DEVELOPMENT):
+        try:
             eel.init('client')
             eel.start({"port": 3000}, host="localhost", port=8888, mode=None) # Remove mode=None to see the chrome app pop up.
-        else:
-            eel.init('build')
-            eel.start('index.html', host="localhost", port=8888)
-except Exception as e:
-    print(e)
+        except Exception as e:
+            print(e)
+    else:
+        eel.init('build')
+        eel.start('index.html', host="localhost", port=8888)
+
 
