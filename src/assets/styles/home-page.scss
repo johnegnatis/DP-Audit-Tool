@@ -1,12 +1,13 @@
 @import "variables.scss";
 @import "colors.scss";
 
-$home-padding-top: 10vh;
+$home-padding-top: 20px;
 .home-page-root {
   min-width: 100%;
   height: calc(100% - $home-padding-top - $navbar-height);
   display: flex;
   justify-content: center;
+  overflow-y: auto;
 
   .home-page {
     padding-top: $home-padding-top;

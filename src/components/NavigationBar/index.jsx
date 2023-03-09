@@ -13,11 +13,20 @@ const NavigationBar = () => {
     const currentStudent = students.find(
       (studentObj) => studentObj.student.studentId === selectedId
     );
+
+    if (!currentStudent) {
+      setGlobalState("selectedId", id);
+      return;
+    }
+
     const alreadyOnStudentPage = currentStudent.student.studentId === id;
-    if (currentStudent.page === pages.degreePlan && !alreadyOnStudentPage) {
-      setOpen(true);
-      setSelected(id);
-    } else setGlobalState("selectedId", id);
+    if (alreadyOnStudentPage || currentStudent === pages.degreePlan) {
+      setGlobalState("selectedId", id);
+      return;
+    }
+
+    setOpen(true);
+    setSelected(id);
   };
 
   const handleConfirmBoxResponse = (response) => {
