@@ -3,15 +3,33 @@ import { iconNames } from "../../utils/constants";
 import React, { useEffect, useMemo, useState } from "react";
 import { extractErrorMessage } from "../../utils/methods";
 import { useGlobalState } from "../GlobalState";
-import { getDatePicker, getForm, getRadio } from "./inputComponents";
-import { formatGrid, formatHalfGrid, getSpan } from "./gridLayout";
+import { getDatePicker, getForm, getRadio } from "./Form/inputComponents";
+import { formatGrid, formatHalfGrid, getSpan } from "./Form/gridLayout";
+import { columns } from "./Form/table";
 import { Table, Button } from "antd";
-import { columns } from "./table";
 import { useCustomReset } from "./hook";
+import Search from "./Search";
 
 const DegreePlan = (student) => {
   const [pageChangeSignal] = useGlobalState("selectedId");
-  const { name, setName, studentId, setStudentId, admittedDate, setAdmittedDate, graduationDate, setGraduationDate, fastTrack, setFastTrack, thesis, setThesis, signature, setSignature } = useCustomReset(pageChangeSignal, student);
+  const {
+    name,
+    setName,
+    studentId,
+    setStudentId,
+    admittedDate,
+    setAdmittedDate,
+    graduationDate,
+    setGraduationDate,
+    fastTrack,
+    setFastTrack,
+    thesis,
+    setThesis,
+    signature,
+    setSignature,
+    searchInput,
+    setSearchInput,
+  } = useCustomReset(pageChangeSignal, student);
 
   const fullLayout = [
     { cell_one: getSpan("Name"), cell_two: getForm(name, setName) },
@@ -42,20 +60,24 @@ const DegreePlan = (student) => {
         <div className="general-info">
           <h2 className="subtitle">General Information</h2>
           {formatGrid(fullLayout, 5, 19)}
-          {formatHalfGrid(halfLayout, 5,5,9,5)}
+          {formatHalfGrid(halfLayout, 5, 5, 9, 5)}
           {/* TODO: at high zooms, some text overlaps here */}
         </div>
         <div>
           <h2 className="subtitle">Core Courses</h2>
-          <h3 className="course-info">15 credit Hours / 3.19 grade point required (HARDCODED)</h3>
-          <Table columns={columns} dataSource={student.student.classes}/>
+          <h3 className="course-info">
+            15 credit Hours / 3.19 grade point required (HARDCODED)
+          </h3>
+          <Table columns={columns} dataSource={student.student.classes} />
           <h2 className="subtitle">One of the Following Courses</h2>
-          <Table columns={columns} dataSource={[]}/> 
+          <Table columns={columns} dataSource={[]} />
           <h2 className="subtitle">Approved 6000 Level Courses</h2>
-          <h3 className="course-info">15 credit Hours / 3.19 grade point required (HARDCODED)</h3>
-          <Table columns={columns} dataSource={[]}/> 
+          <h3 className="course-info">
+            15 credit Hours / 3.19 grade point required (HARDCODED)
+          </h3>
+          <Table columns={columns} dataSource={[]} />
           <h2 className="subtitle">Prerequisites</h2>
-          <Table columns={columns} dataSource={[]}/> 
+          <Table columns={columns} dataSource={[]} />
           <div className="signature">
             <span>Academic Advisor Signature : </span>
             {getForm(signature, setSignature)}
@@ -71,9 +93,7 @@ const DegreePlan = (student) => {
           </div>
         </div>
       </div>
-      <div className="search-bar">
-        Search Here
-      </div>
+      <Search searchInput={searchInput} setSearchInput={setSearchInput} />
     </div>
   );
 };

@@ -6,8 +6,7 @@ import { pages } from "../../utils/constants";
 
 const Router = () => {
   const student = getSelectedStudent() || null;
-  const currentPage = !!student && student.page || pages.homePage;
-
+  const currentPage = (!!student && student.page) || pages.homePage;
   switch (currentPage) {
     case pages.homePage:
       return <HomePage />;

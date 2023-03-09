@@ -5,6 +5,7 @@ export const iconNames = {
     plus: 'material-symbols:add-rounded',
     trash: 'ph:trash-bold', 
     checkboxMinus: 'bxs:checkbox-minus',
+    search: 'ic:outline-search',
 }
 
 export const pages = {
