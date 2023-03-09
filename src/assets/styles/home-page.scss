@@ -1,17 +1,15 @@
 @import "variables.scss";
 @import "colors.scss";
 
-$home-padding-top: 20px;
 .home-page-root {
   min-width: 100%;
-  height: calc(100% - $home-padding-top - $navbar-height);
+  height: calc(100% - $navbar-height);
   display: flex;
   justify-content: center;
   overflow-y: auto;
 
   .home-page {
-    padding-top: $home-padding-top;
-    min-height: 100%;
+    margin: auto;
     width: 600px;
     display: flex;
     flex-direction: column;
@@ -96,7 +94,7 @@ $home-padding-top: 20px;
       }
     }
     .create-button {
-      padding-top: 50px;
+      padding-top: 20px;
     }
   }
 }

@@ -1,5 +1,4 @@
-import json
-from json import JSONEncoder
+from json import JSONEncoder, dumps, loads
 
 class StudentEncoder(JSONEncoder):
     def default(self, o):
@@ -14,10 +13,10 @@ class Student:
         self.classes = classes # list class object below
 
     def packStudentObject(self):
-        return json.dumps(self, cls=StudentEncoder)
+        return dumps(self, cls=StudentEncoder)
 
     def unpackStudentObject(self):
-        return json.loads(self)
+        return loads(self)
 
 transferOptions = {
     'fast_track': 'fastTrack',

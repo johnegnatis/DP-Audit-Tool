@@ -1,7 +1,7 @@
-import React, { useEffect, useMemo, useState } from "react";
+import { useState } from "react";
 import dayjs from "dayjs";
 
-export function useCustomReset(pageChangeSignal, student) {
+export function useStudentObject(student) {
   const defaults = {
     name: student.student.name,
     studentId: student.student.studentId,
@@ -30,17 +30,6 @@ export function useCustomReset(pageChangeSignal, student) {
   const [signature, setSignature] = useState(defaults.signature);
   const [coreClasses, setCoreClasses] = useState(defaults.coreClasses);
   const [searchInput, setSearchInput] = useState(defaults.searchInput);
-
-  useEffect(() => {
-    setName(defaults.name);
-    setStudentId(defaults.studentId);
-    setAdmittedDate(defaults.admitted);
-    setGraduationDate(defaults.graduation);
-    setFastTrack(defaults.fastTrack);
-    setThesis(defaults.thesis);
-    setSignature(defaults.signature);
-    setSearchInput(defaults.searchInput);
-  }, [pageChangeSignal]);
 
   return {
     name,

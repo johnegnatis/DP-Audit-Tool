@@ -19,7 +19,7 @@ const Search = ({ searchInput, setSearchInput }) => {
     { number: "ECSC5177", name: "CS IPP ASSIGNMENT" },
   ];
   const onInputChange = (e) => {
-    setSearchInput(e.target.value.trim());
+    setSearchInput(e.target.value);
   };
   const filterClasses = useMemo(() => {
     return classes.filter(
