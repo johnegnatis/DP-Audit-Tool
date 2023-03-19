@@ -1,11 +1,11 @@
-import { Input, DatePicker, Radio } from "antd";
+import { Input, DatePicker, Radio, AutoComplete, Dropdown } from "antd";
 
 const getForm = (value, setValue) => {
   const handleFormInput = (e) => {
-    setValue(e.target.value.trim());
+    setValue(e.target.value);
   };
 
-  return <Input value={value} onChange={(e) => handleFormInput(e)} />;
+  return <Input value={value} onChange={(e) => handleFormInput(e)}  />;
 };
 
 const getDatePicker = (value, setValue) => {
@@ -36,4 +36,25 @@ const getRadio = (value, setValue) => {
   );
 };
 
-export { getRadio, getDatePicker, getForm };
+const getDropdown = (value, setValue, options) => {
+  const handleMenuClick = (e) => {
+    setValue(options.find((obj) => obj.key === e.key).label);
+  };
+  const menuProps = {
+    items: options,
+    onClick: handleMenuClick,
+  };
+  return (
+    <Dropdown.Button
+      menu={menuProps}
+      onClick={() => {
+        console.log('hi');
+      }}
+      className="d-dropdown"
+  >
+      {value || "Select Track"}
+    </Dropdown.Button>
+  );
+};
+
+export { getDropdown, getRadio, getDatePicker, getForm };

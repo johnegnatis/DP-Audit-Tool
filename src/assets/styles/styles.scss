@@ -50,6 +50,16 @@ body {
   }
 }
 
+.d-dropdown{
+  button:first-child {
+    width: 90%;
+    text-align: left;
+  }
+  button:second-child {
+    width: 10%;
+  }
+}
+
 .icon {
   height: auto;
 

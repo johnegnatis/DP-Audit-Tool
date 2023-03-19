@@ -2,7 +2,7 @@
 @import "colors.scss";
 
 $padding-root-var: 30px;
-$left-width: 66%;
+$left-width: 100%;
 $right-width: calc(100% - $left-width);
 $input-height: 40px;
 .degree-plan-root {
@@ -47,7 +47,7 @@ $input-height: 40px;
             padding: 2px;
             font-weight: 400;
             font-size: 16px;
-            white-space: nowrap;
+            white-space: break-spaces;
             &.asterisk {
               color: $red;
             }
@@ -96,43 +96,43 @@ $input-height: 40px;
       justify-content: center;
     }
   }
-  .search-root {
-    width: $right-width;
-    height: 100%;
+}
+.search-root {
+  // width: $right-width;
+  height: 100%;
 
-    .search-input {
-      border-bottom: $lg-light-grey-border-bottom;
-      width: 100%;
+  .search-input {
+    border-bottom: $lg-light-grey-border-bottom;
+    width: 100%;
+    display: flex;
+    div {
+      width: $input-height;
       display: flex;
-      div {
-        width: $input-height;
-        display: flex;
-        justify-content: center;
-        align-content: center;
-      }
-      input {
-        border: none;
-        width: 100%;
-        height: $input-height;
-        outline: none;
-      }
+      justify-content: center;
+      align-content: center;
     }
-    .class-list {
-      height: calc(100% - $input-height - 4px);
+    input {
+      border: none;
+      width: 100%;
+      height: $input-height;
+      outline: none;
+    }
+  }
+  .class-list {
+    height: calc(100% - $input-height - 4px);
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+
+    .row {
       display: flex;
-      flex-direction: column;
-      overflow-y: scroll;
+      flex-direction: row;
+      justify-content: space-between;
+      border-bottom: $sm-light-grey-border-bottom;
+      padding: 5%;
 
-      .row {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        border-bottom: $sm-light-grey-border-bottom;
-        padding: 5%;
-
-        p:first-child {
-          padding-left: 3px;
-        }
+      p:first-child {
+        padding-left: 3px;
       }
     }
   }

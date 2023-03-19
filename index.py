@@ -1,7 +1,7 @@
 import sys, io
-DEVELOPMENT = len(sys.argv) > 1 and sys.argv[1] == '--develop'
 
 # redirects python script output for build version
+DEVELOPMENT = len(sys.argv) > 1 and sys.argv[1] == '--develop'
 if (DEVELOPMENT == False):
     sys.stdout = io.StringIO() # to fix --no console
     sys.stderr = io.StringIO() # https://github.com/python-eel/Eel/issues/654
@@ -24,6 +24,9 @@ def DoAudit(studentObject):
 def getFilePaths():
     return scripts.getFilePathsMethod()
 
+if getattr(sys, 'frozen', False):
+    import pyi_splash
+
 if __name__ == '__main__':
     if (DEVELOPMENT):
         try:
@@ -33,6 +36,8 @@ if __name__ == '__main__':
             print(e)
     else:
         eel.init('build')
+        if getattr(sys, 'frozen', False):
+            pyi_splash.close()
         eel.start('index.html', host="localhost", port=8888)
 
 

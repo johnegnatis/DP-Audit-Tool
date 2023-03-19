@@ -1,10 +1,13 @@
-import { getDatePicker, getForm, getRadio } from "./inputComponents";
+import { getDatePicker, getDropdown, getForm, getRadio } from "./inputComponents";
 import { formatGrid, formatHalfGrid, getSpan } from "./gridLayout";
 import { columns } from "./table";
 import { Table, Button } from "antd";
+import { tracks } from "../../../utils/constants";
 
-const Form = ({ student, props }) => {
+const Form = ({ student, props, setDrawerOpen }) => {
   const {
+    track,
+    setTrack,
     name,
     setName,
     studentId,
@@ -21,7 +24,14 @@ const Form = ({ student, props }) => {
     setSignature,
   } = props;
   const fullLayout = [
-    { cell_one: getSpan("Name"), cell_two: getForm(name, setName) },
+    { 
+      cell_one: getSpan("Track"), 
+      cell_two: getDropdown(track, setTrack, tracks),
+    },
+    { 
+      cell_one: getSpan("Name"), 
+      cell_two: getForm(name, setName) 
+    },
     {
       cell_one: getSpan("Student ID"),
       cell_two: getForm(studentId, setStudentId),
@@ -57,6 +67,7 @@ const Form = ({ student, props }) => {
           15 credit Hours / 3.19 grade point required (HARDCODED)
         </h3>
         <Table columns={columns} dataSource={student.student.classes} />
+        <Button className="button" onClick={() => setDrawerOpen(true)}>Add Class</Button>
         <h2 className="subtitle">One of the Following Courses</h2>
         <Table columns={columns} dataSource={[]} />
         <h2 className="subtitle">Approved 6000 Level Courses</h2>

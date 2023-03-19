@@ -3,6 +3,7 @@ import dayjs from "dayjs";
 
 export function useStudentObject(student) {
   const defaults = {
+    track: '',
     name: student.student.name,
     studentId: student.student.studentId,
     admitted:
@@ -21,6 +22,7 @@ export function useStudentObject(student) {
     searchInput: "",
   };
 
+  const [track, setTrack] = useState(defaults.track);
   const [name, setName] = useState(defaults.name);
   const [studentId, setStudentId] = useState(defaults.studentId);
   const [admittedDate, setAdmittedDate] = useState(defaults.admitted);
@@ -32,6 +34,8 @@ export function useStudentObject(student) {
   const [searchInput, setSearchInput] = useState(defaults.searchInput);
 
   return {
+    track,
+    setTrack,
     name,
     setName,
     studentId,
