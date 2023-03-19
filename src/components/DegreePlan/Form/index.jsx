@@ -1,8 +1,13 @@
-import { getDatePicker, getDropdown, getForm, getRadio } from "./inputComponents";
+import {
+  getDatePicker,
+  getDropdown,
+  getForm,
+  getRadio,
+} from "./inputComponents";
 import { formatGrid, formatHalfGrid, getSpan } from "./gridLayout";
-import { columns } from "./table";
-import { Table, Button } from "antd";
+import { Button } from "antd";
 import { tracks } from "../../../utils/constants";
+import ClassTable from "./Table";
 
 const Form = ({ student, props, setDrawerOpen }) => {
   const {
@@ -24,20 +29,19 @@ const Form = ({ student, props, setDrawerOpen }) => {
     setSignature,
   } = props;
   const fullLayout = [
-    { 
-      cell_one: getSpan("Track"), 
+    {
+      cell_one: getSpan("Track"),
       cell_two: getDropdown(track, setTrack, tracks),
     },
-    { 
-      cell_one: getSpan("Name"), 
-      cell_two: getForm(name, setName) 
+    {
+      cell_one: getSpan("Name"),
+      cell_two: getForm(name, setName),
     },
     {
       cell_one: getSpan("Student ID"),
       cell_two: getForm(studentId, setStudentId),
     },
   ];
-
   const halfLayout = [
     {
       cell_one: getSpan("Semester Admitted"),
@@ -52,6 +56,12 @@ const Form = ({ student, props, setDrawerOpen }) => {
       cell_four: getRadio(thesis, setThesis),
     },
   ];
+
+  const openDrawer = (options) => {
+    //TODO: put options based off options
+    setDrawerOpen(true);
+  };
+
   return (
     <div className="degree-plan">
       <h1 className="title">Degree Plan</h1>
@@ -62,21 +72,30 @@ const Form = ({ student, props, setDrawerOpen }) => {
         {/* TODO: at high zooms, some text overlaps here */}
       </div>
       <div>
-        <h2 className="subtitle">Core Courses</h2>
-        <h3 className="course-info">
-          15 credit Hours / 3.19 grade point required (HARDCODED)
-        </h3>
-        <Table columns={columns} dataSource={student.student.classes} />
-        <Button className="button" onClick={() => setDrawerOpen(true)}>Add Class</Button>
-        <h2 className="subtitle">One of the Following Courses</h2>
-        <Table columns={columns} dataSource={[]} />
-        <h2 className="subtitle">Approved 6000 Level Courses</h2>
-        <h3 className="course-info">
-          15 credit Hours / 3.19 grade point required (HARDCODED)
-        </h3>
-        <Table columns={columns} dataSource={[]} />
-        <h2 className="subtitle">Prerequisites</h2>
-        <Table columns={columns} dataSource={[]} />
+        <ClassTable
+          title="Core Courses"
+          subtitle="15 credit Hours / 3.19 grade point required (HARDCODED)"
+          classes={student.student.classes}
+          openDrawer={() => openDrawer([])}
+        />
+        <ClassTable
+          title="One of the Following Courses"
+          subtitle=""
+          classes={[]}
+          openDrawer={() => openDrawer([])}
+        />
+        <ClassTable
+          title="Approved 6000 Level Courses"
+          subtitle=""
+          classes={[]}
+          openDrawer={() => openDrawer([])}
+        />
+        <ClassTable
+          title="Prerequisites"
+          subtitle=""
+          classes={[]}
+          openDrawer={() => openDrawer([])}
+        />
         <div className="signature">
           <span>Academic Advisor Signature : </span>
           {getForm(signature, setSignature)}

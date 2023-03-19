@@ -64,6 +64,12 @@ $input-height: 40px;
       padding-bottom: 10px;
     }
 
+    .add-class-button {
+      padding: 3px;
+      display: flex;
+      justify-content: center;
+    }
+
     table {
       border-bottom: $lg-light-grey-border-bottom;
 

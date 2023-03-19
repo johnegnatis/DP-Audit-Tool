@@ -26,6 +26,8 @@ export const columns = [
     },
     {
       title: 'Grade',
+
+
       dataIndex: 'grade',
       key: 'grade',
     },  
