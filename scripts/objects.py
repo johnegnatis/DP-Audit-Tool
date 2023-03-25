@@ -20,8 +20,10 @@ class Student:
         return json.loads(self)
 
 transferOptions = {
-    'fast_track': 'fastTrack',
-    'transfer': 'transfer',
+    #'fast_track': 'fastTrack',
+    'fast_track': 'Fast Track',
+    'transfer' : 'Transfer',
+    #'transfer': 'transfer',
     '': '',
 }
 

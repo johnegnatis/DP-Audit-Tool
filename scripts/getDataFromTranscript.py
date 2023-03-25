@@ -9,7 +9,6 @@ import pandas as pd
 from collections import namedtuple
 
 #TODO put try catch back in - isnt a pdf... no data found...
-#TODO blacklist of classes we don't need
 
 #def getDataFromTranscriptMethod():
 def getDataFromTranscriptMethod(file_path):
@@ -17,6 +16,7 @@ def getDataFromTranscriptMethod(file_path):
     file_path = filedialog.askopenfilename(filetypes=(("PDF Files", "*.pdf"),("All Files", "*.*")))
 
     line_items = []
+    blacklist = []
     semester_admitted = ""
     combined_cumulative_GPA = ""
     course_code = ""
@@ -27,10 +27,9 @@ def getDataFromTranscriptMethod(file_path):
     student_name = ''
     grade = ""
     semester = ""
-    fast_track = ""
-    transfer = ""
+    transferOption = ""
 
-    data = namedtuple('data', 'semester course_prefix course_code course_name attempted_credits grade transfer fast_track')
+    data = namedtuple('data', 'semester course_prefix course_code course_name attempted_credits grade transfer_or_fast_track')
 
     # try: REMOVED TRY TO CATCH ERROR IN CONSOLE
     classes = []
@@ -46,7 +45,6 @@ def getDataFromTranscriptMethod(file_path):
     foundSemAdmitted = 0
     transferCt = 0
     fasttrackCt = 0
-
     extractingGradInfo = False
 
     for line in data_list:
@@ -75,29 +73,29 @@ def getDataFromTranscriptMethod(file_path):
             # TRANSFER SECTION OCCURS BEFORE GRAD RECORD
             if re.compile(r'^Transfer Credit from The University of Texas at Dallas').match(line):
                 fasttrackCt = 0 # fast track classes done, new transfer section in transcript
-                fast_track = ""
+                transferOption = ""
                 transferCt = 1
 
             # HELPER - finds semester_admitted, resets fast_track and transfer (no more past this point)
-            if re.compile(r'^Beginning of Graduate Record').match(line): # helper to find semester_admitted
+            if re.compile(r'^Beginning of Graduate Record').match(line):
                 foundSemAdmitted += 1
                 fasttrackCt = 0
                 transferCt = 0
-                transfer = ""
-                fast_track = ""
+                transferOption = ""
 
             if re.compile(r'^\d{4}\s').match(line): # SEMESTER + SEMESTER ADMITTED
                 if foundSemAdmitted == 1:
                     semester_admitted = line
                     semester_admitted = semester_admitted[2:4] + "" + semester_admitted[5]
                     foundSemAdmitted = 0
-                semester = line
+                semester = line[2:4] + line[5]
         
             if re.compile(r'^Combined Cum GPA').match(line): # TOTAL COMBINED COMULATIVE GPA
                 x = line.split(" ")
                 combined_cumulative_GPA = x[3]
 
-            if re.compile(r'^[A-Za-z0-9]+\s[0-9]+ .*').match(line): # COURSE PREFIX + CODE, COURSE NAME/DESCRIPTION, ATTEMPTED CREDITS, GRADE, TRANSFER/FAST TRACK
+            # COURSE PREFIX + CODE, COURSE NAME/DESCRIPTION, ATTEMPTED CREDITS, GRADE, TRANSFER/FAST TRACK
+            if re.compile(r'^[A-Za-z0-9]+\s[0-9]+ .*').match(line):
                 new_class_col= line.split(" ")
                 course_prefix = " ".join(new_class_col[0:1])
                 course_code = " ".join(new_class_col[1:2])
@@ -105,10 +103,10 @@ def getDataFromTranscriptMethod(file_path):
 
                 if(transferCt == 1):
                     fasttrackCt = 0 # no more fast track classes
-                    transfer = "Transfer"
+                    transferOption = "Transfer"
                     
                 if (fasttrackCt == 1):
-                    fast_track = 'Fast Track'
+                    transferOption = "Fast Track"
 
                 temp = new_class_col[(len(new_class_col)-4)]
                 if( not(temp[0] == "3" or temp[0]=="0" or temp[0]=="1") ): # if grade is blank (class is being currently attempted)
@@ -119,28 +117,43 @@ def getDataFromTranscriptMethod(file_path):
                     course_name = " ".join(new_class_col[2:len(new_class_col)-4])
                     grade = "".join(new_class_col[(len(new_class_col)-2):(len(new_class_col)-1)])
                     attempted_credits = "".join(new_class_col[(len(new_class_col)-4):(len(new_class_col)-3)])
-                myClass = Class(student_name, course_num, semester, '', grade, attempted_credits) 
-                #transferOrFastTrack = transferOptions(transfer, fast_track)
-                # name, number, semester, transfer, grade, attempted_credits
-                classes.append(myClass)
-                #transfers.append(transferOrFastTrack)
-                line_items.append(data(semester, course_prefix, course_code, course_name, attempted_credits, grade, transfer, fast_track))
+                
+                # ADDING TO CLASS OBJECT
+                if(course_prefix != "ECSC"): # ignores CS IPP Assignment (+ any other blacklisted classes)
+                    
+                    # if transfer course
+                    if(transferOption == "Transfer"):
+                        myClass = Class(course_name, course_num, semester, 'transfer', grade, attempted_credits) 
+                    # if fast_track course
+                    elif(transferOption == "Fast Track"):
+                        myClass = Class(course_name, course_num, semester, 'fast_track', grade, attempted_credits) 
+                    # if neither
+                    else:
+                        myClass = Class(course_name, course_num, semester, '', grade, attempted_credits) 
+
+                    classes.append(myClass)
+                    line_items.append(data(semester, course_prefix, course_code, course_name, attempted_credits, grade, transferOption))
+                
+                else:
+                    blacklist.append(data(semester, course_prefix, course_code, course_name, attempted_credits, grade, transferOption))
     
     # ------------ section will be removed later (for debugging)
     df = pd.DataFrame(line_items)
+    df2 = pd.DataFrame(blacklist)
     print("Student Name: " + student_name)
     print("Student ID: " + student_id)
     print("Major: " + major)
     print("Combined Cumulative GPA: " + combined_cumulative_GPA)
     print("Semester Admitted: " + semester_admitted)
     print(df)
+    print(df2)
     # ------------ name, studentId, fastTrack, thesis, admitted_date, expected_graduation, classes
     studentObj = Student(student_name, student_id, True, False, semester_admitted, '1/1/2023', classes)
     return studentObj.packStudentObject()
 
 # function used to debug (remove later)
-#if __name__ == '__main__':
-#    getDataFromTranscriptMethod()
+# if __name__ == '__main__':
+#     getDataFromTranscriptMethod()
 
     # TODO: REMOVE THIS BACK LATER WHEN FINISH TESTING
     # except PDFSyntaxError:
