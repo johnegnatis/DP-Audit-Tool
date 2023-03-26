@@ -33,7 +33,63 @@ def getDataFromTranscriptMethod(file_path):
 
     data = namedtuple('data', 'semester course_prefix course_code course_name attempted_credits grade transfer_or_fast_track')
 
-    # try: REMOVED TRY TO CATCH ERROR IN CONSOLE
+    # try/except for exceptions:
+    
+    try:
+        f = open(fileFullPath, 'r')
+        files = {'file': f}
+        r = requests.post(env.PARSE_HOSTNAME + env.PARSE_FILES_ENDPOINT + "/" + env.PARSE_UPLOADED_FILE_NAME, files=files, headers=headers)
+        jsonResult = r.json()
+
+        if 'error' in jsonResult:
+            print ("An error occurred while trying to upload the file to Parse.com. Details: " + (jsonResult["error"]))
+        else:
+            print (jsonResult["name"])
+            print (jsonResult["url"])
+
+        print ("Completed uploading the file.")
+        result = True
+
+    # Unable to open the file
+    except PDFSyntaxError:
+        raise Exception("This file cannot be read. Ensure that it is a PDF file and please try again.")
+            
+    # if try to import the library that is not installed or you have provided the wrong name
+    except ImportError as ex:
+        print ('ImportError thrown. Details: ' + ' %s' % ex)
+        
+    # if file cannot be opened, IOError is thrown as well, so exit the function to avoid calling "f.close()" in "finally"
+    except IOError as ex:
+        print ('IOError thrown. Details: ' + ' %s' % ex)
+
+    # if a network problem occurs (e.g. DNS failure, refused connection, etc)
+    except ConnectionError as ex:
+        print ('ConnectionError thrown. Details: ' + ' %s' % ex)
+
+    # if an invalid HTTP response
+    except HTTPError as ex:
+        print ('HTTPError thrown. Details: ' + ' %s' % ex)
+
+    # if a time-out occurs
+    except Timeout as ex:
+        print ('Timeout exception thrown. Details: ' + ' %s' % ex)
+
+    # if request exceeds the configured number of maximum redirections
+    except TooManyRedirects as ex:
+        print ('TooManyRedirects exception thrown. Details: ' + ' %s' % ex)
+
+    # All other exceptions
+    except Exception as e:
+        print ('Unexpected error. Details:' + ' %s' % ex)
+    else:
+        f.close()
+    finally:
+        return result
+
+if __name__ == "__main__":
+    myFilePath = r'D:/myfile.pdf'
+    print (uploadFile(myFilePath))
+    
     classes = []
     transfers = []
     text = ''
@@ -158,68 +214,68 @@ def getDataFromTranscriptMethod(file_path):
 #     getDataFromTranscriptMethod()
 
 
-    # TODO: REMOVE THIS BACK LATER WHEN FINISH TESTING
+# TODO: REMOVE THIS BACK LATER WHEN FINISH TESTING
     
-    # try/except for exceptions:
-    def uploadFile(fileFullPath):
-        result = False
+#     try/except function for exceptions:
+#     def uploadFile(fileFullPath):
+#         result = False
 
-        print ("Attempting to upload file: " + fileFullPath)
+#         print ("Attempting to upload file: " + fileFullPath)
 
-        header = {"X-Parse-Application-Id": env.X_Parse_Application_Id,
-            "X-Parse-REST-API-Key": env.X_Parse_REST_API_Key,
-            "Content-Type": "application/json"}
-        try:
-            f = open(fileFullPath, 'r')
-            files = {'file': f}
-            r = requests.post(env.PARSE_HOSTNAME + env.PARSE_FILES_ENDPOINT + "/" + env.PARSE_UPLOADED_FILE_NAME, files=files, headers=headers)
-            jsonResult = r.json()
+#         header = {"X-Parse-Application-Id": env.X_Parse_Application_Id,
+#             "X-Parse-REST-API-Key": env.X_Parse_REST_API_Key,
+#             "Content-Type": "application/json"}
+#         try:
+#             f = open(fileFullPath, 'r')
+#             files = {'file': f}
+#             r = requests.post(env.PARSE_HOSTNAME + env.PARSE_FILES_ENDPOINT + "/" + env.PARSE_UPLOADED_FILE_NAME, files=files, headers=headers)
+#             jsonResult = r.json()
 
-            if 'error' in jsonResult:
-                print ("An error occurred while trying to upload the file to Parse.com. Details: " + (jsonResult["error"]))
-            else:
-                print (jsonResult["name"])
-                print (jsonResult["url"])
+#             if 'error' in jsonResult:
+#                 print ("An error occurred while trying to upload the file to Parse.com. Details: " + (jsonResult["error"]))
+#             else:
+#                 print (jsonResult["name"])
+#                 print (jsonResult["url"])
 
-            print ("Completed uploading the file.")
-            result = True
+#             print ("Completed uploading the file.")
+#             result = True
 
-        # Unable to open the file
-        except PDFSyntaxError:
-            raise Exception("This file cannot be read. Ensure that it is a PDF file and please try again.")
+#         # Unable to open the file
+#         except PDFSyntaxError:
+#             raise Exception("This file cannot be read. Ensure that it is a PDF file and please try again.")
             
-        except ImportError as ex:
-            print ('ImportError thrown. Details: ' + ' %s' % ex)
-            # If try to import the library that is not installed or you have provided the wrong name
+#         except ImportError as ex:
+#             print ('ImportError thrown. Details: ' + ' %s' % ex)
+#             # If try to import the library that is not installed or you have provided the wrong name
         
-        except IOError as ex:
-            print ('IOError thrown. Details: ' + ' %s' % ex)
-            # If file cannot be opened, IOError is thrown as well, so exit the function to avoid calling "f.close()" in "finally"
+#         except IOError as ex:
+#             print ('IOError thrown. Details: ' + ' %s' % ex)
+#             # If file cannot be opened, IOError is thrown as well, so exit the function to avoid calling "f.close()" in "finally"
 
-        # if a network problem occurs (e.g. DNS failure, refused connection, etc)
-        except ConnectionError as ex:
-            print ('ConnectionError thrown. Details: ' + ' %s' % ex)
+#         # if a network problem occurs (e.g. DNS failure, refused connection, etc)
+#         except ConnectionError as ex:
+#             print ('ConnectionError thrown. Details: ' + ' %s' % ex)
 
-        # if an invalid HTTP response
-        except HTTPError as ex:
-            print ('HTTPError thrown. Details: ' + ' %s' % ex)
+#         # if an invalid HTTP response
+#         except HTTPError as ex:
+#             print ('HTTPError thrown. Details: ' + ' %s' % ex)
 
-        # if a time-out occurs
-        except Timeout as ex:
-            print ('Timeout exception thrown. Details: ' + ' %s' % ex)
+#         # if a time-out occurs
+#         except Timeout as ex:
+#             print ('Timeout exception thrown. Details: ' + ' %s' % ex)
 
-        # if request exceeds the configured number of maximum redirections
-        except TooManyRedirects as ex:
-            print ('TooManyRedirects exception thrown. Details: ' + ' %s' % ex)
+#         # if request exceeds the configured number of maximum redirections
+#         except TooManyRedirects as ex:
+#             print ('TooManyRedirects exception thrown. Details: ' + ' %s' % ex)
 
-        # All other exceptions
-        except Exception as e:
-            print ('Unexpected error. Details:' + ' %s' % ex)
-        else:
-            f.close()
-        finally:
-            return result
+#         # All other exceptions
+#         except Exception as e:
+#             print ('Unexpected error. Details:' + ' %s' % ex)
+#         else:
+#             f.close()
+#         finally:
+#             return result
 
-    if __name__ == "__main__":
-        myFilePath = r'D:/myfile.pdf'
-        print (uploadFile(myFilePath))
+#     if __name__ == "__main__":
+#         myFilePath = r'D:/myfile.pdf'
+#         print (uploadFile(myFilePath))
