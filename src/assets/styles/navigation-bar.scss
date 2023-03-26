@@ -1,0 +1,65 @@
+@import "variables.scss";
+
+.navigation-bar {
+  background-color: $light-grey;
+  color: $grey;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  width: 100%;
+  height: $navbar-height;
+  display: flex;
+  flex-direction: row;
+
+  .plus-icon,
+  .help-icon {
+    cursor: pointer;
+    width: clamp($navbar-height, $navbar-height, $navbar-height);
+    height: clamp($navbar-height, $navbar-height, $navbar-height);
+
+    &.plus-icon:not(.selected-id) {
+      background: $white;
+    }
+    &.help-icon {
+      border-left: 1px $white solid;
+    }
+
+    display: flex;
+    span {
+      font-size: 24px;
+      width: 100%;
+      justify-self: center;
+      align-self: center;
+      text-align: center;
+    }
+  }
+
+  nav {
+    height: 100%;
+    width: calc(100% - $navbar-height * 2);
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+
+    div {
+      &.selected-id {
+        background: $white;
+      }
+      cursor: pointer;
+      padding: 0px 20px;
+      border: 1px $white solid;
+      border-top: none;
+      border-bottom: none;
+      display: flex;
+      align-items: center;
+      overflow-x: hidden;
+
+      span {
+        line-height: 18.6px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+}
