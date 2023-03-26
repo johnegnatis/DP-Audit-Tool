@@ -1,4 +1,5 @@
 import pdfplumber
+import requests
 import json
 #from objects import Class, Student, StudentEncoder
 from tkinter import filedialog
@@ -8,7 +9,8 @@ import pdfplumber
 import pandas as pd
 from collections import namedtuple
 
-#TODO put try catch back in - isnt a pdf... no data found...
+#TODO
+-
 
 #def getDataFromTranscriptMethod():
 def getDataFromTranscriptMethod(file_path):
@@ -155,12 +157,69 @@ def getDataFromTranscriptMethod(file_path):
 # if __name__ == '__main__':
 #     getDataFromTranscriptMethod()
 
+
     # TODO: REMOVE THIS BACK LATER WHEN FINISH TESTING
-    # except PDFSyntaxError:
-    #     raise Exception("This file cannot be read. Ensure that it is a PDF file and please try again.")
-    # except Exception as e:
-    #     print (e)
+    
+    # try/except for exceptions:
+    def uploadFile(fileFullPath):
+        result = False
 
+        print ("Attempting to upload file: " + fileFullPath)
 
-    # except:
-    #     raise Exception("This file cannot be read. Ensure that it is a PDF file and please try again.")
+        header = {"X-Parse-Application-Id": env.X_Parse_Application_Id,
+            "X-Parse-REST-API-Key": env.X_Parse_REST_API_Key,
+            "Content-Type": "application/json"}
+        try:
+            f = open(fileFullPath, 'r')
+            files = {'file': f}
+            r = requests.post(env.PARSE_HOSTNAME + env.PARSE_FILES_ENDPOINT + "/" + env.PARSE_UPLOADED_FILE_NAME, files=files, headers=headers)
+            jsonResult = r.json()
+
+            if 'error' in jsonResult:
+                print ("An error occurred while trying to upload the file to Parse.com. Details: " + (jsonResult["error"]))
+            else:
+                print (jsonResult["name"])
+                print (jsonResult["url"])
+
+            print ("Completed uploading the file.")
+            result = True
+
+        # Unable to open the file
+        except PDFSyntaxError:
+            raise Exception("This file cannot be read. Ensure that it is a PDF file and please try again.")
+            
+        except ImportError as ex:
+            print ('ImportError thrown. Details: ' + ' %s' % ex)
+            # If try to import the library that is not installed or you have provided the wrong name
+        
+        except IOError as ex:
+            print ('IOError thrown. Details: ' + ' %s' % ex)
+            # If file cannot be opened, IOError is thrown as well, so exit the function to avoid calling "f.close()" in "finally"
+
+        # if a network problem occurs (e.g. DNS failure, refused connection, etc)
+        except ConnectionError as ex:
+            print ('ConnectionError thrown. Details: ' + ' %s' % ex)
+
+        # if an invalid HTTP response
+        except HTTPError as ex:
+            print ('HTTPError thrown. Details: ' + ' %s' % ex)
+
+        # if a time-out occurs
+        except Timeout as ex:
+            print ('Timeout exception thrown. Details: ' + ' %s' % ex)
+
+        # if request exceeds the configured number of maximum redirections
+        except TooManyRedirects as ex:
+            print ('TooManyRedirects exception thrown. Details: ' + ' %s' % ex)
+
+        # All other exceptions
+        except Exception as e:
+            print ('Unexpected error. Details:' + ' %s' % ex)
+        else:
+            f.close()
+        finally:
+            return result
+
+    if __name__ == "__main__":
+        myFilePath = r'D:/myfile.pdf'
+        print (uploadFile(myFilePath))
