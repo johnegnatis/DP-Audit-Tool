@@ -1,4 +1,4 @@
-from objects import Class, Student, StudentEncoder
+from scripts.objects import Class, Student, StudentEncoder
 from docx import Document
 from docx.shared import Pt
 from docx.enum.section import WD_SECTION
@@ -26,7 +26,7 @@ def doAuditMethod(studentObject):
     para.add_run('\t\t\t\t\t\tID: ').bold = True
     para.add_run(str(studentObject.studentId))
     para.add_run('\nPlan: ').bold = True
-    para.add_run('master')
+    para.add_run('Master')
     para.add_run('\t\t\t\t\t\t\tMajor: ').bold = True
     if studentObject.track == 'Software Engineering':
         para.add_run('Software Engineering')
