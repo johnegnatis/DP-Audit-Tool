@@ -1,14 +1,10 @@
 from objects import Class, Student, StudentEncoder
 from docx import Document
 from docx.shared import Pt
-from docx.oxml import OxmlElement
-from docx.oxml.ns import qn
-from docx.enum.text import WD_BREAK
+from docx.enum.section import WD_SECTION
 
 
 def doAuditMethod(studentObject):
-    # Input: studentObject (JSON)
-    # Output: Audit Report (word doc)
 
     print('Starting audit generation...')
 
@@ -20,18 +16,18 @@ def doAuditMethod(studentObject):
 
     # title
     para = doc.add_paragraph()
-    para.add_run('Audit Report').bold = True
-    para = doc.add_paragraph()
+    para.add_run('Audit Report\n').bold = True
+    para.alignment = 1
 
     # basic information
     para = doc.add_paragraph()
     para.add_run('Name: ').bold = True
     para.add_run(studentObject.name)
+    para.add_run('\t\t\t\t\t\tID: ').bold = True
+    para.add_run(str(studentObject.studentId))
     para.add_run('\nPlan: ').bold = True
     para.add_run('master')
-    para.add_run('\nID: ').bold = True
-    para.add_run(str(studentObject.studentId))
-    para.add_run('\nMajor: ').bold = True
+    para.add_run('\t\t\t\t\t\t\tMajor: ').bold = True
     if studentObject.track == 'Software Engineering':
         para.add_run('Software Engineering')
     else:
@@ -50,19 +46,24 @@ def doAuditMethod(studentObject):
 
     # courses
     para = doc.add_paragraph()
-    para.add_run('\nCore Courses: ').bold = True
+    corecourses = []
+    electivecourses = []
     for course in studentObject.classes:
         if course.type == 'core':
-            para.add_run(course.number + ', ')
-    para.add_run('\nElective Courses: ').bold = True
-    for course in studentObject.classes:
+            corecourses.append(course.number)
         if course.type == 'core_electives' or 'additional_electives':
-            para.add_run(course.number + ', ')
+            electivecourses.append(course.number)
+    para.add_run('\nCore Courses: ').bold = True
+    para.add_run(", ".join(corecourses))
+    para.add_run('\nElective Courses: ').bold = True
+    para.add_run(", ".join(electivecourses))
 
+    # leveling courses (incomplete)
     para = doc.add_paragraph()
     para.add_run('\nLeveling Courses and Pre-requisites from Admission Letter:').bold = True
     para.add_run('\n\nList courses here')
 
+    # requirements (incomplete)
     para = doc.add_paragraph()
     para.add_run('\nOutstanding Requirements:').bold = True
     para.add_run('\n\nCore status.')
@@ -80,7 +81,7 @@ def doAuditMethod(studentObject):
 classes = [Class('Statistical Methods for Data Sciences', 'CS 6313', '22S', '', 'A', '', 'core'),
     Class('Big Data Management and Analytics', 'CS 6350', '22s', '', 'B+', '', 'core'),
     Class('Design and Analysis of Computer Algorithms', 'CS 6363','22s', '', 'A-', '', 'core')]
-mock = Student('Lasso, Ted', 2021504218, False, False, '21F', '', classes, 'Data Science')
+mock = Student('Ted Lasso', 2021504218, False, False, '21F', '', classes, 'Data Science')
 
 if __name__ == '__main__':
     doAuditMethod(mock)
