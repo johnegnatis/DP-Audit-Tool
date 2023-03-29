@@ -1,0 +1,119 @@
+{
+    "prerequisites": [
+        {
+            "course_name": "CS 3341:Probability & Statistics in CS and SE",
+            "typeOptions": "prerequisites"
+        },
+        {
+            "course_name": "CS 5303:Computer Science I",
+            "typeOptions": "prerequisites"
+        },
+        {
+            "course_name": "CS 5330:Computer Science II",
+            "typeOptions": "prerequisites"
+        },
+        {
+            "course_name": "CS 5333:Discrete Structures",
+            "typeOptions": "prerequisites"
+        },
+        {
+            "course_name": "CS 5343:Algorithm Analysis & Data Structures",
+            "typeOptions": "prerequisites"
+        },
+        {
+            "course_name": "CS 5348:Operating System Concepts",
+            "typeOptions": "prerequisites"
+        },
+        {
+            "course_name": "CS 5349:Automata Theory",
+            "typeOptions": "prerequisites"
+        },
+        {
+            "course_name": "CS 5354:Software Engineering",
+            "typeOptions": "prerequisites"
+        },
+        {
+            "course_name": "CS 5390:Computer Networks",
+            "typeOptions": "prerequisites"
+        }
+    ],
+    "cybersecurity": [
+        {
+            "course_name": "CS 6324:Information Security",
+            "typeOptions": "core"
+        },
+        {
+            "course_name": "CS 6363:Design and Analysis of Computer Algorithms",
+            "typeOptions": "core"
+        },
+        {
+            "course_name": "CS 6378:Advanced Operating Systems",
+            "typeOptions": "core"
+        },
+        {
+            "course_name": "CS 6332:Systems Security and Malicious Code Analysis",
+            "typeOptions": "two_of_the_following"
+        },
+        {
+            "course_name": "CS 6348:Data and Applications Security",
+            "typeOptions": "two_of_the_following"
+        },
+        {
+            "course_name": "CS 6349:Network Security",
+            "typeOptions": "two_of_the_following"
+        },
+        {
+            "course_name": "CS 6377:Introduction to Cryptography",
+            "typeOptions": "two_of_the_following"
+        }
+    ],
+    "data_science": [
+        {
+            "CS 6313:Statistical Methods for Data Science": "core"
+        },
+        {
+            "CS 6350:Big Data Management and Analytics": "core"
+        },
+        {
+            "CS 6363:Design and Analysis of Computer Algorithms": "core"
+        },
+        {
+            "CS 6375:Machine Learning": "core"
+        },
+        {
+            "CS 6301:Special Topics in Computer Science [when topic is Social Network Analytics": "one_of_the_following"
+        },
+        {
+            "CS 6320:Natural Language Processing": "one_of_the_following"
+        },
+        {
+            "CS 6327:Video Analytics": "one_of_the_following"
+        },
+        {
+            "CS 6347:Statistical Methods in AI and Machine Learning": "one_of_the_following"
+        },
+        {
+            "CS 6360:Database Design": "one_of_the_following"
+        }
+    ],
+    "intelligent_systems": [
+        {
+            "CS 6320:Natural Language Processing": "core"
+        },
+        {
+            "CS 6363:Design and Analysis of Computer Algorithms": "core"
+        },
+        {
+            "CS 6364:Artificial Intelligence": "core"
+        },
+        {
+            "CS 6375:Machine Learning": "core"
+        },
+        {
+            "CS 6360:Database Design": "one_of_the_following"
+        },
+        {
+            "CS 6378:Advanced Operating Systems": "one_of_the_following"
+        }
+    ]
+}

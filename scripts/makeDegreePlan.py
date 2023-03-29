@@ -1,5 +1,5 @@
-from objects import Class, Student, mockStudent
-
+#from objects import Class, Student, mockStudent
+from scripts.objects import Class, Student, StudentEncoder
 def makeDegreePlanMethod(studentObject):
     # Input: studentObject (JSON)
     # Output: Degree Plan (pdf)
