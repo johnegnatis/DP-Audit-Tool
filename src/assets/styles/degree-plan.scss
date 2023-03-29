@@ -9,14 +9,15 @@ $input-height: 40px;
   min-width: calc(100% - 2 * $padding-root-var);
   height: calc(100% - $navbar-height);
   display: flex;
-  justify-content: left;
+  justify-content: center;
+  overflow-y: scroll;
 
   .degree-plan {
+    max-width: 1100px;
     .degree-plan::-webkit-scrollbar-track {
       background-color: $light-grey !important;
     }
     padding: $padding-root-var;
-    overflow-y: scroll;
     width: $left-width;
     .title {
       font-weight: 700;
@@ -143,3 +144,9 @@ $input-height: 40px;
     }
   }
 }
+
+// @media screen and (min-width: 1100px) {
+//   .degree-plan-root {
+//     ;
+//   }
+// }
