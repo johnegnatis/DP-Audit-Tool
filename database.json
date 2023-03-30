@@ -165,6 +165,28 @@
             "typeOptions": "three_of_the_following"
         }
     ],
+    "networks_and_telecommunications": [
+        {
+            "course_name": "CS 6352:Performance of Computer Systems and Networks",
+            "typeOptions": "core"
+        },
+        {
+            "course_name": "CS 6363:Design and Analysis of Computer Algorithms",
+            "typeOptions": "core"
+        },
+        {
+            "course_name": "CS 6378:Advanced Operating Systems",
+            "typeOptions": "core"
+        },
+        {
+            "course_name": "CS 6385:Algorithmic Aspects of Telecommunication Networks",
+            "typeOptions": "core"
+        },
+        {
+            "course_name": "CS 6390:Advanced Computer Networks",
+            "typeOptions": "core"
+        }
+    ],
     "systems": [
         {
             "course_name": "CS 6304:Computer Architecture",
