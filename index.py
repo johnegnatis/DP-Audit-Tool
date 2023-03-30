@@ -2,19 +2,20 @@ import sys, io
 
 # redirects python script output for build version
 DEVELOPMENT = len(sys.argv) > 1 and sys.argv[1] == '--develop'
-if (DEVELOPMENT == False):
-    sys.stdout = io.StringIO() # to fix --no console
-    sys.stderr = io.StringIO() # https://github.com/python-eel/Eel/issues/654
+# if (DEVELOPMENT == False):
+    # sys.stdout = io.StringIO() # to fix --no console
+    # sys.stderr = io.StringIO() # https://github.com/python-eel/Eel/issues/654
 
-import eel, os, scripts
+import eel, os, scripts, server
+from multiprocessing import Process, freeze_support
 
 @eel.expose
 def getDataFromTranscript(filePath):
     return scripts.getDataFromTranscriptMethod(filePath)
 
 @eel.expose
-def MakeDegreePlan(studentObject):
-    scripts.makeDegreePlanMethod(studentObject)
+def makeDegreePlan(studentObject):
+    return scripts.makeDegreePlanMethod(studentObject)
 
 @eel.expose
 def DoAudit(studentObject):
@@ -24,10 +25,15 @@ def DoAudit(studentObject):
 def getFilePaths():
     return scripts.getFilePathsMethod()
 
+@eel.expose
+def getPDF():
+    return scripts.getPDFMethod()
+
 if getattr(sys, 'frozen', False):
     import pyi_splash
 
-if __name__ == '__main__':
+# if __name__ == '__main__':
+def run_eel():
     if (DEVELOPMENT):
         try:
             eel.init('client')
@@ -40,4 +46,11 @@ if __name__ == '__main__':
             pyi_splash.close()
         eel.start('index.html', host="localhost", port=8888)
 
+if __name__ == '__main__':
+    freeze_support()  # for pyinstaller on Windows
+    server = Process(target = server.host_server, args=[8000])
+    server.start()
+    # eel = Process(target = run_eel)
+    # eel.start()
+    run_eel()
 

@@ -8,6 +8,7 @@ import { formatGrid, formatHalfGrid, getSpan } from "./gridLayout";
 import { Button } from "antd";
 import { pages, tracks } from "../../../utils/constants";
 import ClassTable from "./Table";
+import { eel } from "../../../utils/eel";
 
 const Form = ({ student, props, setDrawerOpen, navigatePage }) => {
   const {
@@ -57,6 +58,15 @@ const Form = ({ student, props, setDrawerOpen, navigatePage }) => {
     },
   ];
 
+  const generatePDF = () => {
+    eel
+      .makeDegreePlan('mock')()
+      .then((pdf) => {
+        console.log('success', pdf);
+      })
+      .catch(() => console.log("error"));
+    navigatePage(pages.pdfPreview)
+  };
   const openDrawer = (options) => {
     //TODO: put options based off options
     setDrawerOpen(true);
@@ -77,7 +87,6 @@ const Form = ({ student, props, setDrawerOpen, navigatePage }) => {
           subtitle="15 credit Hours / 3.19 grade point required (HARDCODED)"
           classes={student.student.classes}
           openDrawer={() => openDrawer([])}
-          notes={['these are core courses', 'haha']}
         />
         <ClassTable
           title="One of the Following Courses"
@@ -102,7 +111,11 @@ const Form = ({ student, props, setDrawerOpen, navigatePage }) => {
           {getForm(signature, setSignature)}
         </div>
         <div className="generate-button">
-          <Button onClick={() => navigatePage(pages.pdfPreview)} className="button orange-bg" size="large">
+          <Button
+            onClick={generatePDF}
+            className="button orange-bg"
+            size="large"
+          >
             GENERATE DEGREE PLAN
           </Button>
         </div>

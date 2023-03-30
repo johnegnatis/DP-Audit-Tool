@@ -15,7 +15,7 @@ const { setGlobalState, useGlobalState } = createGlobalState({
       },
     },
   ],
-  selectedId: 111,
+  selectedId: '',
 });
 
 const getSelectedStudent = () => {

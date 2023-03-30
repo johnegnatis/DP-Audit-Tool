@@ -19,6 +19,10 @@ $footer-height: 50px;
             text-align: center;
             padding: 30px;
         }
+        .warning {
+            text-align: center;
+            color: $red;
+        }
         .viewer {
             display: flex;
             justify-content: center;

@@ -1,14 +1,21 @@
 import { Icon } from "@iconify/react";
 import { Button } from "antd";
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
-import examplePDF from "../../assets/files/Modano, Modano DP-Intelligent Systems.pdf";
 import { iconNames, pages } from "../../utils/constants";
 import { changePage, useGlobalState } from "../GlobalState";
+import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 
 export default function PdfPreview() {
   const [studentList] = useGlobalState("students");
   const [selectedId] = useGlobalState("selectedId");
+  const getStudentFile = () => {
+    return {
+      url: "http://localhost:8000/Lasso,Ted_DP.pdf",
+    };
+  };
+  const path = useMemo(() => getStudentFile(), []);
+  console.log(path);
   const [zoom, setZoom] = useState(1);
   const maxZoom = 2;
   const minZoom = 0.5;
@@ -20,28 +27,27 @@ export default function PdfPreview() {
     setZoom((prev) => (prev - interval < minZoom ? minZoom : prev - interval));
   };
 
-  console.log(studentList);
   const student = studentList.find(
     (student) => student.student.studentId === selectedId
   );
-  try {
-    pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
-  } catch (e) {
-    // do nothing
-    console.log(e);
-  }
-  const path = examplePDF;
+  pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
+
   return (
     <div className="pdf-preview-root">
       <div className="pdf-preview">
         <h1 className="title">DOCUMENT PREVIEW</h1>
-        <div className="viewer">
-          <Document file={path} renderMode="canvas">
+        <h5 className="warning">***Edits to this page will not be saved***</h5>
+        <div className="viewer" style={{ pointerEvents: "none" }}>
+          <Document
+            file={path}
+            renderMode="canvas"
+            onLoadError={(e) => console.log(e)}
+            onSourceError={(e) => console.log(e)}
+          >
             <Page
               scale={zoom}
               pageNumber={1}
               renderTextLayer={false}
-              renderAnnotationLayer={false}
             />
           </Document>
         </div>
