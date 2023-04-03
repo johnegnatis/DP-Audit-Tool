@@ -1,6 +1,5 @@
 import pdfplumber
 import json
-#from scripts.objects import Class, Student, StudentEncoder
 import re
 import pandas as pd
 from collections import namedtuple
@@ -11,12 +10,16 @@ def parseDatabaseMethod():
     # extracting txt file
     with open(r'scripts/database.txt', 'r') as file:
         data = file.read()
-    
+
     data_list = data.split('\n')
     typeOptions = "core"
     master_list = []
     masterDict = {}
     track_name = ""
+
+    # Added support for comments with # as well as stripping any leading zeros
+    for line in data_list:
+        line = line.split('#')[0].strip()
 
 # TODO: track_cybersecurity: DP-Cybersecurity.pdf
     for i in range(12, len(data_list)):

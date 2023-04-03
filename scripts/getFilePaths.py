@@ -4,7 +4,6 @@ import PyPDF2
 import base64
 
 def getFilePathsMethod():
-    print(DEVELOPMENT)
     root = Tk()
     root.withdraw()
     root.wm_attributes('-topmost', 1)

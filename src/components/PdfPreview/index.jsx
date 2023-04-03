@@ -1,6 +1,6 @@
 import { Icon } from "@iconify/react";
 import { Button } from "antd";
-import React, { useState, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
 import { iconNames, pages } from "../../utils/constants";
 import { changePage, useGlobalState } from "../GlobalState";
@@ -14,8 +14,13 @@ export default function PdfPreview() {
       url: "http://localhost:8000/Lasso,Ted_DP.pdf",
     };
   };
-  const path = useMemo(() => getStudentFile(), []);
-  console.log(path);
+  const [path, setPath] = useState("");
+  const [resetSignal, setResetSignal] = useState(false);
+  useEffect(() => {
+    setTimeout(() => {
+      setPath(getStudentFile())
+    }, 1)
+  }, [resetSignal]);
   const [zoom, setZoom] = useState(1);
   const maxZoom = 2;
   const minZoom = 0.5;
@@ -41,14 +46,10 @@ export default function PdfPreview() {
           <Document
             file={path}
             renderMode="canvas"
-            onLoadError={(e) => console.log(e)}
-            onSourceError={(e) => console.log(e)}
+            onLoadError={(e) => setResetSignal(prev => !prev)}
+            onSourceError={(e) => setResetSignal(prev => !prev)}
           >
-            <Page
-              scale={zoom}
-              pageNumber={1}
-              renderTextLayer={false}
-            />
+            <Page scale={zoom} pageNumber={1} renderTextLayer={false} />
           </Document>
         </div>
       </div>
