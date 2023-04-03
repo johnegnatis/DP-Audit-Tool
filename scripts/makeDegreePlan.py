@@ -396,17 +396,17 @@ def fillPDFForms(studentObject, path):
         "object": studentObject.packStudentObject()
     }
 
-    base_dev = './public/degreePlans'
-    base_prod = './build/degreePlans'
+    base_dev = './public/degreePlans/'
+    base_prod = './build/degreePlans/'
     file_lookup = {
-        "Data Science": '/DP-DataScience.pdf',
-        "Systems": '/DP-Systems.pdf',
-        "Interactive Computing": '/DP-Interactive-Computing.pdf',
-        "CyberSecurity": '/DP-CyberSecurity.pdf',
-        "Intelligent Systems": '/DP-Intelligent-Systems.pdf',
-        "Traditional": '/DP-Traditional.pdf',
-        "Telecommunication": '/DP-Networks-Telecommunication.pdf',
-        "Software Engineering": '/DP-software-engineering.pdf',
+        "CyberSecurity": 'DP-Cybersecurity.pdf',
+        "Data Science": 'DP-DataScience.pdf',
+        "Intelligent Systems": 'DP-Intelligent-Systems.pdf',
+        "Interactive Computing": 'DP-Interactive-Computing.pdf',
+        "Telecommunication": 'DP-Networks-Telecommunication.pdf',
+        "Software Engineering": 'DP-Software-Engineering.pdf',
+        "Systems": 'DP-Systems.pdf',
+        "Traditional": 'DP-Traditional.pdf',
     }
     try:
         fillpdfs.write_fillable_pdf(base_dev + file_lookup[studentObject.track], path, data_dict)
@@ -421,7 +421,6 @@ def makeDegreePlanMethod(studentObject):
         studentObject = mockStudent()
     
     file_path = get_server_path() + '/' + getStudentFile(studentObject.name)
-    print(file_path)
     fillPDFForms(studentObject, file_path)
     return file_path
 
