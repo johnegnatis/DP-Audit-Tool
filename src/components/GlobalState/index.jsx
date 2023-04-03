@@ -4,7 +4,7 @@ import { pages } from "../../utils/constants";
 const { setGlobalState, useGlobalState } = createGlobalState({
   students: [
     {
-      page: pages.degreePlan,
+      page: pages.pdfPreview,
       student: {
         name: "Generic Student",
         studentId: 111,
@@ -15,7 +15,7 @@ const { setGlobalState, useGlobalState } = createGlobalState({
       },
     },
   ],
-  selectedId: "",
+  selectedId: '',
 });
 
 const getSelectedStudent = () => {
@@ -27,24 +27,22 @@ const getSelectedStudent = () => {
   );
 };
 
-const updateSelectedStudent = (newStudent) => {
-  const [students] = useGlobalState("students");
+const changePage = (studentList, student, page) => {
   const index =
-    students &&
-    students.findIndex(
+    studentList &&
+    studentList.findIndex(
       (studentObj) =>
-        studentObj.student.studentId === newStudent.student.studentId
+        studentObj.student.studentId === student.student.studentId
     );
 
   if (index < 0) return;
-
-  students[index] = { ...newStudent };
-  setGlobalState("students", students);
+  studentList[index].page = page;
+  setGlobalState("students", [...studentList]);
 };
 
 export {
+  changePage,
   useGlobalState,
   setGlobalState,
   getSelectedStudent,
-  updateSelectedStudent,
 };

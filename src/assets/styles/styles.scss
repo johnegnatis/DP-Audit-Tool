@@ -48,15 +48,23 @@ body {
       color: $white;
     }
   }
+  &.grey-border {
+    border-color: $grey;
+  }
+  &.white-bg {
+    background-color: $white;
+    color: $grey;
+    font-weight: 700;
+    &:hover {
+      color: $grey;
+    }
+  }
 }
 
 .d-dropdown{
   button:first-child {
-    width: 90%;
+    width: 100%;
     text-align: left;
-  }
-  button:second-child {
-    width: 10%;
   }
 }
 
@@ -77,6 +85,9 @@ body {
   }
   &.xs {
     width: 23px;
+  }
+  &.xxs {
+    width: 17px;
   }
   &.grey {
     color: $grey;

@@ -1,10 +1,11 @@
 import pdfplumber
 import json
-#from objects import Class, Student, StudentEncoder
-from scripts.objects import Class, Student, StudentEncoder
+try:
+    from scripts.objects import Class, Student, StudentEncoder
+except:
+    from objects import Class, Student, StudentEncoder
 import re
 import pandas as pd
-# from tkinter import filedialog
 from collections import namedtuple
 
 

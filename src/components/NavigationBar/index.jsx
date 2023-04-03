@@ -20,7 +20,7 @@ const NavigationBar = () => {
     }
 
     const alreadyOnStudentPage = currentStudent.student.studentId === id;
-    if (alreadyOnStudentPage || currentStudent === pages.degreePlan) {
+    if (alreadyOnStudentPage || currentStudent.page !== pages.degreePlan) {
       setGlobalState("selectedId", id);
       return;
     }
