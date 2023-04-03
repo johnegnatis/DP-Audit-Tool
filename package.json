@@ -24,6 +24,7 @@
     "build:js": "react-scripts build",
     "build:eel-one-file": "python -m eel index.py build --onefile --splash public/splash_image.png --name Senior-Project",
     "build:eel": "python -m eel index.py build --onedir --name Senior-Project",
+    "build:eel-noconsole": "python -m eel index.py build --noconsole --onedir --name Senior-Project",
     "clean": "npm-run-all clean:*",
     "clean:build": "rmdir /s /q build 2>NUL",
     "clean:dist": "rmdir /s /q dist 2>NUL",

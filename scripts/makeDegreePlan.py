@@ -1,5 +1,9 @@
-from scripts.objects import Class, Student, mockStudent
-from scripts.helpers import get_server_path
+try:
+    from scripts.objects import Class, Student, mockStudent
+    from scripts.helpers import get_server_path
+except:
+    from objects import Class, Student, mockStudent
+    from helpers import get_server_path
 from fillpdf import fillpdfs 
 import json
 from tkinter import filedialog

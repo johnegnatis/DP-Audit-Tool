@@ -3,7 +3,7 @@ import sys
 import http.server
 import socketserver
 import shutil
-from scripts import get_server_path, get_server_name, tree_printer
+from scripts import get_server_path, get_server_name
 
 class HTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
     def end_headers(self):
@@ -36,6 +36,3 @@ def host_server(port):
         print("\n...shutting down http server")
         httpd.shutdown()
         sys.exit()
-
-if __name__ == '__main__':
-    host_server(8000)
