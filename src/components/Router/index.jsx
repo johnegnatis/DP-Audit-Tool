@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { getSelectedStudent, useGlobalState } from "../GlobalState";
 import HomePage from "../HomePage";
 import DegreePlan from "../DegreePlan";
 import PdfPreview from "../PdfPreview";
 import { pages } from "../../utils/constants";
+import { eel } from "../../utils/eel";
 
 const Router = () => {
   const student = getSelectedStudent() || null;
@@ -16,7 +17,7 @@ const Router = () => {
     case pages.degreePlan:
       return <DegreePlan key={studentId} student={student.student} />;
     case pages.pdfPreview:
-      return <PdfPreview key={studentId} student={student.student} />
+      return <PdfPreview key={studentId} student={student.student} />;
     case pages.notFound:
     default:
       return <div>Page Not Found</div>;

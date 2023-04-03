@@ -71,5 +71,8 @@ def mockStudent():
     ]
     return Student('Lasso, Ted', 2021504218, False, False, '21F', '', classes, 'Data Science')
 
+def getMockStudent():
+    return mockStudent().packStudentObject()
+
 if __name__ == '__main__':
-    print(mockStudent().packStudentObject())
+    print(getMockStudent())

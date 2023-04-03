@@ -57,18 +57,23 @@ $input-height: 40px;
       }
     }
 
-    .course-info {
-      color: $grey;
-      font-weight: 700;
-      font-size: 16px;
-      padding-top: 5px;
-      padding-bottom: 10px;
-    }
-
-    .add-class-button {
-      padding: 3px;
+    .title-span {
       display: flex;
-      justify-content: center;
+      justify-content: space-between;
+      .course-info {
+        color: $grey;
+        font-weight: 700;
+        font-size: 16px;
+        padding-top: 5px;
+        padding-bottom: 10px;
+      }
+
+      .add-class-button {
+        width: 200px;
+        display: flex;
+        justify-content: right;
+        align-items: center;
+      }
     }
 
     table {

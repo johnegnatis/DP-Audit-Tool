@@ -4,7 +4,7 @@ import { pages } from "../../utils/constants";
 const { setGlobalState, useGlobalState } = createGlobalState({
   students: [
     {
-      page: pages.pdfPreview,
+      page: pages.degreePlan,
       student: {
         name: "Generic Student",
         studentId: 111,
@@ -15,7 +15,7 @@ const { setGlobalState, useGlobalState } = createGlobalState({
       },
     },
   ],
-  selectedId: '',
+  selectedId: 111,
 });
 
 const getSelectedStudent = () => {

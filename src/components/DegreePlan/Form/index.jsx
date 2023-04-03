@@ -1,6 +1,6 @@
 import {
   getDatePicker,
-  getDropdown,
+  getNumberForm,
   getForm,
   getRadio,
 } from "./inputComponents";
@@ -9,8 +9,10 @@ import { Button } from "antd";
 import { pages, tracks } from "../../../utils/constants";
 import ClassTable from "./Table";
 import { eel } from "../../../utils/eel";
+import SelectTrack from "../TrackForm";
+import { useState } from "react";
 
-const Form = ({ student, props, setDrawerOpen, navigatePage }) => {
+const Form = ({ student, props, setDrawerOpen: setAddDrawerOpen, navigatePage, setClassForEdit }) => {
   const {
     track,
     setTrack,
@@ -28,11 +30,20 @@ const Form = ({ student, props, setDrawerOpen, navigatePage }) => {
     setThesis,
     signature,
     setSignature,
+    core,
+    setCore,
+    following,
+    setFollowing,
+    elective,
+    setElective,
+    prerequisites,
+    setPrerequisites,
   } = props;
+  const [trackFormOpen, setTrackFormOpen] = useState(true && !track);
   const fullLayout = [
     {
       cell_one: getSpan("Track"),
-      cell_two: getDropdown(track, setTrack, tracks),
+      cell_two: getForm(track, () => {}, true)
     },
     {
       cell_one: getSpan("Name"),
@@ -40,15 +51,15 @@ const Form = ({ student, props, setDrawerOpen, navigatePage }) => {
     },
     {
       cell_one: getSpan("Student ID"),
-      cell_two: getForm(studentId, setStudentId),
+      cell_two: getNumberForm(studentId, setStudentId),
     },
   ];
   const halfLayout = [
     {
       cell_one: getSpan("Semester Admitted"),
-      cell_two: getDatePicker(admittedDate, setAdmittedDate),
+      cell_two: getForm(admittedDate, setAdmittedDate),
       cell_three: getSpan("Anticipated Graduation"),
-      cell_four: getDatePicker(graduationDate, setGraduationDate),
+      cell_four: getForm(graduationDate, setGraduationDate),
     },
     {
       cell_one: getSpan("Fast Track"),
@@ -57,7 +68,9 @@ const Form = ({ student, props, setDrawerOpen, navigatePage }) => {
       cell_four: getRadio(thesis, setThesis),
     },
   ];
-
+  const handleConfirmTrack = () => {
+    setTrackFormOpen(false);
+  }
   const generatePDF = () => {
     eel
       .makeDegreePlan('mock')()
@@ -67,13 +80,13 @@ const Form = ({ student, props, setDrawerOpen, navigatePage }) => {
       .catch(() => console.log("error"));
     navigatePage(pages.pdfPreview)
   };
-  const openDrawer = (options) => {
+  const openAddDrawer = (options) => {
     //TODO: put options based off options
-    setDrawerOpen(true);
+    setAddDrawerOpen(true);
   };
-
   return (
     <div className="degree-plan">
+      <SelectTrack track={track} setTrack={setTrack} handleConfirmTrack={handleConfirmTrack} open={trackFormOpen} options={tracks} />
       <h1 className="title">Degree Plan</h1>
       <div className="general-info">
         <h2 className="subtitle">General Information</h2>
@@ -85,26 +98,30 @@ const Form = ({ student, props, setDrawerOpen, navigatePage }) => {
         <ClassTable
           title="Core Courses"
           subtitle="15 credit Hours / 3.19 grade point required (HARDCODED)"
-          classes={student.student.classes}
-          openDrawer={() => openDrawer([])}
+          classes={core}
+          openAddDrawer={() => openAddDrawer([])}
+          setClassForEdit={setClassForEdit}
         />
         <ClassTable
           title="One of the Following Courses"
           subtitle=""
-          classes={[]}
-          openDrawer={() => openDrawer([])}
+          classes={following}
+          openAddDrawer={() => openAddDrawer([])}
+          setClassForEdit={setClassForEdit}
         />
         <ClassTable
           title="Approved 6000 Level Courses"
           subtitle=""
-          classes={[]}
-          openDrawer={() => openDrawer([])}
+          classes={elective}
+          openAddDrawer={() => openAddDrawer([])}
+          setClassForEdit={setClassForEdit}
         />
         <ClassTable
           title="Prerequisites"
           subtitle=""
-          classes={[]}
-          openDrawer={() => openDrawer([])}
+          classes={prerequisites}
+          openAddDrawer={() => openAddDrawer([])}
+          setClassForEdit={setClassForEdit}
         />
         <div className="signature">
           <span>Academic Advisor Signature : </span>

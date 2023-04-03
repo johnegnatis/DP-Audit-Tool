@@ -1,11 +1,29 @@
-import { Input, DatePicker, Radio, AutoComplete, Dropdown } from "antd";
+import { Input, InputNumber, DatePicker, Radio, Dropdown } from "antd";
 
-const getForm = (value, setValue) => {
+const getForm = (value, setValue, disabled = false) => {
   const handleFormInput = (e) => {
     setValue(e.target.value);
   };
 
-  return <Input value={value} onChange={(e) => handleFormInput(e)}  />;
+  return (
+    <Input
+      value={value}
+      onChange={(e) => handleFormInput(e)}
+      disabled={disabled}
+    />
+  );
+};
+
+const getNumberForm = (value, setValue) => {
+  const handleFormInput = (e) => {
+    const input = e.target.value;
+    const regex = /^[0-9\b]+$/; // only allow digits and backspace
+    if (regex.test(input)) {
+      setValue(input);
+    }
+  };
+
+  return <Input value={value} onChange={(e) => handleFormInput(e)} />;
 };
 
 const getDatePicker = (value, setValue) => {
@@ -48,13 +66,13 @@ const getDropdown = (value, setValue, options) => {
     <Dropdown.Button
       menu={menuProps}
       onClick={() => {
-        console.log('hi');
+        console.log("hi");
       }}
       className="d-dropdown"
-  >
+    >
       {value || "Select Track"}
     </Dropdown.Button>
   );
 };
 
-export { getDropdown, getRadio, getDatePicker, getForm };
+export { getDropdown, getRadio, getDatePicker, getForm, getNumberForm };

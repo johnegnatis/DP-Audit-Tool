@@ -1,26 +1,33 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import dayjs from "dayjs";
 
 export function useStudentObject(student) {
-  const defaults = {
-    track: '',
-    name: student.student.name,
-    studentId: student.student.studentId,
-    admitted:
-      (student.student.dates &&
-        dayjs(student.student.dates.semesterAdmitted)) ||
-      "",
-    graduation:
-      (student.student.dates &&
-        dayjs(student.student.dates.expectedGraduation)) ||
-      "",
+  const studentObj = student.student;
+  const filterClass = (filter, array) => {
+    if (!Array.isArray(array)) return []
+    return array.filter((obj) => obj.type === filter)
+  }
+
+  const defaults = useMemo(() => ({
+    track: studentObj.track,
+    name: studentObj.name,
+    studentId: studentObj.studentId,
+    admitted: studentObj.dates && studentObj.dates.semesterAdmitted,
+    graduation: studentObj.dates && studentObj.dates.graduationDate,
     fastTrack:
-      (student.student.options && student.student.options.fastTrack) || false,
+      (studentObj.options && studentObj.options.fastTrack) || false,
     thesis:
-      (student.student.options && student.student.options.thesis) || false,
+      (studentObj.options && studentObj.options.thesis) || false,
     signature: "",
     searchInput: "",
-  };
+    classes: {
+      core: filterClass('core', studentObj.classes),
+      following: filterClass('one_of_the_following', studentObj.classes),
+      elective: filterClass('core_electives', studentObj.classes),
+      prerequisites: filterClass('prerequisites', studentObj.classes),
+
+    },
+  }), [student]);
 
   const [track, setTrack] = useState(defaults.track);
   const [name, setName] = useState(defaults.name);
@@ -30,8 +37,11 @@ export function useStudentObject(student) {
   const [fastTrack, setFastTrack] = useState(defaults.fastTrack);
   const [thesis, setThesis] = useState(defaults.thesis);
   const [signature, setSignature] = useState(defaults.signature);
-  const [coreClasses, setCoreClasses] = useState(defaults.coreClasses);
   const [searchInput, setSearchInput] = useState(defaults.searchInput);
+  const [core, setCore] = useState(defaults.classes.core);
+  const [following, setFollowing] = useState(defaults.classes.following);
+  const [elective, setElective] = useState(defaults.classes.elective);
+  const [prerequisites, setPrerequisites] = useState(defaults.classes.prerequisites);
 
   return {
     track,
@@ -52,5 +62,13 @@ export function useStudentObject(student) {
     setSignature,
     searchInput,
     setSearchInput,
+    core,
+    setCore,
+    following,
+    setFollowing,
+    elective,
+    setElective,
+    prerequisites,
+    setPrerequisites,
   };
 }
