@@ -1,0 +1,272 @@
+{
+    "prerequisites": [
+        {
+            "course_name": "CS 3341:Probability & Statistics in CS and SE",
+            "typeOptions": "prerequisites"
+        },
+        {
+            "course_name": "CS 5303:Computer Science I",
+            "typeOptions": "prerequisites"
+        },
+        {
+            "course_name": "CS 5330:Computer Science II",
+            "typeOptions": "prerequisites"
+        },
+        {
+            "course_name": "CS 5333:Discrete Structures",
+            "typeOptions": "prerequisites"
+        },
+        {
+            "course_name": "CS 5343:Algorithm Analysis & Data Structures",
+            "typeOptions": "prerequisites"
+        },
+        {
+            "course_name": "CS 5348:Operating System Concepts",
+            "typeOptions": "prerequisites"
+        },
+        {
+            "course_name": "CS 5349:Automata Theory",
+            "typeOptions": "prerequisites"
+        },
+        {
+            "course_name": "CS 5354:Software Engineering",
+            "typeOptions": "prerequisites"
+        },
+        {
+            "course_name": "CS 5390:Computer Networks",
+            "typeOptions": "prerequisites"
+        }
+    ],
+    "cybersecurity": [
+        {
+            "course_name": "CS 6324:Information Security",
+            "typeOptions": "core"
+        },
+        {
+            "course_name": "CS 6363:Design and Analysis of Computer Algorithms",
+            "typeOptions": "core"
+        },
+        {
+            "course_name": "CS 6378:Advanced Operating Systems",
+            "typeOptions": "core"
+        },
+        {
+            "course_name": "CS 6332:Systems Security and Malicious Code Analysis",
+            "typeOptions": "two_of_the_following"
+        },
+        {
+            "course_name": "CS 6348:Data and Applications Security",
+            "typeOptions": "two_of_the_following"
+        },
+        {
+            "course_name": "CS 6349:Network Security",
+            "typeOptions": "two_of_the_following"
+        },
+        {
+            "course_name": "CS 6377:Introduction to Cryptography",
+            "typeOptions": "two_of_the_following"
+        }
+    ],
+    "data_science": [
+        {
+            "course_name": "CS 6313:Statistical Methods for Data Science",
+            "typeOptions": "core"
+        },
+        {
+            "course_name": "CS 6350:Big Data Management and Analytics",
+            "typeOptions": "core"
+        },
+        {
+            "course_name": "CS 6363:Design and Analysis of Computer Algorithms",
+            "typeOptions": "core"
+        },
+        {
+            "course_name": "CS 6375:Machine Learning",
+            "typeOptions": "core"
+        },
+        {
+            "course_name": "CS 6301:Special Topics in Computer Science [when topic is Social Network Analytics",
+            "typeOptions": "one_of_the_following"
+        },
+        {
+            "course_name": "CS 6320:Natural Language Processing",
+            "typeOptions": "one_of_the_following"
+        },
+        {
+            "course_name": "CS 6327:Video Analytics",
+            "typeOptions": "one_of_the_following"
+        },
+        {
+            "course_name": "CS 6347:Statistical Methods in AI and Machine Learning",
+            "typeOptions": "one_of_the_following"
+        },
+        {
+            "course_name": "CS 6360:Database Design",
+            "typeOptions": "one_of_the_following"
+        }
+    ],
+    "intelligent_systems": [
+        {
+            "course_name": "CS 6320:Natural Language Processing",
+            "typeOptions": "core"
+        },
+        {
+            "course_name": "CS 6363:Design and Analysis of Computer Algorithms",
+            "typeOptions": "core"
+        },
+        {
+            "course_name": "CS 6364:Artificial Intelligence",
+            "typeOptions": "core"
+        },
+        {
+            "course_name": "CS 6375:Machine Learning",
+            "typeOptions": "core"
+        },
+        {
+            "course_name": "CS 6360:Database Design",
+            "typeOptions": "one_of_the_following"
+        },
+        {
+            "course_name": "CS 6378:Advanced Operating Systems",
+            "typeOptions": "one_of_the_following"
+        }
+    ],
+    "interactive_computing": [
+        {
+            "course_name": "CS 6326 Human Computer Interactions",
+            "typeOptions": "core"
+        },
+        {
+            "course_name": "CS 6323 Computer Animation and Gaming",
+            "typeOptions": "core"
+        },
+        {
+            "course_name": "CS 6363 Design and Analysis of Computer Algorithms",
+            "typeOptions": "core"
+        },
+        {
+            "course_name": "CS 6323:Computer Animation and Gaming",
+            "typeOptions": "three_of_the_following"
+        },
+        {
+            "course_name": "CS 6328:Modeling and Simulation",
+            "typeOptions": "three_of_the_following"
+        },
+        {
+            "course_name": "CS 6331:Multimedia Systems",
+            "typeOptions": "three_of_the_following"
+        },
+        {
+            "course_name": "CS 6334:Virtual Reality",
+            "typeOptions": "three_of_the_following"
+        },
+        {
+            "course_name": "CS 6366:Computer Graphics",
+            "typeOptions": "three_of_the_following"
+        }
+    ],
+    "networks_and_telecommunications": [
+        {
+            "course_name": "CS 6352:Performance of Computer Systems and Networks",
+            "typeOptions": "core"
+        },
+        {
+            "course_name": "CS 6363:Design and Analysis of Computer Algorithms",
+            "typeOptions": "core"
+        },
+        {
+            "course_name": "CS 6378:Advanced Operating Systems",
+            "typeOptions": "core"
+        },
+        {
+            "course_name": "CS 6385:Algorithmic Aspects of Telecommunication Networks",
+            "typeOptions": "core"
+        },
+        {
+            "course_name": "CS 6390:Advanced Computer Networks",
+            "typeOptions": "core"
+        }
+    ],
+    "systems": [
+        {
+            "course_name": "CS 6304:Computer Architecture",
+            "typeOptions": "core"
+        },
+        {
+            "course_name": "CS 6363:Design and Analysis of Computer Algorithms",
+            "typeOptions": "core"
+        },
+        {
+            "course_name": "CS 6378:Advanced Operating Systems",
+            "typeOptions": "core"
+        },
+        {
+            "course_name": "CS 6396:Real-Time Systems",
+            "typeOptions": "core"
+        },
+        {
+            "course_name": "CS 6349:Network Security",
+            "typeOptions": "one_of_the_following"
+        },
+        {
+            "course_name": "CS 6376:Parallel Processing",
+            "typeOptions": "one_of_the_following"
+        },
+        {
+            "course_name": "CS 6380:Distributed Computing",
+            "typeOptions": "one_of_the_following"
+        },
+        {
+            "course_name": "CS 6397:Synthesis and Optimization of High-Performance Systems",
+            "typeOptions": "one_of_the_following"
+        }
+    ],
+    "traditional_computer_science": [
+        {
+            "course_name": "CS 6363:Design and Analysis of Computer Algorithms",
+            "typeOptions": "core"
+        },
+        {
+            "course_name": "CS 6378:Advanced Operating Systems",
+            "typeOptions": "core"
+        },
+        {
+            "course_name": "CS 6390:Advanced Computer Networks",
+            "typeOptions": "core"
+        },
+        {
+            "course_name": "CS 6353:Compiler Construction",
+            "typeOptions": "two_of_the_following"
+        },
+        {
+            "course_name": "CS 6360:Database Design",
+            "typeOptions": "two_of_the_following"
+        },
+        {
+            "course_name": "CS 6371:Advanced Programming Languages",
+            "typeOptions": "two_of_the_following"
+        }
+    ],
+    "software_engineering": [
+        {
+            "course_name": "SE 6329:Object-Oriented Software Engineering",
+            "typeOptions": "core"
+        },
+        {
+            "course_name": "SE 6361 (CS 6361):Advanced Requirements Engineering",
+            "typeOptions": "core"
+        },
+        {
+            "course_name": "SE 6362:Advanced Software Architecture and Design",
+            "typeOptions": "core"
+        },
+        {
+            "course_name": "SE 6367 (CS 6367):Software Testing, Validation and Verification",
+            "typeOptions": "core"
+        },
+        {
+            "course_name": "SE 6387:Advanced Software Engineering Project",
+            "typeOptions": "core"
+        }
+    ]
+}
