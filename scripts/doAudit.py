@@ -68,9 +68,10 @@ def doAuditMethod(studentObject):
     para.add_run('\nOutstanding Requirements:').bold = True
     para.add_run('\n\nCore status.')
     para.add_run('\nTo maintain a 3.0 elective GPA:')
-    para.add_run('\n	The student must pass [List classes]')
+    para.add_run('\n    The student must pass [List classes]')
     para.add_run('\nTo maintain a 3.0 overall GPA:')
-    para.add_run('\n	The student must pass [List classes]')
+    para.add_run('\n    The student must pass [List classes]')
+
 
     doc.save('Sample Audit.docx')
     print('Sample audit created.')

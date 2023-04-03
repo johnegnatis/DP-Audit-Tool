@@ -6,11 +6,15 @@ export const iconNames = {
     trash: 'ph:trash-bold', 
     checkboxMinus: 'bxs:checkbox-minus',
     search: 'ic:outline-search',
+    import: 'uil:import',
+    zoomIn: 'heroicons:magnifying-glass-plus-20-solid',
+    zoomOut: 'heroicons:magnifying-glass-minus-20-solid',
 }
 
 export const pages = {
     homePage: 'home-page',
     degreePlan: 'degree-plan',
+    pdfPreview: 'pdf-preview',
     notFound: 'not-found',
 }
 
