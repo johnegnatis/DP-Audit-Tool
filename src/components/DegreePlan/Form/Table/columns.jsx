@@ -1,7 +1,13 @@
+import { Icon } from "@iconify/react"
+import { iconNames } from "../../../../utils/constants"
 export const columns = [
     {
         title: ' ',
         width: '2%',
+        align: 'center',
+        render: () => (
+          <Icon icon={iconNames.threeDots} className="xxs icon grey pointer" />
+        ),
     },
     {
       title: 'Course Title',

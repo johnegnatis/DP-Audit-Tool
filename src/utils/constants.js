@@ -9,6 +9,8 @@ export const iconNames = {
     import: 'uil:import',
     zoomIn: 'heroicons:magnifying-glass-plus-20-solid',
     zoomOut: 'heroicons:magnifying-glass-minus-20-solid',
+    threeDots: 'ph:dots-three-vertical',
+    close: 'material-symbols:close',
 }
 
 export const pages = {

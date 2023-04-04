@@ -2,17 +2,34 @@ import React from "react";
 import { columns } from "./columns";
 import { Table, Button } from "antd";
 
-const ClassTable = ({ title, subtitle, classes, openAddDrawer, notes, setClassForEdit }) => {
+const ClassTable = ({
+  title,
+  subtitle,
+  classes,
+  openAddDrawer,
+  notes,
+  setClassForEdit,
+  swapping,
+  executeSwap,
+  disableActions,
+}) => {
   const classList =
     classes &&
     classes.map((classes, index) => {
       return { ...classes, key: index };
     });
   const handleRowClick = (record, rowIndex) => {
-    setClassForEdit({
-      class: record,
-      index: rowIndex,
-    })
+    if (swapping) {
+      executeSwap({
+        class: record,
+        index: rowIndex,
+      });
+    } else {
+      setClassForEdit({
+        class: record,
+        index: rowIndex,
+      });
+    }
   };
   return (
     <>
@@ -22,7 +39,11 @@ const ClassTable = ({ title, subtitle, classes, openAddDrawer, notes, setClassFo
           {subtitle && <h3 className="course-info">{subtitle}</h3>}
         </div>
         <div className="add-class-button">
-          <Button className="button orange-bg" onClick={() => openAddDrawer()}>
+          <Button
+            className="button orange-bg"
+            disabled={disableActions}
+            onClick={() => openAddDrawer()}
+          >
             Add Class
           </Button>
         </div>

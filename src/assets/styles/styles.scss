@@ -62,6 +62,22 @@ body {
       color: $grey;
     }
   }
+  &.grey-bg {
+    background-color: $grey;
+    color: black;
+    font-weight: 700;
+    &:hover {
+      color: black;
+    }
+  }
+  &.red-bg {
+    background-color: $red;
+    color: $white;
+    font-weight: 700;
+    &:hover {
+      color: $white;
+    }
+  }
 }
 
 .d-dropdown{

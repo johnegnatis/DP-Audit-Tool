@@ -1,10 +1,11 @@
-import React, { useState } from "react";
-import { useStudentObject } from "./hook";
+import React, { useMemo, useState } from "react";
+import { useEditClass, useStudentObject } from "./hook";
 import Search from "./Search";
 import Form from "./Form";
 import { Drawer } from "antd";
 import { useGlobalState, changePage } from "../GlobalState";
-import AddClass from "./Form/AddClass";
+import EditClass from "./Form/EditClass";
+import SwappingNotification from "./SwappingNotification"
 
 const mockStudent = {
   name: "Lasso, Ted",
@@ -15,7 +16,7 @@ const mockStudent = {
   },
   dates: {
     admitted: "21F",
-    expected_graduation: "",
+    expected_graduation: "24S",
   },
   classes: [
     {
@@ -212,24 +213,110 @@ const mockStudent = {
 };
 
 const DegreePlan = (student) => {
+  // student obj hooks
   const [students] = useGlobalState("students");
   const props = useStudentObject({ student: mockStudent });
+  const { setCore, setFollowing, setElective, setPrerequisites } = props;
+
+  // add class hooks
   const [addClassOpen, setAddClassOpen] = useState(false);
-  const [selectedClassForEdit, setSelectedClassForEdit] = useState('');
+
+  // edit class hooks
+  const [selectedClassForEdit, setSelectedClassForEdit] = useState("");
+  const [swappingClass, setSwappingClass] = useState("");
+  const editClassProps = useEditClass(selectedClassForEdit);
+  const disableActions = useMemo(() => !!swappingClass, [swappingClass]);
 
   const navigatePage = (page) => {
     changePage(students, student, page);
   };
+  const getClassSetter = (table) => {
+    const tables = [
+      "core",
+      "one_of_the_following",
+      "core_electives",
+      "prerequisites",
+    ];
+    const classSetterLookup = {
+      core: setCore,
+      one_of_the_following: setFollowing,
+      core_electives: setElective,
+      prerequisites: setPrerequisites,
+    };
+    if (tables.includes(table)) {
+      return classSetterLookup[table];
+    } else {
+      console.error("Invalid table");
+      return null;
+    }
+  };
+  const handleSubmitEdits = (obj) => {
+    obj.type = selectedClassForEdit.class.type;
+    const setter = getClassSetter(selectedClassForEdit.class.type);
+    if (!setter) return;
+    setter((prev) => {
+      const newList = [...prev];
+      newList[selectedClassForEdit.index] = obj;
+      return newList;
+    });
+    setSelectedClassForEdit("");
+  };
+  // When the first class has been selected for swapping
+  const handleSwapping = () => {
+    setSwappingClass(selectedClassForEdit);
+    setSelectedClassForEdit("");
+  };
+  // When the second class has been selected for swapping
+  const handleExecuteSwap = (obj) => {
+    const swapOne = obj;
+    const swapTwo = swappingClass;
+
+    const swapOneSetter = getClassSetter(swapOne.class.type);
+    const swapTwoSetter = getClassSetter(swapTwo.class.type);
+    if (!swapOneSetter || !swapTwoSetter) return;
+
+    // swap the type for table placement later
+    const temp = swapOne.class.type;
+    swapOne.class.type = swapTwo.class.type;
+    swapTwo.class.type = temp;
+
+    swapOneSetter((prev) => {
+      const newList = [...prev];
+      newList[swapOne.index] = swapTwo.class;
+      return newList;
+    });
+    swapTwoSetter((prev) => {
+      const newList = [...prev];
+      newList[swapTwo.index] = swapOne.class;
+      return newList;
+    });
+    setSwappingClass("");
+  };
+  const handleCancelSwap = () => {
+    setSwappingClass('');
+  }
+  const handleDeleteClass = () => {
+    const setter = getClassSetter(selectedClassForEdit.class.type);
+    if (!setter) return;
+    setter((prev) => {
+      return prev.filter((_, index) => index !== selectedClassForEdit.index);
+    });
+    setSelectedClassForEdit("");
+  }
 
   return (
-    <div className="degree-plan-root">
+    <div className={`degree-plan-root ${disableActions ? "swapping" : ""}`}>
       <Form
+        disableActions={disableActions}
         student={student}
         props={props}
         setDrawerOpen={setAddClassOpen}
         navigatePage={navigatePage}
         setClassForEdit={setSelectedClassForEdit}
+        swapping={!!swappingClass}
+        handleExecuteSwap={handleExecuteSwap}
       />
+      <SwappingNotification open={!!swappingClass} onCancel={handleCancelSwap}/>
       <Drawer
         title="Search for classes"
         open={addClassOpen}
@@ -243,11 +330,13 @@ const DegreePlan = (student) => {
       <Drawer
         title="Edit class"
         open={!!selectedClassForEdit}
-        onClose={() => setSelectedClassForEdit('')}
+        onClose={() => setSelectedClassForEdit("")}
       >
-        <AddClass 
-          handleSubmit={() => {}}
-          classObj={selectedClassForEdit}
+        <EditClass
+          handleSwapping={handleSwapping}
+          handleSubmit={handleSubmitEdits}
+          handleDeleteClass={handleDeleteClass}
+          editClassProps={editClassProps}
         />
       </Drawer>
     </div>

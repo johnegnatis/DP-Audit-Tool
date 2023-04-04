@@ -14,7 +14,7 @@ const getForm = (value, setValue, disabled = false) => {
   );
 };
 
-const getNumberForm = (value, setValue) => {
+const getNumberForm = (value, setValue, disabled=false) => {
   const handleFormInput = (e) => {
     const input = e.target.value;
     const regex = /^[0-9\b]+$/; // only allow digits and backspace
@@ -23,10 +23,10 @@ const getNumberForm = (value, setValue) => {
     }
   };
 
-  return <Input value={value} onChange={(e) => handleFormInput(e)} />;
+  return <Input value={value} onChange={(e) => handleFormInput(e)} disabled={disabled} />;
 };
 
-const getDatePicker = (value, setValue) => {
+const getDatePicker = (value, setValue, disabled=false) => {
   const handleDateChange = (e) => {
     if (!e) setValue(null);
     else setValue(e);
@@ -37,17 +37,18 @@ const getDatePicker = (value, setValue) => {
       picker="month"
       onChange={(e) => handleDateChange(e)}
       value={value}
+      disabled={disabled}
     />
   );
 };
 
-const getRadio = (value, setValue) => {
+const getRadio = (value, setValue, disabled=false) => {
   const handleRadioChange = (e) => {
     setValue(e.target.value);
   };
 
   return (
-    <Radio.Group onChange={handleRadioChange} value={value}>
+    <Radio.Group disabled={disabled} onChange={handleRadioChange} value={value}>
       <Radio value={true}>Yes</Radio>
       <Radio value={false}>No</Radio>
     </Radio.Group>
@@ -62,6 +63,7 @@ const getDropdown = (value, setValue, options) => {
     items: options,
     onClick: handleMenuClick,
   };
+  // TODO: make popup open everywhere
   return (
     <Dropdown.Button
       menu={menuProps}
