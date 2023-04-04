@@ -39,7 +39,7 @@ const EditClass = ({ handleSubmit, editClassProps, handleSwapping, handleDeleteC
       {getSpan("GRADE", false)}
       {getForm(grade, setGrade)}
       <Button className="button orange-bg" onClick={() => onSubmitClick()}>
-        Submit Edits
+        Save
       </Button>
       <Button className="button orange-bg" onClick={() => handleSwapping()}>
         Swap With Another Row

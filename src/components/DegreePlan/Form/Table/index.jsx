@@ -1,5 +1,5 @@
 import React from "react";
-import { columns } from "./columns";
+import { getColumn } from "./columns";
 import { Table, Button } from "antd";
 
 const ClassTable = ({
@@ -19,6 +19,7 @@ const ClassTable = ({
       return { ...classes, key: index };
     });
   const handleRowClick = (record, rowIndex) => {
+    return;
     if (swapping) {
       executeSwap({
         class: record,
@@ -51,7 +52,7 @@ const ClassTable = ({
       {notes && notes.map((note) => <span>{note}</span>)}
       <Table
         dataSource={classList}
-        columns={columns}
+        columns={getColumn({ onEdit: () => {}, onDelete: () => {}, onMove: () => {}})}
         pagination={false}
         onRow={(record, rowIndex) => {
           return {

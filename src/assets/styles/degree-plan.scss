@@ -11,7 +11,9 @@ $input-height: 40px;
   display: flex;
   justify-content: center;
   overflow-y: scroll;
-
+  .ant-menu {
+    border-inline-end: none !important;
+  }
   .degree-plan {
     max-width: 1100px;
     .degree-plan::-webkit-scrollbar-track {
@@ -171,6 +173,10 @@ $input-height: 40px;
   background-color: rgba(0, 0, 0, 0.25);
   z-index: 0;
   cursor: pointer !important;
+
+  .ant-table-cell-row-hover {
+    border-bottom-color: $orange !important;
+  }
 }
 .swapping-notification-root {
   z-index: 5;

@@ -291,9 +291,11 @@ const DegreePlan = (student) => {
       return newList;
     });
     setSwappingClass("");
+    // TODO: do not close after swap
   };
   const handleCancelSwap = () => {
     setSwappingClass('');
+    // TODO: do not close after swap
   }
   const handleDeleteClass = () => {
     const setter = getClassSetter(selectedClassForEdit.class.type);
