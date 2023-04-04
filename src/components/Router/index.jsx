@@ -8,6 +8,7 @@ import { eel } from "../../utils/eel";
 
 const Router = () => {
   const student = getSelectedStudent() || null;
+  console.log(student);
   const currentPage = (!!student && student.page) || pages.homePage;
   const studentId = (!!student && student.student.studentId) || 0;
 

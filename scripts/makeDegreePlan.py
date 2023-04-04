@@ -1,5 +1,5 @@
 try:
-    from scripts.objects import Class, Student, mockStudent
+    from scripts.objects import Class, Student, mockStudent, json_to_student
     from scripts.helpers import get_server_path
 except:
     from objects import Class, Student, mockStudent
@@ -399,11 +399,11 @@ def fillPDFForms(studentObject, path):
     base_dev = './public/degreePlans/'
     base_prod = './build/degreePlans/'
     file_lookup = {
-        "CyberSecurity": 'DP-Cybersecurity.pdf',
+        "Cyber Security": 'DP-Cybersecurity.pdf',
         "Data Science": 'DP-DataScience.pdf',
         "Intelligent Systems": 'DP-Intelligent-Systems.pdf',
         "Interactive Computing": 'DP-Interactive-Computing.pdf',
-        "Telecommunication": 'DP-Networks-Telecommunication.pdf',
+        "Networks and Telecommunication": 'DP-Networks-Telecommunication.pdf',
         "Software Engineering": 'DP-Software-Engineering.pdf',
         "Systems": 'DP-Systems.pdf',
         "Traditional": 'DP-Traditional.pdf',
@@ -419,10 +419,13 @@ def getStudentFile(name):
 def makeDegreePlanMethod(studentObject):
     if (studentObject == 'mock'):
         studentObject = mockStudent()
+    else:
+        studentObject = json_to_student(studentObject)
     
-    file_path = get_server_path() + '/' + getStudentFile(studentObject.name)
+    file_name = getStudentFile(studentObject.name)
+    file_path = get_server_path() + '/' + file_name
     fillPDFForms(studentObject, file_path)
-    return file_path
+    return file_name
 
 if __name__ == '__main__':
     makeDegreePlanMethod('mock')

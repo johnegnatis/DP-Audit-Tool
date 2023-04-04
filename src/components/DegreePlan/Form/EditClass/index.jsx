@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import { getForm } from "../inputComponents";
-import { formatGrid, getSpan } from "../gridLayout";
+import { getSpan } from "../gridLayout";
 import { Button } from "antd";
-const EditClass = ({ handleSubmit, editClassProps, handleSwapping, handleDeleteClass }) => {
+import { useEditClass } from "../../hook";
+const EditClass = ({ handleSubmit, classObj }) => {
   const {
     name,
     setName,
@@ -14,7 +15,7 @@ const EditClass = ({ handleSubmit, editClassProps, handleSwapping, handleDeleteC
     setTransfer,
     grade,
     setGrade,
-  } = editClassProps;
+  } = useEditClass(classObj);
 
   const onSubmitClick = () => {
     handleSubmit({
@@ -40,12 +41,6 @@ const EditClass = ({ handleSubmit, editClassProps, handleSwapping, handleDeleteC
       {getForm(grade, setGrade)}
       <Button className="button orange-bg" onClick={() => onSubmitClick()}>
         Save
-      </Button>
-      <Button className="button orange-bg" onClick={() => handleSwapping()}>
-        Swap With Another Row
-      </Button>
-      <Button className="button red-bg" onClick={() => handleDeleteClass()}>
-        Delete Class
       </Button>
     </div>
   );

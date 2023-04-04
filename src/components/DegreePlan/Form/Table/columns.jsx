@@ -1,32 +1,34 @@
 import { Icon } from "@iconify/react";
 import { iconNames } from "../../../../utils/constants";
 import { Popover, Menu } from "antd";
-import { AppstoreOutlined } from "@ant-design/icons";
+import { useState } from "react";
 
-// TODO: make antd popover on three dots
-/* <Popover content={content} title="Title" trigger="click">
-  <Button>Click me</Button>
-</Popover> */
+export const getColumn = ({ onEdit, onMove, onDelete, disabled }) => {
+  const keyToFunctionMapping = {
+    1: onEdit,
+    2: onMove,
+    3: onDelete,
+  };
 
-// key,
-// icon,
-// children,
-// label,
-// type,
-export const getColumn = ({ onEdit, onMove, onDelete }) => {
-  const getMenu = (text, record, index) => {
+  const getMenu = (record) => {
     return (
       <Menu
-        onClick={(item, key, keyPath, domEvent) => {
-          console.log(item, key, keyPath, domEvent);
-          console.log(text, record, index);
+        onClick={(item) => {
+          console.log(item);
+          const { name, number, semester, transfer, grade, type } = record;
+          const obj = { name, number, semester, transfer, grade, type };
+          const keyFunction = keyToFunctionMapping[item.key];
+          keyFunction({
+            class: obj,
+            index: record.key,
+          });
         }}
         style={{ width: 120, borderInlineEnd: "none" }}
         mode="vertical"
         items={[
           { label: "Edit", key: 1 },
           { label: "Move", key: 2 },
-          { label: "Delete", key: 3 }, // TODO: delete is RED
+          { label: "Delete", key: 3, className: "red-text" }, // TODO: delete is RED
         ]}
       />
     );
@@ -34,15 +36,23 @@ export const getColumn = ({ onEdit, onMove, onDelete }) => {
 
   return [
     {
-      title: "",
-      width: "2%",
+      title: " ",
+      width: "5%",
       align: "center",
-      render: (text, record, index) => {
+      render: (record) => {
+        if (disabled)
+          return (
+            <Icon
+              icon={iconNames.threeDots}
+              className="xxs icon grey pointer"
+            />
+          );
         return (
           <Popover
-            content={getMenu(text, record, index)}
+            content={getMenu(record)}
             placement="bottom"
-            trigger="click"
+            trigger="hover"
+            destroyTooltipOnHide
           >
             <Icon
               icon={iconNames.threeDots}

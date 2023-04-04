@@ -13,14 +13,14 @@ import SelectTrack from "../TrackForm";
 import { useState } from "react";
 
 const Form = ({
-  disableActions,
-  student,
+  allDisabled,
   props,
   setDrawerOpen: setAddDrawerOpen,
-  navigatePage,
+  generatePDF,
   setClassForEdit,
-  swapping,
-  handleExecuteSwap,
+  setClassForMove,
+  handleMoveClick,
+  deleteClass,
 }) => {
   const {
     track,
@@ -37,14 +37,14 @@ const Form = ({
     setFastTrack,
     thesis,
     setThesis,
-    signature,
-    setSignature,
     core,
     following,
     elective,
     prerequisites,
+    pdfName,
+    setPdfName,
   } = props;
-  const [trackFormOpen, setTrackFormOpen] = useState(true && !track);
+  const [trackFormOpen, setTrackFormOpen] = useState(!track);
   const fullLayout = [
     {
       cell_one: getSpan("Track"),
@@ -52,38 +52,29 @@ const Form = ({
     },
     {
       cell_one: getSpan("Name"),
-      cell_two: getForm(name, setName, disableActions),
+      cell_two: getForm(name, setName, allDisabled),
     },
     {
       cell_one: getSpan("Student ID"),
-      cell_two: getNumberForm(studentId, setStudentId, disableActions),
+      cell_two: getNumberForm(studentId, setStudentId, allDisabled),
     },
   ];
   const halfLayout = [
     {
       cell_one: getSpan("Semester Admitted"),
-      cell_two: getForm(admittedDate, setAdmittedDate, disableActions),
+      cell_two: getForm(admittedDate, setAdmittedDate, allDisabled),
       cell_three: getSpan("Anticipated Graduation"),
-      cell_four: getForm(graduationDate, setGraduationDate, disableActions),
+      cell_four: getForm(graduationDate, setGraduationDate, allDisabled),
     },
     {
       cell_one: getSpan("Fast Track"),
-      cell_two: getRadio(fastTrack, setFastTrack, disableActions),
+      cell_two: getRadio(fastTrack, setFastTrack, allDisabled),
       cell_three: getSpan("Thesis"),
-      cell_four: getRadio(thesis, setThesis, disableActions),
+      cell_four: getRadio(thesis, setThesis, allDisabled),
     },
   ];
   const handleConfirmTrack = () => {
     setTrackFormOpen(false);
-  };
-  const generatePDF = () => {
-    eel
-      .makeDegreePlan("mock")()
-      .then((pdf) => {
-        console.log("success", pdf);
-      })
-      .catch(() => console.log("error"));
-    navigatePage(pages.pdfPreview);
   };
   const openAddDrawer = (options) => {
     //TODO: put options based off options
@@ -109,53 +100,57 @@ const Form = ({
         <ClassTable
           title="Core Courses"
           subtitle="15 credit Hours / 3.19 grade point required (HARDCODED)"
-          disableActions={disableActions}
+          allDisabled={allDisabled}
           classes={core}
           openAddDrawer={() => openAddDrawer([])}
           setClassForEdit={setClassForEdit}
-          swapping={swapping}
-          executeSwap={handleExecuteSwap}
+          setClassForMove={setClassForMove}
+          handleMoveClick={handleMoveClick}
+          deleteClass={deleteClass}
         />
         <ClassTable
           title="One of the Following Courses"
           subtitle=""
-          disableActions={disableActions}
+          allDisabled={allDisabled}
           classes={following}
           openAddDrawer={() => openAddDrawer([])}
           setClassForEdit={setClassForEdit}
-          swapping={swapping}
-          executeSwap={handleExecuteSwap}
+          setClassForMove={setClassForMove}
+          handleMoveClick={handleMoveClick}
+          deleteClass={deleteClass}
         />
         <ClassTable
           title="Approved 6000 Level Courses"
           subtitle=""
-          disableActions={disableActions}
+          allDisabled={allDisabled}
           classes={elective}
           openAddDrawer={() => openAddDrawer([])}
           setClassForEdit={setClassForEdit}
-          swapping={swapping}
-          executeSwap={handleExecuteSwap}
+          setClassForMove={setClassForMove}
+          handleMoveClick={handleMoveClick}
+          deleteClass={deleteClass}
         />
         <ClassTable
           title="Prerequisites"
           subtitle=""
-          disableActions={disableActions}
+          allDisabled={allDisabled}
           classes={prerequisites}
           openAddDrawer={() => openAddDrawer([])}
           setClassForEdit={setClassForEdit}
-          swapping={swapping}
-          executeSwap={handleExecuteSwap}
+          setClassForMove={setClassForMove}
+          handleMoveClick={handleMoveClick}
+          deleteClass={deleteClass}
         />
-        <div className="signature">
+        {/* <div className="signature">
           <span>Academic Advisor Signature : </span>
-          {getForm(signature, setSignature, disableActions)}
-        </div>
+          {getForm(signature, setSignature, allDisabled)}
+        </div> */}
         <div className="generate-button">
           <Button
             onClick={generatePDF}
             className="button orange-bg"
             size="large"
-            disabled={disableActions}
+            disabled={allDisabled}
           >
             GENERATE DEGREE PLAN
           </Button>

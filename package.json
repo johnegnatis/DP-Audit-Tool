@@ -19,7 +19,7 @@
     "start:js": "react-scripts start",
     "start:eel": "python index.py --develop",
     "start:dist": "start dist/Senior-Project.exe",
-    "build": "npm-run-all kill-port build:js build:eel-one-file",
+    "build": "npm-run-all kill-port build:js build:eel",
     "build:source": "npm-run-all kill-port build:js build:eel",
     "build:js": "react-scripts build",
     "build:eel-one-file": "python -m eel index.py build --onefile --splash public/splash_image.png --name Senior-Project",

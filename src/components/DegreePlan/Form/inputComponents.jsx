@@ -1,4 +1,5 @@
-import { Input, InputNumber, DatePicker, Radio, Dropdown } from "antd";
+import { Input, InputNumber, DatePicker, Radio, Dropdown, Button } from "antd";
+import { useState } from "react";
 
 const getForm = (value, setValue, disabled = false) => {
   const handleFormInput = (e) => {
@@ -14,7 +15,7 @@ const getForm = (value, setValue, disabled = false) => {
   );
 };
 
-const getNumberForm = (value, setValue, disabled=false) => {
+const getNumberForm = (value, setValue, disabled = false) => {
   const handleFormInput = (e) => {
     const input = e.target.value;
     const regex = /^[0-9\b]+$/; // only allow digits and backspace
@@ -23,10 +24,16 @@ const getNumberForm = (value, setValue, disabled=false) => {
     }
   };
 
-  return <Input value={value} onChange={(e) => handleFormInput(e)} disabled={disabled} />;
+  return (
+    <Input
+      value={value}
+      onChange={(e) => handleFormInput(e)}
+      disabled={disabled}
+    />
+  );
 };
 
-const getDatePicker = (value, setValue, disabled=false) => {
+const getDatePicker = (value, setValue, disabled = false) => {
   const handleDateChange = (e) => {
     if (!e) setValue(null);
     else setValue(e);
@@ -42,7 +49,7 @@ const getDatePicker = (value, setValue, disabled=false) => {
   );
 };
 
-const getRadio = (value, setValue, disabled=false) => {
+const getRadio = (value, setValue, disabled = false) => {
   const handleRadioChange = (e) => {
     setValue(e.target.value);
   };
@@ -56,6 +63,7 @@ const getRadio = (value, setValue, disabled=false) => {
 };
 
 const getDropdown = (value, setValue, options) => {
+  // Zia: should we make the dropdown only on click or is on hover nice?
   const handleMenuClick = (e) => {
     setValue(options.find((obj) => obj.key === e.key).label);
   };
@@ -63,17 +71,17 @@ const getDropdown = (value, setValue, options) => {
     items: options,
     onClick: handleMenuClick,
   };
-  // TODO: make popup open everywhere
+  const width = "80%";
   return (
-    <Dropdown.Button
+    <Dropdown
       menu={menuProps}
       onClick={() => {
         console.log("hi");
       }}
-      className="d-dropdown"
+      width={width}
     >
-      {value || "Select Track"}
-    </Dropdown.Button>
+      <Button style={{ width, marginBottom: '20px' }}> {value || "Select Track"}</Button>
+    </Dropdown>
   );
 };
 

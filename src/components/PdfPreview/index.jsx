@@ -9,17 +9,28 @@ import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 export default function PdfPreview() {
   const [studentList] = useGlobalState("students");
   const [selectedId] = useGlobalState("selectedId");
+  const student = studentList.find(
+    (student) => student.student.studentId === selectedId
+  );
+  const pdfName = student.student.pdfName;
+  console.log(pdfName);
   const getStudentFile = () => {
     return {
-      url: "http://localhost:8000/Lasso,Ted_DP.pdf",
+      url: "http://localhost:8000/" + pdfName,
     };
   };
   const [path, setPath] = useState("");
   const [resetSignal, setResetSignal] = useState(false);
   useEffect(() => {
-    setTimeout(() => {
-      setPath(getStudentFile())
-    }, 1)
+    let timeout;
+    if (pdfName) {
+      timeout = setTimeout(() => {
+        setPath(getStudentFile());
+      }, 100);
+    }
+    return () => {
+      clearTimeout(timeout);
+    };
   }, [resetSignal]);
   const [zoom, setZoom] = useState(1);
   const maxZoom = 2;
@@ -32,9 +43,6 @@ export default function PdfPreview() {
     setZoom((prev) => (prev - interval < minZoom ? minZoom : prev - interval));
   };
 
-  const student = studentList.find(
-    (student) => student.student.studentId === selectedId
-  );
   pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
   return (
@@ -46,8 +54,8 @@ export default function PdfPreview() {
           <Document
             file={path}
             renderMode="canvas"
-            onLoadError={(e) => setResetSignal(prev => !prev)}
-            onSourceError={(e) => setResetSignal(prev => !prev)}
+            onLoadError={(e) => setResetSignal((prev) => !prev)}
+            onSourceError={(e) => setResetSignal((prev) => !prev)}
           >
             <Page scale={zoom} pageNumber={1} renderTextLayer={false} />
           </Document>

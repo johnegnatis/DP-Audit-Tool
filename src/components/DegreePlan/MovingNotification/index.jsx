@@ -1,20 +1,20 @@
 import React from "react";
 import { Button } from "antd";
-const SwappingNotification = ({ open, onCancel }) => {
+const MovingNotification = ({ open, onCancel }) => {
   if (open)
     return (
-      <div className="swapping-notification-root">
-        <div className="swapping-notification">
-          <span>Click Another Class To Preform a Swap</span>
+      <div className="moving-notification-root">
+        <div className="moving-notification">
+          <span>Click To Move This Class</span>
           <Button
             onClick={() => onCancel()}
             className="button grey-bg grey-border pointer"
           >
-            Close
+            Cancel
           </Button>
         </div>
       </div>
     );
   return <div></div>;
 };
-export default SwappingNotification;
+export default MovingNotification;

@@ -5,19 +5,17 @@ class StudentEncoder(JSONEncoder):
         return o.__dict__
 
 class Student:
-    def __init__(self, name, studentId, fastTrack, thesis, admitted_date, expected_graduation, classes, track='unsure'):
+    def __init__(self, name, studentId, fastTrack, thesis, admitted_date, expected_graduation, classes, track='', pdfName=''):
         self.name = name
         self.studentId = studentId
         self.options = { 'fastTrack': fastTrack, 'thesis': thesis }
         self.dates = { 'admitted': admitted_date, 'expected_graduation': expected_graduation }
         self.classes = classes # list class object below
         self.track = track
+        self.pdfName = pdfName
 
     def packStudentObject(self):
         return dumps(self, cls=StudentEncoder, indent=2)
-
-    def unpackStudentObject(self):
-        return loads(self)
 
 transferOptions = {
     'fast_track': 'fastTrack',
@@ -99,6 +97,85 @@ def mockStudent(unsure = False):
 
 def getMockStudent():
     return mockStudent().packStudentObject()
+
+def json_to_student(json_obj):
+    try:
+        name = json_obj["name"]
+    except KeyError:
+        name = ''
+    try:
+        student_id = json_obj["studentId"]
+    except KeyError:
+        student_id = ''
+    try:
+        options = json_obj["options"]
+        try:
+            fastTrack = options["fastTrack"]
+        except KeyError:
+            fastTrack = ''
+        try:
+            thesis = options["thesis"]
+        except KeyError:
+            thesis = ''
+    except KeyError:
+        options = ''
+        thesis = ''
+        fastTrack = ''
+    try:
+        dates = json_obj["dates"]
+        try:
+            admitted_date = dates["admitted"]
+        except KeyError:
+            admitted_date = ''
+        try:
+            expected_graduation = dates["expected_graduation"]
+        except KeyError:
+            expected_graduation = ''
+    except KeyError:
+        dates = ''
+        admitted_date = ''
+        expected_graduation = ''
+    try:
+        track = json_obj["track"]
+    except KeyError:
+        track = ''
+
+    classes = []
+    try:
+        for class_obj in json_obj["classes"]:
+            try:
+                class_name = class_obj["name"]
+            except KeyError:
+                class_name = ''
+            try:
+                class_number = class_obj["number"]
+            except KeyError:
+                class_number = ''
+            try:
+                class_semester = class_obj["semester"]
+            except KeyError:
+                class_semester = ''
+            try:
+                class_transfer = class_obj["transfer"]
+            except KeyError:
+                class_transfer = ''
+            try:
+                class_grade = class_obj["grade"]
+            except KeyError:
+                class_grade = ''
+            try:
+                class_attempted_credits = class_obj["attempted_credits"]
+            except KeyError:
+                class_attempted_credits = ''
+            try:
+                class_type = class_obj["type"]
+            except KeyError:
+                class_type = ''
+            classes.append(Class(class_name, class_number, class_semester, class_transfer, class_grade, class_attempted_credits, class_type))
+    except KeyError:
+        pass
+
+    return Student(name, student_id, fastTrack, thesis, admitted_date, expected_graduation, classes, track)
 
 if __name__ == '__main__':
     print(getMockStudent())

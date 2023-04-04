@@ -1,21 +1,14 @@
 import { createGlobalState } from "react-hooks-global-state";
-import { pages } from "../../utils/constants";
+import { genericStudent, pages } from "../../utils/constants";
 
 const { setGlobalState, useGlobalState } = createGlobalState({
   students: [
     {
       page: pages.degreePlan,
-      student: {
-        name: "Generic Student",
-        studentId: 111,
-        dates: {
-          expectedGraduation: "12/01/2023",
-          semesterAdmitted: "06/09/2020",
-        },
-      },
+      student: genericStudent,
     },
   ],
-  selectedId: 111,
+  selectedId: "",
 });
 
 const getSelectedStudent = () => {
@@ -27,22 +20,28 @@ const getSelectedStudent = () => {
   );
 };
 
-const changePage = (studentList, student, page) => {
+const changePage = (
+  studentList,
+  student,
+  newPage,
+  previousStudentId = null,
+  pdfName = null
+) => {
   const index =
     studentList &&
     studentList.findIndex(
       (studentObj) =>
-        studentObj.student.studentId === student.student.studentId
+        studentObj.student.studentId === student.student.studentId ||
+        (previousStudentId &&
+          studentObj.student.studentId === previousStudentId)
     );
 
   if (index < 0) return;
-  studentList[index].page = page;
+  if (newPage) student.page = newPage;
+  if (pdfName) student.student.pdfName = pdfName;
+  studentList[index] = student;
   setGlobalState("students", [...studentList]);
+  setGlobalState("selectedId", student.student.studentId);
 };
 
-export {
-  changePage,
-  useGlobalState,
-  setGlobalState,
-  getSelectedStudent,
-};
+export { changePage, useGlobalState, setGlobalState, getSelectedStudent };

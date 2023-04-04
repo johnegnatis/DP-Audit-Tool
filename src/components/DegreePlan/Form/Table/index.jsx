@@ -9,29 +9,23 @@ const ClassTable = ({
   openAddDrawer,
   notes,
   setClassForEdit,
-  swapping,
-  executeSwap,
-  disableActions,
+  setClassForMove,
+  handleMoveClick,
+  deleteClass,
+  allDisabled,
 }) => {
   const classList =
     classes &&
     classes.map((classes, index) => {
       return { ...classes, key: index };
     });
-  const handleRowClick = (record, rowIndex) => {
-    return;
-    if (swapping) {
-      executeSwap({
+    const onMoveClick = (record, rowIndex) => {
+      if (!allDisabled) return; // if all disabled, we are moving
+      handleMoveClick({
         class: record,
         index: rowIndex,
-      });
-    } else {
-      setClassForEdit({
-        class: record,
-        index: rowIndex,
-      });
+      })
     }
-  };
   return (
     <>
       <div className="title-span">
@@ -42,21 +36,21 @@ const ClassTable = ({
         <div className="add-class-button">
           <Button
             className="button orange-bg"
-            disabled={disableActions}
+            disabled={allDisabled}
             onClick={() => openAddDrawer()}
           >
-            Add Class
+            Add Course
           </Button>
         </div>
       </div>
       {notes && notes.map((note) => <span>{note}</span>)}
       <Table
         dataSource={classList}
-        columns={getColumn({ onEdit: () => {}, onDelete: () => {}, onMove: () => {}})}
+        columns={getColumn({ onEdit: setClassForEdit, onDelete: deleteClass, onMove: setClassForMove, disabled: allDisabled})}
         pagination={false}
         onRow={(record, rowIndex) => {
           return {
-            onClick: () => handleRowClick(record, rowIndex),
+            onClick: () => onMoveClick(record, rowIndex),
           };
         }}
       />

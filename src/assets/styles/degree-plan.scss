@@ -169,7 +169,7 @@ $input-height: 40px;
     }
   }
 }
-.swapping {
+.moving {
   background-color: rgba(0, 0, 0, 0.25);
   z-index: 0;
   cursor: pointer !important;
@@ -178,7 +178,7 @@ $input-height: 40px;
     border-bottom-color: $orange !important;
   }
 }
-.swapping-notification-root {
+.moving-notification-root {
   z-index: 5;
   background-color: $orange;
   width: 400px;
@@ -186,7 +186,7 @@ $input-height: 40px;
   position: absolute;
   top: 10px;
   border-radius: 10px;
-  .swapping-notification {
+  .moving-notification {
     text-align: center;
     display: flex;
     flex-direction: column;

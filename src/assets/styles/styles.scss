@@ -80,11 +80,11 @@ body {
   }
 }
 
-.d-dropdown{
-  button:first-child {
-    width: 100%;
-    text-align: left;
-  }
+.ant-modal-body {
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .icon {
@@ -117,4 +117,8 @@ body {
   &.pointer {
     cursor: pointer;
   }
+}
+
+.red-text {
+  color: red;
 }
