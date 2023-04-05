@@ -54,7 +54,7 @@ def doAuditMethod(studentObject):
     for course in studentObject.classes:
         if course.type == 'core':
             corecourses.append(course.number)
-        if course.type == 'core_electives' or 'additional_electives':
+        if course.type == 'electives' or 'additional_electives':
             electivecourses.append(course.number)
     para.add_run('\nCore Courses: ').bold = True
     para.add_run(", ".join(corecourses))

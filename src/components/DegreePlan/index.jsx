@@ -42,14 +42,14 @@ const DegreePlan = (student) => {
   const getClassSetter = (table) => {
     const tables = [
       "core",
-      "one_of_the_following",
-      "core_electives",
+      "following",
+      "electives",
       "prerequisites",
     ];
     const classSetterLookup = {
       core: setCore,
-      one_of_the_following: setFollowing,
-      core_electives: setElective,
+      following: setFollowing,
+      electives: setElective,
       prerequisites: setPrerequisites,
     };
     if (tables.includes(table)) {

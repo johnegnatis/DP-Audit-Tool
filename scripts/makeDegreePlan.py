@@ -50,7 +50,7 @@ def fillPDFForms(studentObject, path):
     j = 0
     class_data = studentObject.classes
     for i in class_data:
-        if (i.type == "one_of_the_following"):
+        if (i.type == "following"):
             followingName[j] = (i.name)
             followingNum[j] = (i.number)
             followingSem[j] = (i.semester)
@@ -69,7 +69,7 @@ def fillPDFForms(studentObject, path):
     j = 0
     class_data = studentObject.classes
     for i in class_data:
-        if (i.type == "core_electives"):
+        if (i.type == "electives"):
             electiveName[j] = (i.name)
             electiveNum[j] = (i.number)
             electiveSem[j] = (i.semester)
