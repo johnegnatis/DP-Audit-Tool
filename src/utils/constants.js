@@ -110,7 +110,7 @@ export const genericStudent = {
       transfer: "",
       grade: "",
       attempted_credits: "",
-      type: "one_of_the_following",
+      type: "following",
     },
     {
       name: "Natural Language Processing",
@@ -119,7 +119,7 @@ export const genericStudent = {
       transfer: "",
       grade: "",
       attempted_credits: "",
-      type: "one_of_the_following",
+      type: "following",
     },
     {
       name: "Video Analytics",
@@ -128,7 +128,7 @@ export const genericStudent = {
       transfer: "",
       grade: "",
       attempted_credits: "",
-      type: "one_of_the_following",
+      type: "following",
     },
     {
       name: "Statistics for Machine Learning",
@@ -137,7 +137,7 @@ export const genericStudent = {
       transfer: "",
       grade: "",
       attempted_credits: "",
-      type: "one_of_the_following",
+      type: "following",
     },
     {
       name: "Database Design",
@@ -146,7 +146,7 @@ export const genericStudent = {
       transfer: "",
       grade: "A-",
       attempted_credits: "",
-      type: "one_of_the_following",
+      type: "following",
     },
     {
       name: "Virtual Reality",
@@ -155,7 +155,7 @@ export const genericStudent = {
       transfer: "",
       grade: "B",
       attempted_credits: "",
-      type: "core_electives",
+      type: "electives",
     },
     {
       name: "Theory of Computation",
@@ -164,7 +164,7 @@ export const genericStudent = {
       transfer: "",
       grade: "A",
       attempted_credits: "",
-      type: "core_electives",
+      type: "electives",
     },
     {
       name: "Natural Language Processing",
@@ -173,7 +173,7 @@ export const genericStudent = {
       transfer: "",
       grade: "A",
       attempted_credits: "",
-      type: "core_electives",
+      type: "electives",
     },
     {
       name: "Network Security",
@@ -182,7 +182,7 @@ export const genericStudent = {
       transfer: "",
       grade: "",
       attempted_credits: "",
-      type: "core_electives",
+      type: "electives",
     },
     {
       name: "Sftwr Test/Validatn/Verificatn",
@@ -191,7 +191,7 @@ export const genericStudent = {
       transfer: "",
       grade: "",
       attempted_credits: "",
-      type: "core_electives",
+      type: "electives",
     },
     {
       name: "Software Maint Evolut & Re-Eng",
@@ -200,7 +200,7 @@ export const genericStudent = {
       transfer: "",
       grade: "",
       attempted_credits: "",
-      type: "core_electives",
+      type: "electives",
     },
     {
       name: "Computer Science I",
@@ -209,7 +209,7 @@ export const genericStudent = {
       transfer: "",
       grade: "",
       attempted_credits: "",
-      type: "additional_electives",
+      type: "electives",
     },
     {
       name: "Computer Science II",

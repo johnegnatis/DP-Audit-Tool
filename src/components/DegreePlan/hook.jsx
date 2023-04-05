@@ -33,8 +33,8 @@ export function useStudentObject(student) {
     setThesis((studentObj.options && studentObj.options.thesis) || false);
     setSearchInput("");
     setCore(filterClass("core", studentObj.classes));
-    setFollowing(filterClass("one_of_the_following", studentObj.classes));
-    setElective(filterClass("core_electives", studentObj.classes));
+    setFollowing(filterClass("following", studentObj.classes));
+    setElective(filterClass("electives", studentObj.classes));
     setPrerequisites(filterClass("prerequisites", studentObj.classes));
   }, [studentObj]);
 
