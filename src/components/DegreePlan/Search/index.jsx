@@ -11,12 +11,7 @@ const Search = ({ searchInput, setSearchInput }) => {
     { number: "CS6322", name: "INFORMATION RETRIEVAL" },
     { number: "CS6360", name: "DATABASE DESIGN" },
     { number: "CS6364", name: "ARTIFICIAL INTELLIGENCE" },
-    { number: "ECSC5177", name: "CS IPP ASSIGNMENT" },
-    { number: "CS5343", name: "ALGORITHM ANLS&DATA STRUCTURES" },
-    { number: "CS6301", name: "SPECIAL TPCS: COMPUTER SCIENCE" },
-    { number: "CS6356", name: "SOFTWARE MAINT EVOL & RE-ENGR" },
-    { number: "CS6359", name: "OBJECT-ORIENTED ANALYS & DSGN" },
-    { number: "ECSC5177", name: "CS IPP ASSIGNMENT" },
+    { number: "+", name: "New Course" },
   ];
   const onInputChange = (e) => {
     setSearchInput(e.target.value);

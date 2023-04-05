@@ -174,7 +174,7 @@ const DegreePlan = (student) => {
         onCancel={handleCancelSwap}
       />
       <Drawer
-        title="Search for classes"
+        title="Search for Courses"
         open={addClassOpen}
         onClose={() => setAddClassOpen(false)}
       >
@@ -184,9 +184,10 @@ const DegreePlan = (student) => {
         />
       </Drawer>
       <Drawer
-        title="Edit class"
+        title="Edit Course"
         open={!!selectedClassForEdit}
         onClose={() => setSelectedClassForEdit("")}
+        className="edit-student-root"
       >
         <EditClass
           classObj={selectedClassForEdit}

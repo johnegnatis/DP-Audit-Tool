@@ -152,21 +152,21 @@ $input-height: 40px;
   }
 }
 .edit-student-root {
+  .ant-drawer-body {
+    padding-top: 10px; 
+  }
+  font-weight: 400;
+  font-size: 16px;
+
   .row {
-    padding-bottom: 10px;
-    .left {
-      text-align: right;
-      span {
-        vertical-align: middle;
-        padding: 2px;
-        font-weight: 400;
-        font-size: 16px;
-        white-space: break-spaces;
-        &.asterisk {
-          color: $red;
-        }
-      }
+    input {
+      margin-top: 5px;
     }
+    margin-bottom: 10px;
+  }
+  .button-float-right {
+    display: flex;
+    justify-content: right;
   }
 }
 .moving {

@@ -67,26 +67,31 @@ export const getColumn = ({ onEdit, onMove, onDelete, disabled }) => {
       dataIndex: "name",
       key: "name",
       width: "45%",
+      align: "left",
     },
     {
       title: "Course Num",
       dataIndex: "number",
       key: "number",
+      align: "center",
     },
     {
       title: "UTD Sem",
       dataIndex: "semester",
       key: "semester",
+      align: "center",
     },
     {
       title: "Transfer",
       dataIndex: "transfer",
       key: "transfer",
+      align: "center",
     },
     {
       title: "Grade",
       dataIndex: "grade",
       key: "grade",
+      align: "center",
     },
   ];
 };
