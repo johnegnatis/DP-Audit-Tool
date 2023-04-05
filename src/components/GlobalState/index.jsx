@@ -1,5 +1,6 @@
 import { createGlobalState } from "react-hooks-global-state";
 import { genericStudent, pages } from "../../utils/constants";
+import { message } from "antd";
 
 const { setGlobalState, useGlobalState } = createGlobalState({
   students: [
@@ -8,7 +9,7 @@ const { setGlobalState, useGlobalState } = createGlobalState({
       student: genericStudent,
     },
   ],
-  selectedId: "",
+  selectedId: genericStudent.studentId,
 });
 
 const getSelectedStudent = () => {

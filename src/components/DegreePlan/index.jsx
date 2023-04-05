@@ -1,28 +1,31 @@
 import React, { useMemo, useState } from "react";
 import { useStudentObject } from "./hook";
-import Search from "./Search";
+import AddClass from "./AddClass";
 import Form from "./Form";
-import { Drawer } from "antd";
+import { Button, Drawer, message } from "antd";
 import { useGlobalState, changePage } from "../GlobalState";
 import EditClass from "./Form/EditClass";
-import MovingNotification from "./MovingNotification";
 import { eel } from "../../utils/eel";
-import { pages } from "../../utils/constants";
+import { pages, tableNames } from "../../utils/constants";
+import {
+  sendError,
+  sendSuccess,
+  sendWaiting,
+  sendWarning,
+} from "../../utils/methods";
+import NavigationBar from "../NavigationBar";
 
-const DegreePlan = (student) => {
+const DegreePlan = ({ student }) => {
   // student obj hooks
   const [students] = useGlobalState("students");
   const formProps = useStudentObject(student);
-  const {
-    setCore,
-    setFollowing,
-    setElective,
-    setPrerequisites,
-    studentObjectJSON,
-  } = formProps;
+  const { searchInput, setSearchInput, getClassSetter, studentObjectJSON } =
+    formProps;
 
   // add class hooks
-  const [addClassOpen, setAddClassOpen] = useState(false);
+  const [addClassTable, setAddClassTable] = useState("");
+  const [isSearch, setIsSearch] = useState(false);
+  const [classOptions, setClassOptions] = useState([]);
 
   // edit class hooks
   const [selectedClassForEdit, setSelectedClassForEdit] = useState(null);
@@ -32,32 +35,33 @@ const DegreePlan = (student) => {
     [selectedClassForMove]
   );
 
-  const navigatePage = (page, pdfName) => {
+  const navigatePage = (page, pdfName = null) => {
     const newStudent = {
       student: studentObjectJSON,
       page,
     };
-    changePage(students, newStudent, page, student.student.studentId, pdfName);
+    changePage(students, newStudent, page, student.studentId, pdfName);
   };
-  const getClassSetter = (table) => {
-    const tables = [
-      "core",
-      "following",
-      "electives",
-      "prerequisites",
-    ];
-    const classSetterLookup = {
-      core: setCore,
-      following: setFollowing,
-      electives: setElective,
-      prerequisites: setPrerequisites,
-    };
-    if (tables.includes(table)) {
-      return classSetterLookup[table];
-    } else {
-      console.error("Invalid table");
-      return null;
-    }
+  const saveStudentObject = () => {
+    navigatePage(pages.degreePlan);
+  };
+
+  const handleAddClassDrawerOpen = (type, options) => {
+    setAddClassTable(type);
+    setIsSearch(options && options.length > 0); // if there are options, start with searching options
+    setClassOptions(options);
+  };
+  const handleSubmitAddClass = (obj) => {
+    obj.type = addClassTable;
+    const setter = getClassSetter(addClassTable);
+    if (!setter) return;
+    setter((prev) => {
+      return [...prev, obj];
+    });
+    setAddClassTable("");
+    setClassOptions([]);
+    setIsSearch(false);
+    sendSuccess("Course Was Added Successfully!");
   };
   const handleSubmitEdits = (obj) => {
     obj.type = selectedClassForEdit.class.type;
@@ -68,10 +72,28 @@ const DegreePlan = (student) => {
       newList[selectedClassForEdit.index] = obj;
       return newList;
     });
+    sendSuccess("Course Was Edited Successfully!");
     setSelectedClassForEdit("");
   };
   // When the first class has been selected for moving
+  const moveKey = "move-message";
   const handleMovingStart = (obj) => {
+    sendWaiting(
+      <div>
+        <p>Select a location to move this course:</p>
+        {obj && obj.class && <p>{obj.class.name}</p>}
+        <Button
+          className="red-bg button"
+          onClick={() => {
+            setSelectedClassForMove("");
+            message.destroy(moveKey);
+          }}
+        >
+          Cancel
+        </Button>
+      </div>,
+      moveKey
+    );
     setSelectedClassForMove(obj);
   };
   // When the second class has been selected for moving
@@ -81,7 +103,11 @@ const DegreePlan = (student) => {
 
     const moveOneSetter = getClassSetter(moveOne.class.type);
     const moveTwoSetter = getClassSetter(moveTwo.class.type);
-    if (!moveOneSetter || !moveTwoSetter) return;
+    if (!moveOneSetter || !moveTwoSetter) {
+      sendError("Move Unsuccessful", moveKey);
+      setSelectedClassForMove("");
+      return;
+    }
 
     // give moveOne the targets type
     let moveOccurInSameTable = true;
@@ -90,7 +116,11 @@ const DegreePlan = (student) => {
       moveOccurInSameTable = false;
     }
 
-    if (moveOccurInSameTable && moveOne.index === moveTwo.index) return; // no move can occur here
+    if (moveOccurInSameTable && moveOne.index === moveTwo.index) {
+      sendWarning("You tried to move to the same location", moveKey);
+      setSelectedClassForMove("");
+      return;
+    } // no move can occur here
 
     // insert move1 right below move2
     if (!moveOccurInSameTable) {
@@ -133,9 +163,7 @@ const DegreePlan = (student) => {
       });
     }
     setSelectedClassForMove("");
-  };
-  const handleCancelSwap = () => {
-    setSelectedClassForMove("");
+    sendSuccess("Move Successful!", moveKey);
   };
   const handleDeleteClass = (obj) => {
     const setter = getClassSetter(obj.class.type);
@@ -144,9 +172,7 @@ const DegreePlan = (student) => {
       return prev.filter((_, index) => index !== obj.index);
     });
   };
-
   const generatePDF = () => {
-    console.log(studentObjectJSON)
     eel
       .makeDegreePlan(studentObjectJSON)()
       .then((pdfName) => {
@@ -154,47 +180,50 @@ const DegreePlan = (student) => {
       })
       .catch((e) => console.log(e, "error at PDF creation"));
 
-      // handle this async
+    // handle this async
   };
 
   return (
-    <div className={`degree-plan-root ${allDisabled ? "moving" : ""}`}>
-      <Form
-        allDisabled={allDisabled}
-        props={formProps}
-        setDrawerOpen={setAddClassOpen}
-        generatePDF={generatePDF}
-        setClassForEdit={setSelectedClassForEdit}
-        setClassForMove={handleMovingStart}
-        handleMoveClick={handleMoveClick}
-        deleteClass={handleDeleteClass}
-      />
-      <MovingNotification
-        open={!!selectedClassForMove}
-        onCancel={handleCancelSwap}
-      />
-      <Drawer
-        title="Search for Courses"
-        open={addClassOpen}
-        onClose={() => setAddClassOpen(false)}
-      >
-        <Search
-          searchInput={formProps.searchInput}
-          setSearchInput={formProps.setSearchInput}
+    <>
+      <NavigationBar saveStudentObject={saveStudentObject} />
+      <div className={`degree-plan-root ${allDisabled ? "moving" : ""}`}>
+        <Form
+          allDisabled={allDisabled}
+          props={formProps}
+          setAddClassDrawerOpen={handleAddClassDrawerOpen}
+          generatePDF={generatePDF}
+          setClassForEdit={setSelectedClassForEdit}
+          setClassForMove={handleMovingStart}
+          handleMoveClick={handleMoveClick}
+          deleteClass={handleDeleteClass}
         />
-      </Drawer>
-      <Drawer
-        title="Edit Course"
-        open={!!selectedClassForEdit}
-        onClose={() => setSelectedClassForEdit("")}
-        className="edit-student-root"
-      >
-        <EditClass
-          classObj={selectedClassForEdit}
-          handleSubmit={handleSubmitEdits}
-        />
-      </Drawer>
-    </div>
+        <Drawer
+          title={`Add ${tableNames[addClassTable] || "Course"}`}
+          open={!!addClassTable}
+          onClose={() => setAddClassTable("")}
+        >
+          <AddClass
+            searchInput={searchInput}
+            setSearchInput={setSearchInput}
+            isSearch={isSearch}
+            setIsSearch={setIsSearch}
+            classes={classOptions}
+            handleSubmitAddClass={handleSubmitAddClass}
+          />
+        </Drawer>
+        <Drawer
+          title="Edit Course"
+          open={!!selectedClassForEdit}
+          onClose={() => setSelectedClassForEdit("")}
+          className="class-form-root"
+        >
+          <EditClass
+            classObj={selectedClassForEdit}
+            handleSubmit={handleSubmitEdits}
+          />
+        </Drawer>
+      </div>
+    </>
   );
 };
 

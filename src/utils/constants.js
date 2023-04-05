@@ -20,6 +20,30 @@ export const pages = {
   notFound: "not-found",
 };
 
+export const defaultSearchOptions = [
+  { number: "CS6314", name: "WEB PROGRAMMING LANGUAGES" },
+  { number: "CS6363", name: "DESIGN & ANALYS-COMP ALGORITHM" },
+  { number: "CS6375", name: "MACHINE LEARNING" },
+  { number: "CS6320", name: "NATURAL LANGUAGE PROCESSING" },
+  { number: "CS6322", name: "INFORMATION RETRIEVAL" },
+  { number: "CS6360", name: "DATABASE DESIGN" },
+  { number: "CS6364", name: "ARTIFICIAL INTELLIGENCE" },
+];
+
+export const tableTypes = {
+  core: 'core',
+  following: 'following',
+  electives: 'electives',
+  prerequisites: 'prerequisites',
+}
+export const tableList = [ tableTypes.core, tableTypes.following, tableTypes.electives, tableTypes.prerequisites]
+export const tableNames = {
+  core: 'Core Courses',
+  following: 'One of the Following Courses',
+  electives: 'Approved 6000 Level Courses',
+  prerequisites: 'Prerequisites',
+}
+
 export const tracks = [
   {
     label: "Data Science",
@@ -257,5 +281,5 @@ export const genericStudent = {
       type: "prerequisites",
     },
   ],
-  track: "",
+  track: "Data Science",
 };

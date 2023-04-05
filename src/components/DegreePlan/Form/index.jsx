@@ -6,7 +6,12 @@ import {
 } from "./inputComponents";
 import { formatGrid, formatHalfGrid, getSpan } from "./gridLayout";
 import { Button } from "antd";
-import { pages, tracks } from "../../../utils/constants";
+import {
+  defaultSearchOptions,
+  pages,
+  tableTypes,
+  tracks,
+} from "../../../utils/constants";
 import ClassTable from "./Table";
 import { eel } from "../../../utils/eel";
 import SelectTrack from "../TrackForm";
@@ -15,7 +20,7 @@ import { useState } from "react";
 const Form = ({
   allDisabled,
   props,
-  setDrawerOpen: setAddDrawerOpen,
+  setAddClassDrawerOpen,
   generatePDF,
   setClassForEdit,
   setClassForMove,
@@ -76,10 +81,7 @@ const Form = ({
   const handleConfirmTrack = () => {
     setTrackFormOpen(false);
   };
-  const openAddDrawer = (options) => {
-    //TODO: put options based off options
-    setAddDrawerOpen(true);
-  };
+
   return (
     <div className="degree-plan">
       <SelectTrack
@@ -98,44 +100,59 @@ const Form = ({
       </div>
       <div>
         <ClassTable
+          type={tableTypes.core}
           title="Core Courses"
           subtitle="15 credit Hours / 3.19 grade point required (HARDCODED)"
           allDisabled={allDisabled}
           classes={core}
-          openAddDrawer={() => openAddDrawer([])}
+          openAddClassDrawer={() =>
+            setAddClassDrawerOpen(tableTypes.core, defaultSearchOptions)
+          }
           setClassForEdit={setClassForEdit}
           setClassForMove={setClassForMove}
           handleMoveClick={handleMoveClick}
           deleteClass={deleteClass}
         />
         <ClassTable
+          type={tableTypes.following}
           title="One of the Following Courses"
           subtitle=""
           allDisabled={allDisabled}
           classes={following}
-          openAddDrawer={() => openAddDrawer([])}
+          openAddClassDrawer={() =>
+            setAddClassDrawerOpen(tableTypes.following, defaultSearchOptions)
+          }
           setClassForEdit={setClassForEdit}
           setClassForMove={setClassForMove}
           handleMoveClick={handleMoveClick}
           deleteClass={deleteClass}
         />
         <ClassTable
+          type={tableTypes.electives}
           title="Approved 6000 Level Courses"
           subtitle=""
           allDisabled={allDisabled}
           classes={elective}
-          openAddDrawer={() => openAddDrawer([])}
+          openAddClassDrawer={() =>
+            setAddClassDrawerOpen(tableTypes.electives, [])
+          }
           setClassForEdit={setClassForEdit}
           setClassForMove={setClassForMove}
           handleMoveClick={handleMoveClick}
           deleteClass={deleteClass}
         />
         <ClassTable
+          type={tableTypes.prerequisites}
           title="Prerequisites"
           subtitle=""
           allDisabled={allDisabled}
           classes={prerequisites}
-          openAddDrawer={() => openAddDrawer([])}
+          openAddClassDrawer={() =>
+            setAddClassDrawerOpen(
+              tableTypes.prerequisites,
+              defaultSearchOptions
+            )
+          }
           setClassForEdit={setClassForEdit}
           setClassForMove={setClassForMove}
           handleMoveClick={handleMoveClick}

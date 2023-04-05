@@ -136,7 +136,6 @@ $input-height: 40px;
     height: calc(100% - $input-height - 4px);
     display: flex;
     flex-direction: column;
-    overflow-y: scroll;
 
     .row {
       display: flex;
@@ -144,6 +143,7 @@ $input-height: 40px;
       justify-content: space-between;
       border-bottom: $sm-light-grey-border-bottom;
       padding: 5%;
+      cursor: pointer;
 
       p:first-child {
         padding-left: 3px;
@@ -151,7 +151,7 @@ $input-height: 40px;
     }
   }
 }
-.edit-student-root {
+.class-form-root {
   .ant-drawer-body {
     padding-top: 10px; 
   }

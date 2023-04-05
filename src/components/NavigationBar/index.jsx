@@ -3,7 +3,7 @@ import { pages } from "../../utils/constants";
 import { useGlobalState, setGlobalState } from "../GlobalState";
 import ConfirmPageSwitch from "./confirmPageSwitch";
 
-const NavigationBar = () => {
+const NavigationBar = ({ saveStudentObject }) => {
   const [students] = useGlobalState("students");
   const [selectedId] = useGlobalState("selectedId");
   const [open, setOpen] = useState(false);
@@ -25,23 +25,25 @@ const NavigationBar = () => {
       return;
     }
 
-    setOpen(true);
-    setSelected(id);
+    saveStudentObject();
+    setGlobalState("selectedId", id);
+    // setOpen(true);
+    // setSelected(id);
   };
 
-  const handleConfirmBoxResponse = (response) => {
-    if (response === "ok") setGlobalState("selectedId", selected);
-  };
+  // const handleConfirmBoxResponse = (response) => {
+  //   if (response === "ok") setGlobalState("selectedId", selected);
+  // };
 
   return (
     <>
-      <ConfirmPageSwitch
+      {/* <ConfirmPageSwitch
         open={open}
         setOpen={setOpen}
         okText="Yes"
         okType="danger"
         handleConfirmBoxResponse={handleConfirmBoxResponse}
-      />
+      /> */}
       <header className="navigation-bar">
         <div
           className={`plus-icon ${!!selectedId && "selected-id"}`}

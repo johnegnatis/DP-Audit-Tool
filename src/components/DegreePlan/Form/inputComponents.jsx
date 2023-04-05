@@ -20,7 +20,6 @@ const getNumberForm = (value, setValue, disabled = false, semester = false) => {
     const input = e.target.value;
     let regex = /^[0-9\b]+$/; // only allow digits and backspace
     if (semester) regex = /^[0-9\bFSfs]+$/;
-    console.log(regex.test(input) || input === "");
     if (regex.test(input) || input === "") {
       setValue(input);
     }
@@ -77,9 +76,6 @@ const getDropdown = (value, setValue, options) => {
   return (
     <Dropdown
       menu={menuProps}
-      onClick={() => {
-        console.log("hi");
-      }}
       width={width}
     >
       <Button style={{ width, marginBottom: "20px" }}>

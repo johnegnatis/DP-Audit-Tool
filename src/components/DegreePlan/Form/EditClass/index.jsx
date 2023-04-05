@@ -29,7 +29,7 @@ const EditClass = ({ handleSubmit, classObj }) => {
   };
 
   return (
-    <div className="edit-student-root">
+    <div className="class-form-root">
       <div className="row">
         {getSpan("Course Title", false, false)}
         {getForm(name, setName)}

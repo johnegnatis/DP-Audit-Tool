@@ -14,7 +14,6 @@ export const getColumn = ({ onEdit, onMove, onDelete, disabled }) => {
     return (
       <Menu
         onClick={(item) => {
-          console.log(item);
           const { name, number, semester, transfer, grade, type } = record;
           const obj = { name, number, semester, transfer, grade, type };
           const keyFunction = keyToFunctionMapping[item.key];
