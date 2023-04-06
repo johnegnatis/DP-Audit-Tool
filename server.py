@@ -23,13 +23,7 @@ def host_server(port):
         server_name = get_server_name()
         if not os.path.exists(server_name):
             os.makedirs(server_name)
-            os.chdir(server_name)
-            try:
-                shutil.copyfile('../public/degreePlans/Lasso,Ted_DP.pdf', 'Lasso,Ted_DP_copy.pdf')
-            except:
-                shutil.copyfile('../build/degreePlans/Lasso,Ted_DP.pdf', 'Lasso,Ted_DP_copy.pdf')
-        else:
-            os.chdir(server_name)
+        os.chdir(server_name)
         print("\nserving from build/ at localhost:" + str(port))
         httpd.serve_forever()
     except KeyboardInterrupt:
