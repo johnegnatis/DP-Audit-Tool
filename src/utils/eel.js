@@ -10,9 +10,9 @@ async function getFilePaths(filePath) {
   return await eel.getFilePaths(filePath)();
 }
 
-eel.expose(getPDF);
-async function getPDF() {
-  return await eel.getPDF()();
+eel.expose(savePDF);
+async function savePDF(fileName) {
+  return await eel.savePDF(fileName)();
 }
 
 eel.expose(makeDegreePlan);

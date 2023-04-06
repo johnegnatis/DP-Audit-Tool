@@ -33,8 +33,8 @@ def getFilePaths():
     return scripts.getFilePathsMethod()
 
 @eel.expose
-def getPDF():
-    return scripts.getPDFMethod()
+def savePDF(fileName):
+    return scripts.savePDFMethod(fileName)
 
 if NO_CONSOLE and getattr(sys, 'frozen', False):
     import pyi_splash
