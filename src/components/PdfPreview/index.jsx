@@ -6,6 +6,8 @@ import { iconNames, pages } from "../../utils/constants";
 import { changePage, useGlobalState } from "../GlobalState";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 import NavigationBar from "../NavigationBar";
+import { eel } from "../../utils/eel";
+import { sendError, sendSuccess } from "../../utils/methods";
 
 export default function PdfPreview() {
   const [studentList] = useGlobalState("students");
@@ -18,6 +20,17 @@ export default function PdfPreview() {
     return {
       url: "http://localhost:8000/" + pdfName,
     };
+  };
+  const onSavePDF = () => {
+    eel
+      .savePDF(pdfName)()
+      .then((result) => {
+        sendSuccess(`PDF saved to ${result} as ${pdfName}`);
+      })
+      .catch((e) => {
+      sendError("PDF could not be saved.");
+      console.error(e);
+    });
   };
   const [path, setPath] = useState("");
   const [resetSignal, setResetSignal] = useState(false);
@@ -79,18 +92,18 @@ export default function PdfPreview() {
             <Icon
               icon={iconNames.zoomOut}
               onClick={() => zoomOut()}
-              className="icon xs grey"
+              className="icon xs pointer grey"
             />
             <span className="percent">{Math.round(zoom * 100) + "%"}</span>
             <Icon
               icon={iconNames.zoomIn}
               onClick={() => zoomIn()}
-              className="icon xs grey"
+              className="icon xs pointer grey"
             />
           </div>
           <div className="save-continue">
             <Button
-              onClick={() => {}}
+              onClick={() => onSavePDF()}
               className="button grey-border white-bg"
               size="large"
             >

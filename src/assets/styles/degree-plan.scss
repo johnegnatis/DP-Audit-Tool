@@ -78,6 +78,14 @@ $input-height: 40px;
       }
     }
 
+    .ant-table-wrapper {
+      @for $i from 0 through 100 {
+        &.row-#{$i} tr[data-row-key="#{$i}"] td {
+          background-color: $grey;
+        }
+      }
+    }
+
     table {
       border-bottom: $lg-light-grey-border-bottom;
 
@@ -153,7 +161,7 @@ $input-height: 40px;
 }
 .class-form-root {
   .ant-drawer-body {
-    padding-top: 10px; 
+    padding-top: 10px;
   }
   font-weight: 400;
   font-size: 16px;
@@ -175,7 +183,12 @@ $input-height: 40px;
   cursor: pointer !important;
 
   .ant-table-cell-row-hover {
-    border-bottom-color: $orange !important;
+    border-bottom: 3px solid $orange !important;
+  }
+  .header-hovered {
+    tr[data-row-key="0"] td {
+      border-top: 3px solid $orange !important;
+    }
   }
 }
 .moving-notification-root {

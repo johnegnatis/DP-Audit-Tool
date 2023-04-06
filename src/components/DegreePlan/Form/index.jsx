@@ -26,6 +26,8 @@ const Form = ({
   setClassForMove,
   handleMoveClick,
   deleteClass,
+  selectedRow,
+  handleMoveToTopClick,
 }) => {
   const {
     track,
@@ -102,7 +104,6 @@ const Form = ({
         <ClassTable
           type={tableTypes.core}
           title="Core Courses"
-          subtitle="15 credit Hours / 3.19 grade point required (HARDCODED)"
           allDisabled={allDisabled}
           classes={core}
           openAddClassDrawer={() =>
@@ -111,7 +112,9 @@ const Form = ({
           setClassForEdit={setClassForEdit}
           setClassForMove={setClassForMove}
           handleMoveClick={handleMoveClick}
+          handleMoveToTopClick={handleMoveToTopClick}
           deleteClass={deleteClass}
+          selectedRow={selectedRow}
         />
         <ClassTable
           type={tableTypes.following}
@@ -125,7 +128,9 @@ const Form = ({
           setClassForEdit={setClassForEdit}
           setClassForMove={setClassForMove}
           handleMoveClick={handleMoveClick}
+          handleMoveToTopClick={handleMoveToTopClick}
           deleteClass={deleteClass}
+          selectedRow={selectedRow}
         />
         <ClassTable
           type={tableTypes.electives}
@@ -139,6 +144,8 @@ const Form = ({
           setClassForEdit={setClassForEdit}
           setClassForMove={setClassForMove}
           handleMoveClick={handleMoveClick}
+          handleMoveToTopClick={handleMoveToTopClick}
+          selectedRow={selectedRow}
           deleteClass={deleteClass}
         />
         <ClassTable
@@ -156,7 +163,9 @@ const Form = ({
           setClassForEdit={setClassForEdit}
           setClassForMove={setClassForMove}
           handleMoveClick={handleMoveClick}
+          handleMoveToTopClick={handleMoveToTopClick}
           deleteClass={deleteClass}
+          selectedRow={selectedRow}
         />
         {/* <div className="signature">
           <span>Academic Advisor Signature : </span>

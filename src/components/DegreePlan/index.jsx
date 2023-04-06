@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useStudentObject } from "./hook";
 import AddClass from "./AddClass";
 import Form from "./Form";
@@ -34,6 +34,12 @@ const DegreePlan = ({ student }) => {
     () => !!selectedClassForMove,
     [selectedClassForMove]
   );
+  const selectedRow = useMemo(() => {
+    const row = selectedClassForEdit || selectedClassForMove;
+    if (!row) return null;
+
+    return { index: row.index, table: row.class.type };
+  });
 
   const navigatePage = (page, pdfName = null) => {
     const newStudent = {
@@ -165,6 +171,41 @@ const DegreePlan = ({ student }) => {
     setSelectedClassForMove("");
     sendSuccess("Move Successful!", moveKey);
   };
+  // If you click on header, move to top of row
+  const handleMoveToTopClick = (type) => {
+    const moveOne = selectedClassForMove;
+    const moveTwoType = type;
+
+    const moveOneSetter = getClassSetter(moveOne.class.type);
+    const moveTwoSetter = getClassSetter(moveTwoType);
+    if (!moveOneSetter || !moveTwoSetter) {
+      sendError("Move Unsuccessful", moveKey);
+      setSelectedClassForMove("");
+      return;
+    }
+
+    // give moveOne the targets type
+    let moveOccurInSameTable = true;
+    if (moveOne.class.type !== moveTwoType) {
+      moveOne.class.type = type;
+      moveOccurInSameTable = false;
+    }
+
+    if (moveOccurInSameTable && moveOne.index === 0) {
+      sendWarning("You tried to move to the same location", moveKey);
+      setSelectedClassForMove("");
+      return;
+    } // no move can occur here
+
+    moveOneSetter((prev) => {
+      return [...prev].filter((_, index) => index !== moveOne.index);
+    });
+    moveTwoSetter((prev) => {
+      return [moveOne.class, ...prev];
+    });
+    setSelectedClassForMove("");
+    sendSuccess("Move Successful!", moveKey);
+  };
   const handleDeleteClass = (obj) => {
     const setter = getClassSetter(obj.class.type);
     if (!setter) return;
@@ -195,7 +236,9 @@ const DegreePlan = ({ student }) => {
           setClassForEdit={setSelectedClassForEdit}
           setClassForMove={handleMovingStart}
           handleMoveClick={handleMoveClick}
+          handleMoveToTopClick={handleMoveToTopClick}
           deleteClass={handleDeleteClass}
+          selectedRow={selectedRow}
         />
         <Drawer
           title={`Add ${tableNames[addClassTable] || "Course"}`}

@@ -25,7 +25,7 @@ const AddClass = ({
     setTransfer,
     grade,
     setGrade,
-  } = useEditClass(null);
+  } = useEditClass(null, isSearch);
   const addClass = {
     number: "+",
     name: "New Course",

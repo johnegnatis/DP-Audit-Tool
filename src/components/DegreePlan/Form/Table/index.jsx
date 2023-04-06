@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo, useState } from "react";
 import { getColumn } from "./columns";
 import { Table, Button } from "antd";
 import { tableTypes } from "../../../../utils/constants";
@@ -13,20 +13,36 @@ const ClassTable = ({
   setClassForEdit,
   setClassForMove,
   handleMoveClick,
+  handleMoveToTopClick,
   deleteClass,
   allDisabled,
+  selectedRow: rowSelectedForEditOrMove,
 }) => {
+  const [headerHover, setHeaderHover] = useState(false);
   const classList =
     classes &&
     classes.map((classes, index) => {
       return { ...classes, key: index };
     });
+  const TableCSS = useMemo(
+    () =>
+      `${
+        rowSelectedForEditOrMove && rowSelectedForEditOrMove.table === type
+          ? `row-${rowSelectedForEditOrMove.index}`
+          : ""
+      } ${headerHover ? "header-hovered" : ""}`,
+    [rowSelectedForEditOrMove, headerHover]
+  );
   const onMoveClick = (record, rowIndex) => {
     if (!allDisabled) return; // if all disabled, we are moving
     handleMoveClick({
       class: record,
       index: rowIndex,
     });
+  };
+  const onMoveTopClick = (type) => {
+    if (!allDisabled) return;
+    handleMoveToTopClick(type);
   };
   const rowSelection = {
     onChange: (selectedRowKeys, selectedRows) => {
@@ -62,12 +78,15 @@ const ClassTable = ({
       </div>
       {notes && notes.map((note) => <span>{note}</span>)}
       <Table
-        rowSelection={type === tableTypes.prerequisites && {
-          type: "checkbox",
-          columnTitle: "given",
-          fixed: false,
-          ...rowSelection,
-        }}
+        rowSelection={
+          type === tableTypes.prerequisites && {
+            type: "checkbox",
+            columnTitle: "given",
+            fixed: false,
+            ...rowSelection,
+          }
+        }
+        className={TableCSS}
         dataSource={classList}
         columns={getColumn({
           onEdit: setClassForEdit,
@@ -79,6 +98,13 @@ const ClassTable = ({
         onRow={(record, rowIndex) => {
           return {
             onClick: () => onMoveClick(record, rowIndex),
+          };
+        }}
+        onHeaderRow={(column, index) => {
+          return {
+            onClick: () => onMoveTopClick(type),
+            onMouseEnter: () => setHeaderHover(true),
+            onMouseLeave: () => setHeaderHover(false),
           };
         }}
       />

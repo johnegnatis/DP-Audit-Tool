@@ -7,7 +7,7 @@ export function useStudentObject(student) {
     return array.filter((obj) => obj.type === filter);
   };
 
-  const [track, setTrack] = useState(student.track || '');
+  const [track, setTrack] = useState(student.track || "");
   const [name, setName] = useState(null);
   const [studentId, setStudentId] = useState(null);
   const [admittedDate, setAdmittedDate] = useState(null);
@@ -27,7 +27,8 @@ export function useStudentObject(student) {
     electives: setElective,
     prerequisites: setPrerequisites,
   };
-  const getClassSetter = (table) => { // returns the appropriate class
+  const getClassSetter = (table) => {
+    // returns the appropriate class
     if (tableList.includes(table)) {
       return classSetterLookup[table];
     } else {
@@ -70,7 +71,20 @@ export function useStudentObject(student) {
       pdfName,
       classes: classList,
     };
-  }, [name, studentId, fastTrack, thesis, admittedDate, graduationDate, track, pdfName, core, following, elective, prerequisites]);
+  }, [
+    name,
+    studentId,
+    fastTrack,
+    thesis,
+    admittedDate,
+    graduationDate,
+    track,
+    pdfName,
+    core,
+    following,
+    elective,
+    prerequisites,
+  ]);
 
   return {
     track,
@@ -104,7 +118,7 @@ export function useStudentObject(student) {
   };
 }
 
-export function useEditClass(classObj) {
+export function useEditClass(classObj, deleteSignal) {
   const [name, setName] = useState("");
   const [number, setNumber] = useState("");
   const [semester, setSemester] = useState("");
@@ -118,6 +132,16 @@ export function useEditClass(classObj) {
     setTransfer((classObj && classObj.class && classObj.class.transfer) || "");
     setGrade((classObj && classObj.class && classObj.class.grade) || "");
   }, [classObj]);
+
+  useEffect(() => {
+    if (deleteSignal) {
+      setName("");
+      setNumber("");
+      setSemester("");
+      setTransfer("");
+      setGrade("");
+    }
+  }, [deleteSignal]);
 
   return {
     name,

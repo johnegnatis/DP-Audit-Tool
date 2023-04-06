@@ -6,6 +6,7 @@ import PdfPreview from "../PdfPreview";
 import { pages } from "../../utils/constants";
 import { eel } from "../../utils/eel";
 import NavigationBar from "../NavigationBar";
+import { message } from "antd";
 
 const Router = () => {
   const selectedStudent = getSelectedStudent() || null;
@@ -19,14 +20,18 @@ const Router = () => {
       case pages.homePage:
         return <HomePage />;
       case pages.degreePlan:
-        return <DegreePlan key={studentId} student={selectedStudent.student}/>;
+        return <DegreePlan key={studentId} student={selectedStudent.student} />;
       case pages.pdfPreview:
-        return <PdfPreview key={studentId} student={selectedStudent.student}/>;
+        return <PdfPreview key={studentId} student={selectedStudent.student} />;
       case pages.notFound:
       default:
         return <div>Page Not Found</div>;
     }
   }, [currentPage, studentId, selectedStudent]);
+
+  useEffect(() => {
+    message.destroy();
+  }, [component]);
 
   return component;
 };
