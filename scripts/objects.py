@@ -34,7 +34,7 @@ typeOptions = {
     }
 
 class Class:
-    def __init__(self, name, number, semester, transfer, grade, attempted_credits, type = 'unsure'):
+    def __init__(self, name, number, semester, transfer, grade, attempted_credits, type = 'unsure', leveling=False):
         self.name = name
         self.number = number
         self.semester = semester
@@ -42,6 +42,7 @@ class Class:
         self.grade = grade
         self.attempted_credits = attempted_credits
         self.type = typeOptions[type]
+        self.leveling = leveling
 
 def mockStudent(unsure = False):
     if (unsure == True):
@@ -98,83 +99,47 @@ def mockStudent(unsure = False):
 def getMockStudent():
     return mockStudent().packStudentObject()
 
+def get_key(json_obj, key):
+    try:
+        return json_obj[key]
+    except:
+        print(f"Key '{key}' not found in JSON object")
+        return ''
+
 def json_to_student(json_obj):
-    try:
-        name = json_obj["name"]
-    except KeyError:
-        name = ''
-    try:
-        student_id = json_obj["studentId"]
-    except KeyError:
-        student_id = ''
-    try:
-        options = json_obj["options"]
-        try:
-            fastTrack = options["fastTrack"]
-        except KeyError:
-            fastTrack = ''
-        try:
-            thesis = options["thesis"]
-        except KeyError:
-            thesis = ''
-    except KeyError:
-        options = ''
-        thesis = ''
+    name = get_key(json_obj, 'name')
+    student_id = get_key(json_obj, 'studentId')
+    options = get_key(json_obj, "options")
+    if (options):
+        fastTrack = get_key(options, "fastTrack");
+        thesis = get_key(options, "thesis");
+    else:
         fastTrack = ''
-    try:
-        dates = json_obj["dates"]
-        try:
-            admitted_date = dates["admitted"]
-        except KeyError:
-            admitted_date = ''
-        try:
-            expected_graduation = dates["expected_graduation"]
-        except KeyError:
-            expected_graduation = ''
-    except KeyError:
-        dates = ''
+        thesis = ''
+    dates = get_key(json_obj, "dates")
+    if (dates):
+        admitted_date = get_key(dates, "admitted");
+        expected_graduation = get_key(dates, "expected_graduation");
+    else:
         admitted_date = ''
         expected_graduation = ''
-    try:
-        track = json_obj["track"]
-    except KeyError:
-        track = ''
-
+    track = get_key(json_obj, 'track')
     classes = []
+    class_list = json_obj['classes']
     try:
-        for class_obj in json_obj["classes"]:
-            try:
-                class_name = class_obj["name"]
-            except KeyError:
-                class_name = ''
-            try:
-                class_number = class_obj["number"]
-            except KeyError:
-                class_number = ''
-            try:
-                class_semester = class_obj["semester"]
-            except KeyError:
-                class_semester = ''
-            try:
-                class_transfer = class_obj["transfer"]
-            except KeyError:
-                class_transfer = ''
-            try:
-                class_grade = class_obj["grade"]
-            except KeyError:
-                class_grade = ''
-            try:
-                class_attempted_credits = class_obj["attempted_credits"]
-            except KeyError:
-                class_attempted_credits = ''
-            try:
-                class_type = class_obj["type"]
-            except KeyError:
-                class_type = ''
-            classes.append(Class(class_name, class_number, class_semester, class_transfer, class_grade, class_attempted_credits, class_type))
+        for class_obj in class_list:
+            class_name = get_key(class_obj, 'name')
+            class_number = get_key(class_obj, 'number')
+            class_semester = get_key(class_obj, 'semester')
+            class_transfer = get_key(class_obj, 'transfer')
+            class_grade = get_key(class_obj, 'grade')
+            class_attempted_credits = get_key(class_obj, 'attempted_credits')
+            class_type = get_key(class_obj, 'type')
+            leveling = get_key(class_obj, 'leveling')
+            classes.append(Class(class_name, class_number, class_semester, class_transfer, class_grade, class_attempted_credits, class_type, leveling))
     except KeyError:
+        print("classes not found")
         pass
-
     return Student(name, student_id, fastTrack, thesis, admitted_date, expected_graduation, classes, track)
 
 if __name__ == '__main__':

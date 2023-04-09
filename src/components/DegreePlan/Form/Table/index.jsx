@@ -17,6 +17,7 @@ const ClassTable = ({
   deleteClass,
   allDisabled,
   selectedRow: rowSelectedForEditOrMove,
+  onLevelingChange,
 }) => {
   const [headerHover, setHeaderHover] = useState(false);
   const classList =
@@ -44,21 +45,6 @@ const ClassTable = ({
     if (!allDisabled) return;
     handleMoveToTopClick(type);
   };
-  const rowSelection = {
-    onChange: (selectedRowKeys, selectedRows) => {
-      console.log(
-        `selectedRowKeys: ${selectedRowKeys}`,
-        "selectedRows: ",
-        selectedRows
-      );
-      // TODO: make a callback to make the prereqs save the given state here that goes back the the main
-    },
-    getCheckboxProps: (record) => ({
-      disabled: record.name === "Disabled User",
-      // Column configuration not to be checked
-      name: record.name,
-    }),
-  };
   return (
     <>
       <div className="title-span">
@@ -78,14 +64,6 @@ const ClassTable = ({
       </div>
       {notes && notes.map((note) => <span>{note}</span>)}
       <Table
-        rowSelection={
-          type === tableTypes.prerequisites && {
-            type: "checkbox",
-            columnTitle: "given",
-            fixed: false,
-            ...rowSelection,
-          }
-        }
         className={TableCSS}
         dataSource={classList}
         columns={getColumn({
@@ -93,6 +71,7 @@ const ClassTable = ({
           onDelete: deleteClass,
           onMove: setClassForMove,
           disabled: allDisabled,
+          onLevelingChange,
         })}
         pagination={false}
         onRow={(record, rowIndex) => {
