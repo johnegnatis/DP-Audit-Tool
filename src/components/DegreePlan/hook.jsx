@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { tableList, tableTypes } from "../../utils/constants";
 
 export function useStudentObject(student) {
@@ -53,6 +53,13 @@ export function useStudentObject(student) {
     setElective(filterClass(tableTypes.electives, student.classes));
     setPrerequisites(filterClass(tableTypes.prerequisites, student.classes));
   }, [student]);
+
+  const setClasses = useCallback((newClasses) => {
+    setCore(filterClass(tableTypes.core, newClasses));
+    setFollowing(filterClass(tableTypes.following, newClasses));
+    setElective(filterClass(tableTypes.electives, newClasses));
+    setPrerequisites(filterClass(tableTypes.prerequisites, newClasses));
+  }, []);
 
   const studentObjectJSON = useMemo(() => {
     const classList = [...core, ...following, ...elective, ...prerequisites];
@@ -115,6 +122,7 @@ export function useStudentObject(student) {
     pdfName,
     setPdfName,
     getClassSetter,
+    setClasses,
   };
 }
 

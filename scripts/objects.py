@@ -38,7 +38,7 @@ class Class:
         self.name = name
         self.number = number
         self.semester = semester
-        self.transfer = transferOptions[transfer]
+        self.transfer = transfer
         self.grade = grade
         self.attempted_credits = attempted_credits
         self.type = typeOptions[type]
@@ -125,9 +125,9 @@ def json_to_student(json_obj):
         expected_graduation = ''
     track = get_key(json_obj, 'track')
     classes = []
-    class_list = json_obj['classes']
-    try:
-        for class_obj in class_list:
+    classList = get_key(json_obj, 'classes')
+    if (classList):
+        for class_obj in classList:
             class_name = get_key(class_obj, 'name')
             class_number = get_key(class_obj, 'number')
             class_semester = get_key(class_obj, 'semester')
@@ -137,9 +137,9 @@ def json_to_student(json_obj):
             class_type = get_key(class_obj, 'type')
             leveling = get_key(class_obj, 'leveling')
             classes.append(Class(class_name, class_number, class_semester, class_transfer, class_grade, class_attempted_credits, class_type, leveling))
-    except KeyError:
-        print("classes not found")
-        pass
+    else:
+        print('Classes not found')
+
     return Student(name, student_id, fastTrack, thesis, admitted_date, expected_graduation, classes, track)
 
 if __name__ == '__main__':

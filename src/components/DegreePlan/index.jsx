@@ -3,7 +3,7 @@ import { useStudentObject } from "./hook";
 import AddClass from "./AddClass";
 import Form from "./Form";
 import { Button, Drawer, message } from "antd";
-import { useGlobalState, changePage } from "../GlobalState";
+import { useGlobalState, changePage, setGlobalState } from "../GlobalState";
 import EditClass from "./Form/EditClass";
 import { eel } from "../../utils/eel";
 import { pages, tableNames } from "../../utils/constants";
@@ -25,44 +25,17 @@ const DegreePlan = ({ student }) => {
     getClassSetter,
     studentObjectJSON,
     track,
+    setClasses,
   } = formProps;
 
-  // add class hooks
-  const [addClassTable, setAddClassTable] = useState("");
-  const [isSearch, setIsSearch] = useState(false);
-  const [classOptions, setClassOptions] = useState([]);
-
-  // edit class hooks
-  const [selectedClassForEdit, setSelectedClassForEdit] = useState(null);
-  const [selectedClassForMove, setSelectedClassForMove] = useState(null);
-  const allDisabled = useMemo(
-    () => !!selectedClassForMove,
-    [selectedClassForMove]
-  );
-  const selectedRow = useMemo(() => {
-    const row = selectedClassForEdit || selectedClassForMove;
-    if (!row) return null;
-
-    return { index: row.index, table: row.class.type };
-  });
-
-  const generatePDF = () => {
-    eel
-      .makeDegreePlan(studentObjectJSON)()
-      .then((pdfName) => {
-        navigatePage(pages.pdfPreview, pdfName);
-      })
-      .catch((e) => console.log(e, "error at PDF creation"));
-
-    // handle this async
-  };
   const handleSelectTrack = () => {
     const newStudent = student;
     newStudent.track = track;
     eel
       .designateClasses(newStudent)()
       .then((result) => {
-        console.log(result);
+        const newStudent = JSON.parse(result);
+        setClasses(newStudent.classes);
       })
       .catch((e) => console.log(e, "error at track selection"));
   };
@@ -140,7 +113,7 @@ const DegreePlan = ({ student }) => {
       icon: null,
     });
     sendWaiting(
-      <div style={{minWidth: '25%', minHeight: '10%'}}>
+      <div style={{ minWidth: "25%", minHeight: "10%" }}>
         <p>Move the following course to the desired location:</p>
         {obj && obj.class && (
           <p style={{ fontWeight: "700" }}>{obj.class.name}</p>

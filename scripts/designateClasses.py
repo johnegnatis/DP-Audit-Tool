@@ -42,6 +42,7 @@ def open_database():
     return json.load(f)
 
 def find_add_classes(newClasses, classList, typeList, typeKey):
+    found = False
     for j in range(0, len(typeList)):
         for i in range(0, len(classList)):
             found = False

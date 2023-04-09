@@ -2,13 +2,14 @@ import { createGlobalState } from "react-hooks-global-state";
 import { genericStudent, pages } from "../../utils/constants";
 
 const { setGlobalState, useGlobalState } = createGlobalState({
-  students: [
-    {
-      page: pages.degreePlan,
-      student: genericStudent,
-    },
-  ],
-  selectedId: '',
+  // students: [
+  //   {
+  //     page: pages.degreePlan,
+  //     student: genericStudent,
+  //   },
+  // ],
+  students: [],
+  selectedId: "",
 });
 
 const getSelectedStudent = (students, selectedId) => {
