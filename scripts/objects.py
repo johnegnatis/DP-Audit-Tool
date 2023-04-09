@@ -47,7 +47,7 @@ class Class:
 def mockStudent(unsure = False):
     if (unsure == True):
         classes = [
-            Class('Statistical Methods for Data Sciences', 'CS 6313', '22S', '', 'A', '', 'unsure'),
+            Class('Statistical Methods for Data Science', 'CS 6313', '22S', '', 'A', '', 'unsure'),
             Class('Big Data Management and Analytics', 'CS 6350', '22s', '', 'B+', '', 'unsure'),
             Class('Design and Analysis of Computer Algorithms', 'CS 6363','22s', '', 'A-', '', 'unsure'),
             Class('Machine Learning', 'CS 6375',  '21f', '', 'A', '', 'unsure'),
@@ -67,12 +67,12 @@ def mockStudent(unsure = False):
             Class('Discrete Structures', 'CS 5333',   '', '', '', '', 'unsure'),
             Class('Algorithm Analysis & Data Structures', 'CS 5343',  '', '', '', '', 'unsure'),
             Class('Operating System Concepts', 'CS 5348', '', '', '', '', 'unsure'),
-            Class('Probability & Statistics in CS<<', 'CS 3341<<','', '', '*** A- ***', '', 'unsure'),
+            Class('Probability & Statistics in CS and SE', 'CS 3341<<','', '', '****A-', '', 'unsure'),
         ]
-        return Student('Lasso, Ted', 2021504218, False, False, '21F', '', classes, '')
+        return Student('Lasso, Ted', 2021504218, False, False, '21F', '', classes, 'Data Science')
     else:
         classes = [
-            Class('Statistical Methods for Data Sciences', 'CS 6313', '22S', '', 'A', '', 'core'),
+            Class('Statistical Methods for Data Science', 'CS 6313', '22S', '', 'A', '', 'core'),
             Class('Big Data Management and Analytics', 'CS 6350', '22s', '', 'B+', '', 'core'),
             Class('Design and Analysis of Computer Algorithms', 'CS 6363','22s', '', 'A-', '', 'core'),
             Class('Machine Learning', 'CS 6375',  '21f', '', 'A', '', 'core'),
@@ -92,7 +92,7 @@ def mockStudent(unsure = False):
             Class('Discrete Structures', 'CS 5333',   '', '', '', '', 'prerequisites'),
             Class('Algorithm Analysis & Data Structures', 'CS 5343',  '', '', '', '', 'prerequisites'),
             Class('Operating System Concepts', 'CS 5348', '', '', '', '', 'prerequisites'),
-            Class('Probability & Statistics in CS<<', 'CS 3341<<','', '', '*** A- ***', '', 'prerequisites'),
+            Class('Probability & Statistics in CS and SE', 'CS 3341<<','', '', '*** A- ***', '', 'prerequisites'),
         ]
         return Student('Lasso, Ted', 2021504218, False, False, '21F', '', classes, 'Data Science')
 

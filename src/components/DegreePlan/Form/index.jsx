@@ -25,6 +25,7 @@ const Form = ({
   deleteClass,
   selectedRow,
   handleMoveToTopClick,
+  handleSelectTrack,
   handleLevelingChange,
 }) => {
   const {
@@ -79,6 +80,7 @@ const Form = ({
     },
   ];
   const handleConfirmTrack = () => {
+    handleSelectTrack();
     setTrackFormOpen(false);
   };
 

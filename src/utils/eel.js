@@ -19,3 +19,8 @@ eel.expose(makeDegreePlan);
 async function makeDegreePlan(studentObject) {
   return await eel.makeDegreePlan(studentObject)();
 }
+
+eel.expose(designateClasses);
+async function designateClasses(studentObject) {
+  return await eel.designateClasses(studentObject)();
+}

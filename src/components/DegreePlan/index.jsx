@@ -19,8 +19,53 @@ const DegreePlan = ({ student }) => {
   // STUDENT OBJ LOGIC
   const [students] = useGlobalState("students");
   const formProps = useStudentObject(student);
-  const { searchInput, setSearchInput, getClassSetter, studentObjectJSON } =
-    formProps;
+  const {
+    searchInput,
+    setSearchInput,
+    getClassSetter,
+    studentObjectJSON,
+    track,
+  } = formProps;
+
+  // add class hooks
+  const [addClassTable, setAddClassTable] = useState("");
+  const [isSearch, setIsSearch] = useState(false);
+  const [classOptions, setClassOptions] = useState([]);
+
+  // edit class hooks
+  const [selectedClassForEdit, setSelectedClassForEdit] = useState(null);
+  const [selectedClassForMove, setSelectedClassForMove] = useState(null);
+  const allDisabled = useMemo(
+    () => !!selectedClassForMove,
+    [selectedClassForMove]
+  );
+  const selectedRow = useMemo(() => {
+    const row = selectedClassForEdit || selectedClassForMove;
+    if (!row) return null;
+
+    return { index: row.index, table: row.class.type };
+  });
+
+  const generatePDF = () => {
+    eel
+      .makeDegreePlan(studentObjectJSON)()
+      .then((pdfName) => {
+        navigatePage(pages.pdfPreview, pdfName);
+      })
+      .catch((e) => console.log(e, "error at PDF creation"));
+
+    // handle this async
+  };
+  const handleSelectTrack = () => {
+    const newStudent = student;
+    newStudent.track = track;
+    eel
+      .designateClasses(newStudent)()
+      .then((result) => {
+        console.log(result);
+      })
+      .catch((e) => console.log(e, "error at track selection"));
+  };
 
   const navigatePage = (page, pdfName = null) => {
     const newStudent = {
@@ -276,6 +321,7 @@ const DegreePlan = ({ student }) => {
           handleMoveToTopClick={handleMoveToTopClick}
           deleteClass={handleDeleteClass}
           selectedRow={selectedRow}
+          handleSelectTrack={handleSelectTrack}
           handleLevelingChange={handleLevelingChange}
         />
         <Drawer

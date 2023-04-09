@@ -1,3 +1,650 @@
 {
-    "test":"HELLO WORLD"
-}
+    "tracks": [
+        {
+            "major": "Computer Science",
+            "name": "Cyber Security",
+            "pdf": "DP-Cybersecurity.pdf",
+            "pdf-table-size": {
+              "core": 5,
+              "following": 6,
+              "elective": 6,
+              "prerequisites": 8
+            },
+            "core": [
+              {
+                "name": "Information Security",
+                "id": "CS 6324"
+              },
+              {
+                "name": "Design and Analysis of Computer Algorithms",
+                "id": "CS 6363"
+              },
+              {
+                "name": "Advanced Operating Systems",
+                "id": "CS 6378"
+              }
+            ],
+            "N-of-the-following": 2,
+            "following": [
+              {
+                "name": "Systems Security and Malicious Code Analysis",
+                "id": "CS 6332"
+              },
+              {
+                "id": "CS 6348",
+                "name": "Data and Applications Security"
+              },
+              {
+                "name": "Network Security",
+                "id": "CS 6349"
+              },
+              {
+                "name": "Introduction to Cryptography",
+                "id": "CS 6377"
+              }
+            ],
+            "prerequisites": [
+              {
+                "id": "CS 3341",
+                "name": "Probability & Statistics in CS and SE"
+              },
+              {
+                "id": "CS 5303",
+                "name": "Computer Science I"
+              },
+              {
+                "id": "CS 5330",
+                "name": "Computer Science II"
+              },
+              {
+                "id": "CS 5333",
+                "name": "Discrete Structures"
+              },
+              {
+                "id": "CS 5343",
+                "name": "Algorithm Analysis & Data Structures"
+              },
+              {
+                "id": "CS 5348",
+                "name": "Operating System Concepts"
+              },
+              {
+                "id": "CS 5349",
+                "name": "Automata Theory"
+              },
+              {
+                "id": "CS 5354",
+                "name": "Software Engineering"
+              },
+              {
+                "id": "CS 5390",
+                "name": "Computer Networks"
+              }
+            ]
+      },
+      {
+        "major": "Computer Science",
+        "name": "Data Science",
+        "pdf": "DP-DataScience.pdf",
+        "pdf-table-size": {
+            "core": 5,
+            "following": 6,
+            "elective": 9,
+            "prerequisites": 8
+        },
+        "core": [
+          {
+            "name": "Statistical Methods for Data Science",
+            "id": "CS 6313"
+          },
+          {
+            "name": "Big Data Management and Analytics",
+            "id": "CS 6350"
+          },
+          {
+            "name": "Design and Analysis of Computer Algorithms",
+            "id": "CS 6363"
+          },
+          {
+            "name": "Machine Learning",
+            "id": "CS 6375"
+          }
+        ],
+        "N-of-the-following": 1,
+        "following": [
+          {
+            "name": "Special Topics in Computer Science [when topic is Social Network Analytics]",
+            "id": "CS 6301"
+          },
+          {
+            "name": "Natural Language Processing",
+            "id": "CS 6320"
+          },
+          {
+            "name": "Video Analytics",
+            "id": "CS 6327"
+          },
+          {
+            "name": "Statistical Methods in AI and Machine Learning",
+            "id": "CS 6347"
+          },
+          {
+            "name": "Database Design",
+            "id": "CS 6360"
+          }
+        ],
+        "prerequisites": [
+          {
+            "id": "CS 3341",
+            "name": "Probability & Statistics in CS and SE"
+          },
+          {
+            "id": "CS 5303",
+            "name": "Computer Science I"
+          },
+          {
+            "id": "CS 5330",
+            "name": "Computer Science II"
+          },
+          {
+            "id": "CS 5333",
+            "name": "Discrete Structures"
+          },
+          {
+            "id": "CS 5343",
+            "name": "Algorithm Analysis & Data Structures"
+          },
+          {
+            "id": "CS 5348",
+            "name": "Operating System Concepts"
+          },
+          {
+            "id": "CS 5349",
+            "name": "Automata Theory"
+          },
+          {
+            "id": "CS 5354",
+            "name": "Software Engineering"
+          },
+          {
+            "id": "CS 5390",
+            "name": "Computer Networks"
+          }
+        ]
+      },
+      {
+        "major": "Intelligent Systems",
+        "name": "Intelligent Systems",
+        "pdf": "DP-Intelligent-Systems.pdf",
+        "pdf-table-size": {
+            "core": 5,
+            "following": 6,
+            "elective": 9,
+            "prerequisites": 8
+        },
+        "core": [
+          {
+            "name": "Natural Language Processing",
+            "id": "CS 6320"
+          },
+          {
+            "name": "Design and Analysis of Computer Algorithms",
+            "id": "CS 6363"
+          },
+          {
+            "name": "Artificial Intelligence",
+            "id": "CS 6364"
+          },
+          {
+            "name": "Machine Learning",
+            "id": "CS 6375"
+          }
+        ],
+        "N-of-the-following": 1,
+        "following": [
+          {
+            "name": "Database Design",
+            "id": "CS 6360"
+          },
+          {
+            "name": "Advanced Operating Systems",
+            "id": "CS 6378"
+          }
+        ],
+        "prerequisites": [
+          {
+            "id": "CS 3341",
+            "name": "Probability & Statistics in CS and SE"
+          },
+          {
+            "id": "CS 5303",
+            "name": "Computer Science I"
+          },
+          {
+            "id": "CS 5330",
+            "name": "Computer Science II"
+          },
+          {
+            "id": "CS 5333",
+            "name": "Discrete Structures"
+          },
+          {
+            "id": "CS 5343",
+            "name": "Algorithm Analysis & Data Structures"
+          },
+          {
+            "id": "CS 5348",
+            "name": "Operating System Concepts"
+          },
+          {
+            "id": "CS 5349",
+            "name": "Automata Theory"
+          },
+          {
+            "id": "CS 5354",
+            "name": "Software Engineering"
+          },
+          {
+            "id": "CS 5390",
+            "name": "Computer Networks"
+          }
+        ]
+      },
+      {
+        "major": "Computer Science",
+        "name": "Interactive Computing",
+        "pdf": "DP-Interactive-Computing.pdf",
+        "pdf-table-size": {
+            "core": 5,
+            "following": 6,
+            "elective": 9,
+            "prerequisites": 8
+        },
+        "core": [
+          {
+            "name": "Human Computer Interactions",
+            "id": "CS 6326"
+          },
+          {
+            "name": "Computer Animation and Gaming",
+            "id": "CS 6323"
+          },
+          {
+            "name": "Design and Analysis of Computer Algorithms",
+            "id": "CS 6363"
+          }
+        ],
+        "N-of-the-following": 3,
+        "following": [
+          {
+            "name": "Computer Animation and Gaming",
+            "id": "CS 6323"
+          },
+          {
+            "name": "Modeling and Simulation",
+            "id": "CS 6328"
+          },
+          {
+            "name": "Multimedia Systems",
+            "id": "CS 6331"
+          },
+          {
+            "name": "Virtual Reality",
+            "id": "CS 6334"
+          },
+          {
+            "name": "Computer Graphics",
+            "id": "CS 6366"
+          }
+        ],
+        "prerequisites": [
+          {
+            "id": "CS 3341",
+            "name": "Probability & Statistics in CS and SE"
+          },
+          {
+            "id": "CS 5303",
+            "name": "Computer Science I"
+          },
+          {
+            "id": "CS 5330",
+            "name": "Computer Science II"
+          },
+          {
+            "id": "CS 5333",
+            "name": "Discrete Structures"
+          },
+          {
+            "id": "CS 5343",
+            "name": "Algorithm Analysis & Data Structures"
+          },
+          {
+            "id": "CS 5348",
+            "name": "Operating System Concepts"
+          },
+          {
+            "id": "CS 5349",
+            "name": "Automata Theory"
+          },
+          {
+            "id": "CS 5354",
+            "name": "Software Engineering"
+          },
+          {
+            "id": "CS 5390",
+            "name": "Computer Networks"
+          }
+        ]
+      },
+      {
+        "major": "Computer Science",
+        "name": "Networks and Telecommunications",
+        "pdf": "DP-Networks-Telecommunications.pdf",
+        "pdf-table-size": {
+          "core": 6,
+          "following": 5,
+          "elective": 8,
+          "prerequisites": 9
+        },
+        "core": [
+          {
+            "name": "Performance of Computer Systems and Networks",
+            "id": "CS 6352"
+          },
+          {
+            "name": "Design and Analysis of Computer Algorithms",
+            "id": "CS 6363"
+          },
+          {
+            "name": "Advanced Operating Systems",
+            "id": "CS 6378"
+          },
+          {
+            "name": "Algorithmic Aspects of Telecommunication Networks",
+            "id": "CS 6385"
+          },
+          {
+            "name": "Advanced Computer Networks",
+            "id": "CS 6390"
+          }
+        ],
+        "N-of-the-following": 0,
+        "following": [],
+        "prerequisites": [
+          {
+            "id": "CS 3341",
+            "name": "Probability & Statistics in CS and SE"
+          },
+          {
+            "id": "CS 5303",
+            "name": "Computer Science I"
+          },
+          {
+            "id": "CS 5330",
+            "name": "Computer Science II"
+          },
+          {
+            "id": "CS 5333",
+            "name": "Discrete Structures"
+          },
+          {
+            "id": "CS 5343",
+            "name": "Algorithm Analysis & Data Structures"
+          },
+          {
+            "id": "CS 5348",
+            "name": "Operating System Concepts"
+          },
+          {
+            "id": "CS 5349",
+            "name": "Automata Theory"
+          },
+          {
+            "id": "CS 5354",
+            "name": "Software Engineering"
+          },
+          {
+            "id": "CS 5390",
+            "name": "Computer Networks"
+          }
+        ]
+      },
+      {
+        "major": "Computer Science",
+        "name": "Systems",
+        "pdf": "DP-Systems.pdf",
+        "pdf-table-size": {
+            "core": 5,
+            "following": 6,
+            "elective": 9,
+            "prerequisites": 8
+        },
+        "core": [
+          {
+            "name": "Computer Architecture",
+            "id": "CS 6304"
+          },
+          {
+            "name": "Design and Analysis of Computer Algorithms",
+            "id": "CS 6363"
+          },
+          {
+            "name": "Advanced Operating Systems",
+            "id": "CS 6378"
+          },
+          {
+            "name": "Real-Time Systems",
+            "id": "CS 6396"
+          }
+        ],
+        "N-of-the-following": 1,
+        "following": [
+          {
+            "name": "Network Security",
+            "id": "CS 6349"
+          },
+          {
+            "name": "Parallel Processing",
+            "id": "CS 6376"
+          },
+          {
+            "name": "Distributed Computing",
+            "id": "CS 6380"
+          },
+          {
+            "name": "Synthesis and Optimization of High-Performance Systems",
+            "id": "CS 6397"
+          }
+        ],
+        "prerequisites": [
+          {
+            "id": "CS 3341",
+            "name": "Probability & Statistics in CS and SE"
+          },
+          {
+            "id": "CS 5303",
+            "name": "Computer Science I"
+          },
+          {
+            "id": "CS 5330",
+            "name": "Computer Science II"
+          },
+          {
+            "id": "CS 5333",
+            "name": "Discrete Structures"
+          },
+          {
+            "id": "CS 5343",
+            "name": "Algorithm Analysis & Data Structures"
+          },
+          {
+            "id": "CS 5348",
+            "name": "Operating System Concepts"
+          },
+          {
+            "id": "CS 5349",
+            "name": "Automata Theory"
+          },
+          {
+            "id": "CS 5354",
+            "name": "Software Engineering"
+          },
+          {
+            "id": "CS 5390",
+            "name": "Computer Networks"
+          }
+        ]
+      },
+      {
+        "major": "Computer Science",
+        "name": "Traditional Computer Science",
+        "pdf": "DP-Traditional.pdf",
+        "pdf-table-size": {
+            "core": 5,
+            "following": 6,
+            "elective": 9,
+            "prerequisites": 8
+        },
+        "core": [
+            {
+                "name": "Design and Analysis of Computer Algorithms",
+                "id": "CS 6363"
+            },
+            {
+                "name": "Advanced Operating Systems",
+                "id": "CS 6378"
+            },
+            {
+                "name": "Advanced Computer Networks",
+                "id": "CS 6390"
+            }
+        ],
+        "N-of-the-following": 2,
+        "following": [
+            {
+                "name": "Compiler Construction",
+                "id": "CS 6353"
+            },
+            {
+                "name": "Database Design",
+                "id": "CS 6360"
+            },
+            {
+                "name": "Advanced Programming Languages",
+                "id": "CS 6371"
+            }
+        ],
+        "prerequisites": [
+            {
+                "id": "CS 3341",
+                "name": "Probability & Statistics in CS and SE"
+            },
+            {
+                "id": "CS 5303",
+                "name": "Computer Science I"
+            },
+            {
+                "id": "CS 5330",
+                "name": "Computer Science II"
+            },
+            {
+                "id": "CS 5333",
+                "name": "Discrete Structures"
+            },
+            {
+                "id": "CS 5343",
+                "name": "Algorithm Analysis & Data Structures"
+            },
+            {
+                "id": "CS 5348",
+                "name": "Operating System Concepts"
+            },
+            {
+                "id": "CS 5349",
+                "name": "Automata Theory"
+            },
+            {
+                "id": "CS 5354",
+                "name": "Software Engineering"
+            },
+            {
+                "id": "CS 5390",
+                "name": "Computer Networks"
+            }
+        ]
+    },
+    {
+        "major": "Software Engineering",
+        "name": "Software Engineering",
+        "pdf": "DP-Software-Engineering.pdf",
+        "pdf-table-size": {
+            "core": 6,
+            "following": 5,
+            "elective": 8,
+            "prerequisites": 9
+        },
+        "core": [
+          {
+            "name": "Object-Oriented Software Engineering",
+            "id": "SE 6329"
+          },
+          {
+            "name": "Advanced Requirements Engineering",
+            "id": "SE 6361 (CS 6361)"
+          },
+          {
+            "name": "Advanced Software Architecture and Design",
+            "id": "SE 6362"
+          },
+          {
+            "name": "Software Testing, Validation and Verification",
+            "id": "SE 6367 (CS 6367)"
+          },
+          {
+            "name": "Advanced Software Engineering Project",
+            "id": "SE 6387"
+          }
+        ],
+        "N-of-the-following": 0,
+        "following": [],
+        "prerequisites": [
+          {
+            "id": "CS 3341",
+            "name": "Probability & Statistics in CS and SE"
+          },
+          {
+            "id": "CS 5303",
+            "name": "Computer Science I"
+          },
+          {
+            "id": "CS 5330",
+            "name": "Computer Science II"
+          },
+          {
+            "id": "CS 5333",
+            "name": "Discrete Structures"
+          },
+          {
+            "id": "CS 5343",
+            "name": "Algorithm Analysis & Data Structures"
+          },
+          {
+            "id": "CS 5348",
+            "name": "Operating System Concepts"
+          },
+          {
+            "id": "CS 5349",
+            "name": "Automata Theory"
+          },
+          {
+            "id": "CS 5354",
+            "name": "Software Engineering"
+          },
+          {
+            "id": "CS 5390",
+            "name": "Computer Networks"
+          }
+        ]
+      }      
+    ]
+  }
