@@ -1,31 +1,50 @@
-import React from "react";
+import React, { useMemo, useState } from "react";
 import { getColumn } from "./columns";
 import { Table, Button } from "antd";
+import { tableTypes } from "../../../../utils/constants";
 
 const ClassTable = ({
+  type,
   title,
   subtitle,
   classes,
-  openAddDrawer,
+  openAddClassDrawer,
   notes,
   setClassForEdit,
   setClassForMove,
   handleMoveClick,
+  handleMoveToTopClick,
   deleteClass,
   allDisabled,
+  selectedRow: rowSelectedForEditOrMove,
+  onLevelingChange,
 }) => {
+  const [headerHover, setHeaderHover] = useState(false);
   const classList =
     classes &&
     classes.map((classes, index) => {
       return { ...classes, key: index };
     });
-    const onMoveClick = (record, rowIndex) => {
-      if (!allDisabled) return; // if all disabled, we are moving
-      handleMoveClick({
-        class: record,
-        index: rowIndex,
-      })
-    }
+  const TableCSS = useMemo(
+    () =>
+      `${
+        rowSelectedForEditOrMove && rowSelectedForEditOrMove.table === type
+          ? `row-${rowSelectedForEditOrMove.index}`
+          : ""
+      } ${headerHover ? "header-hovered" : ""}`,
+    [rowSelectedForEditOrMove, headerHover]
+  );
+  const onMoveClick = (record, rowIndex) => {
+    if (!allDisabled) return; // if all disabled, we are moving
+    handleMoveClick({
+      class: record,
+      index: rowIndex,
+    });
+  };
+  const onMoveTopClick = (type) => {
+    if (!allDisabled) return;
+    handleMoveToTopClick(type);
+  };
   return (
     <>
       <div className="title-span">
@@ -37,7 +56,7 @@ const ClassTable = ({
           <Button
             className="button orange-bg"
             disabled={allDisabled}
-            onClick={() => openAddDrawer()}
+            onClick={() => openAddClassDrawer()}
           >
             Add Course
           </Button>
@@ -45,12 +64,26 @@ const ClassTable = ({
       </div>
       {notes && notes.map((note) => <span>{note}</span>)}
       <Table
+        className={TableCSS}
         dataSource={classList}
-        columns={getColumn({ onEdit: setClassForEdit, onDelete: deleteClass, onMove: setClassForMove, disabled: allDisabled})}
+        columns={getColumn({
+          onEdit: setClassForEdit,
+          onDelete: deleteClass,
+          onMove: setClassForMove,
+          disabled: allDisabled,
+          onLevelingChange,
+        })}
         pagination={false}
         onRow={(record, rowIndex) => {
           return {
             onClick: () => onMoveClick(record, rowIndex),
+          };
+        }}
+        onHeaderRow={(column, index) => {
+          return {
+            onClick: () => onMoveTopClick(type),
+            onMouseEnter: () => setHeaderHover(true),
+            onMouseLeave: () => setHeaderHover(false),
           };
         }}
       />

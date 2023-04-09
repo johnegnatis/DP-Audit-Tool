@@ -1,13 +1,13 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
+import { tableList, tableTypes } from "../../utils/constants";
 
 export function useStudentObject(student) {
-  const studentObj = student.student;
   const filterClass = (filter, array) => {
     if (!Array.isArray(array)) return [];
     return array.filter((obj) => obj.type === filter);
   };
 
-  const [track, setTrack] = useState(studentObj.track || '');
+  const [track, setTrack] = useState(student.track || "");
   const [name, setName] = useState(null);
   const [studentId, setStudentId] = useState(null);
   const [admittedDate, setAdmittedDate] = useState(null);
@@ -21,22 +21,45 @@ export function useStudentObject(student) {
   const [prerequisites, setPrerequisites] = useState([]);
   const [pdfName, setPdfName] = useState(null);
 
+  const classSetterLookup = {
+    core: setCore,
+    following: setFollowing,
+    electives: setElective,
+    prerequisites: setPrerequisites,
+  };
+  const getClassSetter = (table) => {
+    // returns the appropriate class
+    if (tableList.includes(table)) {
+      return classSetterLookup[table];
+    } else {
+      console.error("Invalid table");
+      return null;
+    }
+  };
+
   useEffect(() => {
-    setTrack(studentObj.track || "");
-    setName(studentObj.name || "");
-    setStudentId(studentObj.studentId || -1);
-    setAdmittedDate((studentObj.dates && studentObj.dates.admitted) || "");
+    setTrack(student.track || "");
+    setName(student.name || "");
+    setStudentId(student.studentId || -1);
+    setAdmittedDate((student.dates && student.dates.admitted) || "");
     setGraduationDate(
-      (studentObj.dates && studentObj.dates.expected_graduation) || ""
+      (student.dates && student.dates.expected_graduation) || ""
     );
-    setFastTrack((studentObj.options && studentObj.options.fastTrack) || false);
-    setThesis((studentObj.options && studentObj.options.thesis) || false);
+    setFastTrack((student.options && student.options.fastTrack) || false);
+    setThesis((student.options && student.options.thesis) || false);
     setSearchInput("");
-    setCore(filterClass("core", studentObj.classes));
-    setFollowing(filterClass("following", studentObj.classes));
-    setElective(filterClass("electives", studentObj.classes));
-    setPrerequisites(filterClass("prerequisites", studentObj.classes));
-  }, [studentObj]);
+    setCore(filterClass(tableTypes.core, student.classes));
+    setFollowing(filterClass(tableTypes.following, student.classes));
+    setElective(filterClass(tableTypes.electives, student.classes));
+    setPrerequisites(filterClass(tableTypes.prerequisites, student.classes));
+  }, [student]);
+
+  const setClasses = useCallback((newClasses) => {
+    setCore(filterClass(tableTypes.core, newClasses));
+    setFollowing(filterClass(tableTypes.following, newClasses));
+    setElective(filterClass(tableTypes.electives, newClasses));
+    setPrerequisites(filterClass(tableTypes.prerequisites, newClasses));
+  }, []);
 
   const studentObjectJSON = useMemo(() => {
     const classList = [...core, ...following, ...elective, ...prerequisites];
@@ -55,7 +78,20 @@ export function useStudentObject(student) {
       pdfName,
       classes: classList,
     };
-  }, [name, studentId, fastTrack, thesis, admittedDate, graduationDate, track, pdfName, core, following, elective, prerequisites]);
+  }, [
+    name,
+    studentId,
+    fastTrack,
+    thesis,
+    admittedDate,
+    graduationDate,
+    track,
+    pdfName,
+    core,
+    following,
+    elective,
+    prerequisites,
+  ]);
 
   return {
     track,
@@ -85,10 +121,12 @@ export function useStudentObject(student) {
     studentObjectJSON,
     pdfName,
     setPdfName,
+    getClassSetter,
+    setClasses,
   };
 }
 
-export function useEditClass(classObj) {
+export function useEditClass(classObj, deleteSignal) {
   const [name, setName] = useState("");
   const [number, setNumber] = useState("");
   const [semester, setSemester] = useState("");
@@ -96,12 +134,22 @@ export function useEditClass(classObj) {
   const [grade, setGrade] = useState("");
 
   useEffect(() => {
-    setName((classObj.class && classObj.class.name) || "");
-    setNumber((classObj.class && classObj.class.number) || "");
-    setSemester((classObj.class && classObj.class.semester) || "");
-    setTransfer((classObj.class && classObj.class.transfer) || "");
-    setGrade((classObj.class && classObj.class.grade) || "");
+    setName((classObj && classObj.class && classObj.class.name) || "");
+    setNumber((classObj && classObj.class && classObj.class.number) || "");
+    setSemester((classObj && classObj.class && classObj.class.semester) || "");
+    setTransfer((classObj && classObj.class && classObj.class.transfer) || "");
+    setGrade((classObj && classObj.class && classObj.class.grade) || "");
   }, [classObj]);
+
+  useEffect(() => {
+    if (deleteSignal) {
+      setName("");
+      setNumber("");
+      setSemester("");
+      setTransfer("");
+      setGrade("");
+    }
+  }, [deleteSignal]);
 
   return {
     name,

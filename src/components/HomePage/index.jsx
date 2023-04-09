@@ -7,6 +7,7 @@ import { eel } from "../../utils/eel";
 import { extractErrorMessage } from "../../utils/methods";
 import { useGlobalState, setGlobalState } from "../GlobalState";
 import { getEelResponse } from "./apiHelper";
+import NavigationBar from "../NavigationBar";
 
 const HomePage = () => {
   const [globalStudents] = useGlobalState("students");
@@ -129,15 +130,24 @@ const HomePage = () => {
   };
 
   return (
-    <div className="home-page-root">
-      <div className="home-page">
-        <div>
-          <img src={UTDLogo} alt="utd logo" />
+    <>
+      <NavigationBar />
+      <div className="home-page-root">
+        <div className="home-page">
+          <div>
+            <img src={UTDLogo} alt="utd logo" />
+          </div>
+          <div className="title">
+            UTD CS/SE Graduate Advising Degree Plan and Audit Tool
+          </div>
+          {getUploadBox()}
         </div>
-        <div className="title">
-          UTD CS/SE Graduate Advising Degree Plan and Audit Tool
+      </div>
+      <footer>
+        <div className="support">
+          <Icon icon={iconNames.question} className="icon orange xs" />
+          <span>Support</span>
         </div>
-        {getUploadBox()}
         <div className="create-button">
           <Button
             onClick={handleCreateDocumentClick}
@@ -147,8 +157,8 @@ const HomePage = () => {
             CREATE DOCUMENTS
           </Button>
         </div>
-      </div>
-    </div>
+      </footer>
+    </>
   );
 };
 

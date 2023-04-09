@@ -15,11 +15,12 @@ const getForm = (value, setValue, disabled = false) => {
   );
 };
 
-const getNumberForm = (value, setValue, disabled = false) => {
+const getNumberForm = (value, setValue, disabled = false, semester = false) => {
   const handleFormInput = (e) => {
     const input = e.target.value;
-    const regex = /^[0-9\b]+$/; // only allow digits and backspace
-    if (regex.test(input)) {
+    let regex = /^[0-9\b]+$/; // only allow digits and backspace
+    if (semester) regex = /^[0-9\bFSfs]+$/;
+    if (regex.test(input) || input === "") {
       setValue(input);
     }
   };
@@ -63,7 +64,7 @@ const getRadio = (value, setValue, disabled = false) => {
 };
 
 const getDropdown = (value, setValue, options) => {
-  // Zia: should we make the dropdown only on click or is on hover nice?
+  // @Zia: should we make the dropdown only on click or is on hover nice?
   const handleMenuClick = (e) => {
     setValue(options.find((obj) => obj.key === e.key).label);
   };
@@ -75,12 +76,12 @@ const getDropdown = (value, setValue, options) => {
   return (
     <Dropdown
       menu={menuProps}
-      onClick={() => {
-        console.log("hi");
-      }}
       width={width}
     >
-      <Button style={{ width, marginBottom: '20px' }}> {value || "Select Track"}</Button>
+      <Button style={{ width, marginBottom: "20px" }}>
+        {" "}
+        {value || "Select Track"}
+      </Button>
     </Dropdown>
   );
 };

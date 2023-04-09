@@ -1,26 +1,32 @@
 import {
-  getDatePicker,
   getNumberForm,
   getForm,
   getRadio,
 } from "./inputComponents";
 import { formatGrid, formatHalfGrid, getSpan } from "./gridLayout";
 import { Button } from "antd";
-import { pages, tracks } from "../../../utils/constants";
+import {
+  defaultSearchOptions,
+  tableTypes,
+  tracks,
+} from "../../../utils/constants";
 import ClassTable from "./Table";
-import { eel } from "../../../utils/eel";
 import SelectTrack from "../TrackForm";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 
 const Form = ({
   allDisabled,
   props,
-  setDrawerOpen: setAddDrawerOpen,
+  setAddClassDrawerOpen,
   generatePDF,
   setClassForEdit,
   setClassForMove,
   handleMoveClick,
   deleteClass,
+  selectedRow,
+  handleMoveToTopClick,
+  handleSelectTrack,
+  handleLevelingChange,
 }) => {
   const {
     track,
@@ -74,12 +80,108 @@ const Form = ({
     },
   ];
   const handleConfirmTrack = () => {
+    handleSelectTrack();
     setTrackFormOpen(false);
   };
-  const openAddDrawer = (options) => {
-    //TODO: put options based off options
-    setAddDrawerOpen(true);
-  };
+
+  const sharedTableDependencies = [
+    tableTypes,
+    allDisabled,
+    defaultSearchOptions,
+    selectedRow,
+    setAddClassDrawerOpen,
+    setClassForEdit,
+    setClassForMove,
+    handleMoveClick,
+    handleMoveToTopClick,
+    deleteClass,
+    handleLevelingChange,
+  ];
+  const coreTable = useMemo(
+    () => (
+      <ClassTable
+        type={tableTypes.core}
+        title="Core Courses"
+        allDisabled={allDisabled}
+        classes={core}
+        openAddClassDrawer={() =>
+          setAddClassDrawerOpen(tableTypes.core, defaultSearchOptions)
+        }
+        setClassForEdit={setClassForEdit}
+        setClassForMove={setClassForMove}
+        handleMoveClick={handleMoveClick}
+        handleMoveToTopClick={handleMoveToTopClick}
+        deleteClass={deleteClass}
+        selectedRow={selectedRow}
+      />
+    ),
+    [core, ...sharedTableDependencies]
+  );
+  const followingTable = useMemo(
+    () => (
+      <ClassTable
+        type={tableTypes.following}
+        title="One of the Following Courses"
+        subtitle=""
+        allDisabled={allDisabled}
+        classes={following}
+        openAddClassDrawer={() =>
+          setAddClassDrawerOpen(tableTypes.following, defaultSearchOptions)
+        }
+        setClassForEdit={setClassForEdit}
+        setClassForMove={setClassForMove}
+        handleMoveClick={handleMoveClick}
+        handleMoveToTopClick={handleMoveToTopClick}
+        deleteClass={deleteClass}
+        selectedRow={selectedRow}
+      />
+    ),
+    [following, ...sharedTableDependencies]
+  );
+  const electiveTable = useMemo(
+    () => (
+      <ClassTable
+        type={tableTypes.electives}
+        title="Approved 6000 Level Courses"
+        subtitle=""
+        allDisabled={allDisabled}
+        classes={elective}
+        openAddClassDrawer={() =>
+          setAddClassDrawerOpen(tableTypes.electives, [])
+        }
+        setClassForEdit={setClassForEdit}
+        setClassForMove={setClassForMove}
+        handleMoveClick={handleMoveClick}
+        handleMoveToTopClick={handleMoveToTopClick}
+        selectedRow={selectedRow}
+        deleteClass={deleteClass}
+      />
+    ),
+    [elective, ...sharedTableDependencies]
+  );
+  const prerequisiteTable = useMemo(
+    () => (
+      <ClassTable
+        type={tableTypes.prerequisites}
+        title="Prerequisites"
+        subtitle=""
+        allDisabled={allDisabled}
+        classes={prerequisites}
+        openAddClassDrawer={() =>
+          setAddClassDrawerOpen(tableTypes.prerequisites, defaultSearchOptions)
+        }
+        setClassForEdit={setClassForEdit}
+        setClassForMove={setClassForMove}
+        handleMoveClick={handleMoveClick}
+        handleMoveToTopClick={handleMoveToTopClick}
+        deleteClass={deleteClass}
+        selectedRow={selectedRow}
+        onLevelingChange={handleLevelingChange}
+      />
+    ),
+    [prerequisites, ...sharedTableDependencies]
+  );
+
   return (
     <div className="degree-plan">
       <SelectTrack
@@ -94,53 +196,12 @@ const Form = ({
         <h2 className="subtitle">General Information</h2>
         {formatGrid(fullLayout, 5, 19)}
         {formatHalfGrid(halfLayout, 5, 5, 9, 5)}
-        {/* TODO: at high zooms, some text overlaps here */}
+        {coreTable}
+        {followingTable}
+        {electiveTable}
+        {prerequisiteTable}
       </div>
       <div>
-        <ClassTable
-          title="Core Courses"
-          subtitle="15 credit Hours / 3.19 grade point required (HARDCODED)"
-          allDisabled={allDisabled}
-          classes={core}
-          openAddDrawer={() => openAddDrawer([])}
-          setClassForEdit={setClassForEdit}
-          setClassForMove={setClassForMove}
-          handleMoveClick={handleMoveClick}
-          deleteClass={deleteClass}
-        />
-        <ClassTable
-          title="One of the Following Courses"
-          subtitle=""
-          allDisabled={allDisabled}
-          classes={following}
-          openAddDrawer={() => openAddDrawer([])}
-          setClassForEdit={setClassForEdit}
-          setClassForMove={setClassForMove}
-          handleMoveClick={handleMoveClick}
-          deleteClass={deleteClass}
-        />
-        <ClassTable
-          title="Approved 6000 Level Courses"
-          subtitle=""
-          allDisabled={allDisabled}
-          classes={elective}
-          openAddDrawer={() => openAddDrawer([])}
-          setClassForEdit={setClassForEdit}
-          setClassForMove={setClassForMove}
-          handleMoveClick={handleMoveClick}
-          deleteClass={deleteClass}
-        />
-        <ClassTable
-          title="Prerequisites"
-          subtitle=""
-          allDisabled={allDisabled}
-          classes={prerequisites}
-          openAddDrawer={() => openAddDrawer([])}
-          setClassForEdit={setClassForEdit}
-          setClassForMove={setClassForMove}
-          handleMoveClick={handleMoveClick}
-          deleteClass={deleteClass}
-        />
         {/* <div className="signature">
           <span>Academic Advisor Signature : </span>
           {getForm(signature, setSignature, allDisabled)}
@@ -152,7 +213,7 @@ const Form = ({
             size="large"
             disabled={allDisabled}
           >
-            GENERATE DEGREE PLAN
+            Preview Degree Plan
           </Button>
         </div>
       </div>

@@ -1,9 +1,15 @@
 import { Icon } from "@iconify/react";
 import { iconNames } from "../../../../utils/constants";
-import { Popover, Menu } from "antd";
+import { Popover, Menu, Checkbox } from "antd";
 import { useState } from "react";
 
-export const getColumn = ({ onEdit, onMove, onDelete, disabled }) => {
+export const getColumn = ({
+  onEdit,
+  onMove,
+  onDelete,
+  disabled,
+  onLevelingChange,
+}) => {
   const keyToFunctionMapping = {
     1: onEdit,
     2: onMove,
@@ -14,7 +20,6 @@ export const getColumn = ({ onEdit, onMove, onDelete, disabled }) => {
     return (
       <Menu
         onClick={(item) => {
-          console.log(item);
           const { name, number, semester, transfer, grade, type } = record;
           const obj = { name, number, semester, transfer, grade, type };
           const keyFunction = keyToFunctionMapping[item.key];
@@ -34,7 +39,7 @@ export const getColumn = ({ onEdit, onMove, onDelete, disabled }) => {
     );
   };
 
-  return [
+  const columns = [
     {
       title: " ",
       width: "5%",
@@ -67,26 +72,55 @@ export const getColumn = ({ onEdit, onMove, onDelete, disabled }) => {
       dataIndex: "name",
       key: "name",
       width: "45%",
+      align: "left",
     },
     {
       title: "Course Num",
       dataIndex: "number",
       key: "number",
+      align: "center",
     },
     {
       title: "UTD Sem",
       dataIndex: "semester",
       key: "semester",
+      align: "center",
     },
     {
       title: "Transfer",
       dataIndex: "transfer",
       key: "transfer",
+      align: "center",
     },
     {
       title: "Grade",
       dataIndex: "grade",
       key: "grade",
+      align: "center",
     },
   ];
+
+  if (onLevelingChange) {
+    columns.push({
+      title: "Leveling",
+      key: "leveling",
+      align: "center",
+      render: (record) => {
+        return (
+          <Checkbox
+            checked={record.leveling}
+            onChange={(e) =>
+              onLevelingChange({
+                checked: e.target.checked,
+                table: record.type,
+                key: record.key,
+              })
+            }
+          />
+        );
+      },
+    });
+  }
+
+  return columns;
 };

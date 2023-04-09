@@ -3,6 +3,7 @@ import { getForm } from "../inputComponents";
 import { getSpan } from "../gridLayout";
 import { Button } from "antd";
 import { useEditClass } from "../../hook";
+import { getNumberForm } from "../inputComponents";
 const EditClass = ({ handleSubmit, classObj }) => {
   const {
     name,
@@ -28,21 +29,35 @@ const EditClass = ({ handleSubmit, classObj }) => {
   };
 
   return (
-    <div className="edit-student-root">
-      {getSpan("NAME", false)}
-      {getForm(name, setName)}
-      {getSpan("NUMBER", false)}
-      {getForm(number, setNumber)}
-      {getSpan("SEMESTER", false)}
-      {getForm(semester, setSemester, false)}
-      {getSpan("TRANSFER", false)}
-      {getForm(transfer, setTransfer, false)}
-      {getSpan("GRADE", false)}
-      {getForm(grade, setGrade)}
-      <Button className="button orange-bg" onClick={() => onSubmitClick()}>
-        Save
-      </Button>
-    </div>
+    <div className="class-form-root">
+      <div className="row">
+        {getSpan("Course Title", false, false)}
+        {getForm(name, setName)}
+      </div>
+      <div className="row">
+        {getSpan("Course Number", false, false)}
+        {getForm(number, setNumber)}
+      </div>
+      <div className="row">
+        {getSpan("UTD Semester", false, false)}
+        {getNumberForm(semester, setSemester, false, true)}
+      </div>
+      <div className="split5050 row">
+        <div>
+          {getSpan("Transfer", false, false)}
+          {getForm(transfer, setTransfer, false, false)}
+        </div>
+        <div>
+          {getSpan("Grade", false, false)}
+          {getForm(grade, setGrade)}
+        </div>
+      </div>
+      <div className="button-float-right">
+        <Button className="button orange-bg" onClick={() => onSubmitClick()}>
+          Save
+        </Button>
+            </div>
+      </div>
   );
 };
 

@@ -78,6 +78,14 @@ $input-height: 40px;
       }
     }
 
+    .ant-table-wrapper {
+      @for $i from 0 through 100 {
+        &.row-#{$i} tr[data-row-key="#{$i}"] td {
+          background-color: $grey;
+        }
+      }
+    }
+
     table {
       border-bottom: $lg-light-grey-border-bottom;
 
@@ -136,7 +144,6 @@ $input-height: 40px;
     height: calc(100% - $input-height - 4px);
     display: flex;
     flex-direction: column;
-    overflow-y: scroll;
 
     .row {
       display: flex;
@@ -144,6 +151,7 @@ $input-height: 40px;
       justify-content: space-between;
       border-bottom: $sm-light-grey-border-bottom;
       padding: 5%;
+      cursor: pointer;
 
       p:first-child {
         padding-left: 3px;
@@ -151,22 +159,29 @@ $input-height: 40px;
     }
   }
 }
-.edit-student-root {
+.class-form-root {
+  .back {
+    color: $orange;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 16px;
+  }
+
+  .ant-drawer-body {
+    padding-top: 10px;
+  }
+  font-weight: 400;
+  font-size: 16px;
+
   .row {
-    padding-bottom: 10px;
-    .left {
-      text-align: right;
-      span {
-        vertical-align: middle;
-        padding: 2px;
-        font-weight: 400;
-        font-size: 16px;
-        white-space: break-spaces;
-        &.asterisk {
-          color: $red;
-        }
-      }
+    input {
+      margin-top: 5px;
     }
+    margin-bottom: 10px;
+  }
+  .button-float-right {
+    display: flex;
+    justify-content: right;
   }
 }
 .moving {
@@ -175,7 +190,12 @@ $input-height: 40px;
   cursor: pointer !important;
 
   .ant-table-cell-row-hover {
-    border-bottom-color: $orange !important;
+    border-bottom: 3px solid $orange !important;
+  }
+  .header-hovered {
+    tr[data-row-key="0"] td {
+      border-top: 3px solid $orange !important;
+    }
   }
 }
 .moving-notification-root {
@@ -195,5 +215,13 @@ $input-height: 40px;
     .button {
       width: 100px;
     }
+  }
+}
+.select-track {
+  .ant-modal-header {
+    padding-bottom: 20px !important;
+  }
+  button {
+    width: 100% !important;
   }
 }

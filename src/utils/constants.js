@@ -11,6 +11,7 @@ export const iconNames = {
   zoomOut: "heroicons:magnifying-glass-minus-20-solid",
   threeDots: "ph:dots-three-vertical",
   close: "material-symbols:close",
+  question: "radix-icons:question-mark-circled",
 };
 
 export const pages = {
@@ -19,6 +20,30 @@ export const pages = {
   pdfPreview: "pdf-preview",
   notFound: "not-found",
 };
+
+export const defaultSearchOptions = [
+  { number: "CS6314", name: "WEB PROGRAMMING LANGUAGES" },
+  { number: "CS6363", name: "DESIGN & ANALYS-COMP ALGORITHM" },
+  { number: "CS6375", name: "MACHINE LEARNING" },
+  { number: "CS6320", name: "NATURAL LANGUAGE PROCESSING" },
+  { number: "CS6322", name: "INFORMATION RETRIEVAL" },
+  { number: "CS6360", name: "DATABASE DESIGN" },
+  { number: "CS6364", name: "ARTIFICIAL INTELLIGENCE" },
+];
+
+export const tableTypes = {
+  core: 'core',
+  following: 'following',
+  electives: 'electives',
+  prerequisites: 'prerequisites',
+}
+export const tableList = [ tableTypes.core, tableTypes.following, tableTypes.electives, tableTypes.prerequisites]
+export const tableNames = {
+  core: 'Core Courses',
+  following: 'One of the Following Courses',
+  electives: 'Approved 6000 Level Courses',
+  prerequisites: 'Prerequisites',
+}
 
 export const tracks = [
   {
@@ -75,6 +100,7 @@ export const genericStudent = {
       grade: "A",
       attempted_credits: "",
       type: "core",
+      leveling: false,
     },
     {
       name: "Big Data Management and Analytics",
@@ -84,6 +110,7 @@ export const genericStudent = {
       grade: "B+",
       attempted_credits: "",
       type: "core",
+      leveling: false,
     },
     {
       name: "Design and Analysis of Computer Algorithms",
@@ -93,6 +120,7 @@ export const genericStudent = {
       grade: "A-",
       attempted_credits: "",
       type: "core",
+      leveling: false,
     },
     {
       name: "Machine Learning",
@@ -102,6 +130,7 @@ export const genericStudent = {
       grade: "A",
       attempted_credits: "",
       type: "core",
+      leveling: false,
     },
     {
       name: "Social Network Analytics",
@@ -111,6 +140,7 @@ export const genericStudent = {
       grade: "",
       attempted_credits: "",
       type: "following",
+      leveling: false,
     },
     {
       name: "Natural Language Processing",
@@ -120,6 +150,7 @@ export const genericStudent = {
       grade: "",
       attempted_credits: "",
       type: "following",
+      leveling: false,
     },
     {
       name: "Video Analytics",
@@ -129,6 +160,7 @@ export const genericStudent = {
       grade: "",
       attempted_credits: "",
       type: "following",
+      leveling: false,
     },
     {
       name: "Statistics for Machine Learning",
@@ -138,6 +170,7 @@ export const genericStudent = {
       grade: "",
       attempted_credits: "",
       type: "following",
+      leveling: false,
     },
     {
       name: "Database Design",
@@ -147,6 +180,7 @@ export const genericStudent = {
       grade: "A-",
       attempted_credits: "",
       type: "following",
+      leveling: false,
     },
     {
       name: "Virtual Reality",
@@ -156,6 +190,7 @@ export const genericStudent = {
       grade: "B",
       attempted_credits: "",
       type: "electives",
+      leveling: false,
     },
     {
       name: "Theory of Computation",
@@ -165,6 +200,7 @@ export const genericStudent = {
       grade: "A",
       attempted_credits: "",
       type: "electives",
+      leveling: false,
     },
     {
       name: "Natural Language Processing",
@@ -174,6 +210,7 @@ export const genericStudent = {
       grade: "A",
       attempted_credits: "",
       type: "electives",
+      leveling: false,
     },
     {
       name: "Network Security",
@@ -183,6 +220,7 @@ export const genericStudent = {
       grade: "",
       attempted_credits: "",
       type: "electives",
+      leveling: false,
     },
     {
       name: "Sftwr Test/Validatn/Verificatn",
@@ -192,6 +230,7 @@ export const genericStudent = {
       grade: "",
       attempted_credits: "",
       type: "electives",
+      leveling: false,
     },
     {
       name: "Software Maint Evolut & Re-Eng",
@@ -201,6 +240,7 @@ export const genericStudent = {
       grade: "",
       attempted_credits: "",
       type: "electives",
+      leveling: false,
     },
     {
       name: "Computer Science I",
@@ -210,6 +250,7 @@ export const genericStudent = {
       grade: "",
       attempted_credits: "",
       type: "electives",
+      leveling: false,
     },
     {
       name: "Computer Science II",
@@ -219,6 +260,7 @@ export const genericStudent = {
       grade: "",
       attempted_credits: "",
       type: "prerequisites",
+      leveling: true,
     },
     {
       name: "Discrete Structures",
@@ -228,6 +270,7 @@ export const genericStudent = {
       grade: "",
       attempted_credits: "",
       type: "prerequisites",
+      leveling: false,
     },
     {
       name: "Algorithm Analysis & Data Structures",
@@ -237,6 +280,7 @@ export const genericStudent = {
       grade: "",
       attempted_credits: "",
       type: "prerequisites",
+      leveling: true,
     },
     {
       name: "Operating System Concepts",
@@ -246,6 +290,7 @@ export const genericStudent = {
       grade: "",
       attempted_credits: "",
       type: "prerequisites",
+      leveling: true,
     },
     {
       name: "Probability & Statistics in CS<<",
@@ -255,7 +300,8 @@ export const genericStudent = {
       grade: "*** A- ***",
       attempted_credits: "",
       type: "prerequisites",
+      leveling: false,
     },
   ],
-  track: "",
+  track: "Data Science",
 };

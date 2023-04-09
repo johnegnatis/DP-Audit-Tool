@@ -4,10 +4,11 @@ const SelectTrack = ({ open, track, setTrack, handleConfirmTrack, options }) => 
   return (
     <Modal
       title="Select Track"
-      okText="Confirm Track"
+      okText="Confirm Selection"
       style={{
         top: 20,
       }}
+      className="select-track"
       open={open}
       footer={false}
       closable={false}

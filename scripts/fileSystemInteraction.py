@@ -1,7 +1,10 @@
 from tkinter import filedialog
 from tkinter import *
-import PyPDF2
-import base64
+from shutil import copy2
+try:
+    from scripts.helpers import get_server_path
+except:
+    from helpers import get_server_path
 
 def getFilePathsMethod():
     root = Tk()
@@ -10,9 +13,17 @@ def getFilePathsMethod():
     file_paths = filedialog.askopenfilename(filetypes=(("PDF Files", "*.pdf"),("All Files", "*.*")), title="Select Transcript(s)", multiple=True)
     return file_paths
 
-def getPDFMethod():
+def savePDFMethod(file_name):
     root = Tk()
     root.withdraw()
     root.wm_attributes('-topmost', 1)
-    pdf = filedialog.askopenfilename(filetypes=(("PDF Files", "*.pdf"),("All Files", "*.*")), title="Select Degree Plan", multiple=False)
-    return pdf
+
+    # destination
+    dir_to_save = filedialog.askdirectory(title="Select Place To Save PDF")
+
+    # source
+    file_path = get_server_path() + '/' + file_name
+
+    copy2(file_path, dir_to_save, follow_symlinks=True)
+
+    return dir_to_save
