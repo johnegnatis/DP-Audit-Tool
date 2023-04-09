@@ -2,7 +2,7 @@ import React from "react";
 import { columns } from "./columns";
 import { Table, Button } from "antd";
 
-const ClassTable = ({ title, subtitle, classes, openDrawer }) => {
+const ClassTable = ({ title, subtitle, classes, openDrawer, notes }) => {
   const classList =
     classes &&
     classes.map((classes, index) => {
@@ -12,6 +12,7 @@ const ClassTable = ({ title, subtitle, classes, openDrawer }) => {
     <>
       <h2 className="subtitle">{title}</h2>
       {subtitle && <h3 className="course-info">{subtitle}</h3>}
+      {notes && notes.map((note) => <span>{note}</span>)}
       <Table dataSource={classList} columns={columns} pagination={false} />
       <div className="add-class-button">
         {/* TODO: put options here */}

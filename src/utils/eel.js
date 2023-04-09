@@ -9,3 +9,13 @@ eel.expose(getFilePaths);
 async function getFilePaths(filePath) {
   return await eel.getFilePaths(filePath)();
 }
+
+eel.expose(getPDF);
+async function getPDF() {
+  return await eel.getPDF()();
+}
+
+eel.expose(makeDegreePlan);
+async function makeDegreePlan(studentObject) {
+  return await eel.makeDegreePlan(studentObject)();
+}

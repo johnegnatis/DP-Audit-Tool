@@ -1,4 +1,7 @@
-from objects import Class, Student, StudentEncoder
+try:
+    from scripts.objects import Class, Student, StudentEncoder
+except:
+    from objects import Class, Student, StudentEncoder
 from docx import Document
 from docx.shared import Pt
 from docx.enum.section import WD_SECTION
