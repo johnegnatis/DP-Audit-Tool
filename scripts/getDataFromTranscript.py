@@ -66,17 +66,17 @@ def getDataFromTranscriptMethod(file_path):
                 
                 extractingGradInfo = True
             
-                # FAST TRACK SECTION OCCURS BEFORE TRANSFER
+            # FAST TRACK SECTION OCCURS BEFORE TRANSFER
             elif re.compile(r'^Transfer Credit from UT Dallas Fast Track').match(line):
                 fasttrackCt = 1
                 
-                # TRANSFER SECTION OCCURS BEFORE GRAD RECORD
+            # TRANSFER SECTION OCCURS BEFORE GRAD RECORD
             elif re.compile(r'^Transfer Credit from The University of Texas at Dallas').match(line):
                 fasttrackCt = 0 # fast track classes done, new transfer section in transcript
                 transferOption = ""
                 transferCt = 1
 
-                # HELPER - finds semester_admitted, resets fast_track and transfer (no more past this point)
+            # HELPER - finds semester_admitted, resets fast_track and transfer (no more past this point)
             elif re.compile(r'^Beginning of Graduate Record').match(line):
                 foundSemAdmitted += 1
                 fasttrackCt = 0
@@ -95,7 +95,7 @@ def getDataFromTranscriptMethod(file_path):
                 combined_cumulative_GPA = x[3]
                                     
 
-                # COURSE PREFIX + CODE, COURSE NAME/DESCRIPTION, ATTEMPTED CREDITS, GRADE, TRANSFER/FAST TRACK
+            # COURSE PREFIX + CODE, COURSE NAME/DESCRIPTION, ATTEMPTED CREDITS, GRADE, TRANSFER/FAST TRACK
             elif re.compile(r'^[A-Za-z0-9]+\s[0-9]+ .*').match(line):
                     new_class_col= line.split(" ")
                     course_prefix = " ".join(new_class_col[:1])
@@ -122,13 +122,13 @@ def getDataFromTranscriptMethod(file_path):
             # ADDING TO CLASS OBJECT
             if (course_prefix != "ECSC"): # ignores CS IPP Assignment (+ any other blacklisted classes)
                         
-            # if fasttrack course
+                # if fasttrack course
                 if  (transferOption == "Fast Track"):
                     myClass = Class(course_name, course_num, semester, semester,'fast_track', grade, attempted_credits) 
-                    # if transfer course
+                # if transfer course
                 elif(transferOption == "Transfer"):
                     myClass = Class(course_name, course_num, semester, 'transfer', grade, attempted_credits) 
-                        # if neither
+                # if neither
                 else:
                     myClass = Class(course_name, course_num, semester, '', grade, attempted_credits) 
 
