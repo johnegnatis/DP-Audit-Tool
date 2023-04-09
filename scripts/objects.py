@@ -18,8 +18,10 @@ class Student:
         return dumps(self, cls=StudentEncoder, indent=2)
 
 transferOptions = {
-    'fast_track': 'fastTrack',
-    'transfer': 'transfer',
+    #'fast_track': 'fastTrack',
+    'fast_track': 'Fast Track',
+    'transfer' : 'Transfer',
+    #'transfer': 'transfer',
     '': '',
 }
 
