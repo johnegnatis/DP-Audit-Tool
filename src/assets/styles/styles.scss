@@ -130,3 +130,9 @@ body {
     width: 48%;
   }
 }
+
+.ant-message-info {
+  svg, .anticon-info-circle {
+    display: none;
+  }
+}
