@@ -36,6 +36,10 @@ def getFilePaths():
 def savePDF(fileName):
     return scripts.savePDFMethod(fileName)
 
+@eel.expose
+def designateClasses(studentObject):
+    return scripts.designateClassesMethod(studentObject)
+
 if NO_CONSOLE and getattr(sys, 'frozen', False):
     import pyi_splash
 
