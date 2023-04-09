@@ -10,6 +10,7 @@
 /build
 
 # misc
+__server
 .vscode
 .DS_Store
 .env.local
@@ -17,7 +18,6 @@
 .env.test.local
 .env.production.local
 Senior-Project.spec
-*.pdf
 
 npm-debug.log*
 yarn-debug.log*

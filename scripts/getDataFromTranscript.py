@@ -3,7 +3,7 @@ import pdfplumber
 import json
 try:
     from scripts.objects import Class, Student, StudentEncoder
-except Exception:
+except:
     from objects import Class, Student, StudentEncoder
 import re
 import pandas as pd
@@ -60,6 +60,7 @@ def getDataFromTranscriptMethod(file_path):
             elif re.compile(r'^\d{4}\-\d{2}\-\d{2}\:\s.*Major$').match(line): # STUDENT MAJOR - bypasses undergrad major if necessary
                 x = line.split(" ")
                 major = " ".join(x[1:-1])
+
             
             # TO PREVENT UNDERGRAD INFO FROM BEING EXTRACTED
             if extractingGradInfo==True or re.compile(r'^Beginning of Graduate Record').match(line) or re.compile(r'^Transfer Credit from UT Dallas Fast Track').match(line) or re.compile(r'^Transfer Credit from The University of Texas at Dallas').match(line):
@@ -173,3 +174,4 @@ def getDataFromTranscriptMethod(file_path):
     #function used to debug (remove later)
 # if __name__ == '__main__':
 #     getDataFromTranscriptMethod()
+
