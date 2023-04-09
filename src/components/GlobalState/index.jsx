@@ -1,6 +1,5 @@
 import { createGlobalState } from "react-hooks-global-state";
 import { genericStudent, pages } from "../../utils/constants";
-import { message } from "antd";
 
 const { setGlobalState, useGlobalState } = createGlobalState({
   students: [
@@ -9,16 +8,20 @@ const { setGlobalState, useGlobalState } = createGlobalState({
       student: genericStudent,
     },
   ],
-  selectedId: genericStudent.studentId,
+  selectedId: '',
 });
 
-const getSelectedStudent = () => {
-  const [students] = useGlobalState("students");
-  const [selectedId] = useGlobalState("selectedId");
+const getSelectedStudent = (students, selectedId) => {
   return (
     students &&
     students.find((studentObj) => studentObj.student.studentId === selectedId)
   );
+};
+
+const getSelectedStudentHook = () => {
+  const [students] = useGlobalState("students");
+  const [selectedId] = useGlobalState("selectedId");
+  return getSelectedStudent(students, selectedId);
 };
 
 const changePage = (
@@ -45,4 +48,10 @@ const changePage = (
   setGlobalState("selectedId", student.student.studentId);
 };
 
-export { changePage, useGlobalState, setGlobalState, getSelectedStudent };
+export {
+  changePage,
+  useGlobalState,
+  setGlobalState,
+  getSelectedStudentHook,
+  getSelectedStudent,
+};

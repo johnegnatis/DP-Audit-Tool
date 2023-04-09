@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { getSelectedStudent, useGlobalState } from "../GlobalState";
+import { getSelectedStudentHook, useGlobalState } from "../GlobalState";
 import HomePage from "../HomePage";
 import DegreePlan from "../DegreePlan";
 import PdfPreview from "../PdfPreview";
@@ -9,12 +9,11 @@ import NavigationBar from "../NavigationBar";
 import { message } from "antd";
 
 const Router = () => {
-  const selectedStudent = getSelectedStudent() || null;
+  const selectedStudent = getSelectedStudentHook() || null;
   const currentPage =
     (!!selectedStudent && selectedStudent.page) || pages.homePage;
   const studentId =
     (!!selectedStudent && selectedStudent.student.studentId) || 0;
-
   const component = useMemo(() => {
     switch (currentPage) {
       case pages.homePage:
@@ -29,6 +28,7 @@ const Router = () => {
     }
   }, [currentPage, studentId, selectedStudent]);
 
+// Removes any hanging message on page navigation
   useEffect(() => {
     message.destroy();
   }, [component]);

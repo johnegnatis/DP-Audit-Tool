@@ -26,11 +26,6 @@ const AddClass = ({
     grade,
     setGrade,
   } = useEditClass(null, isSearch);
-  const addClass = {
-    number: "+",
-    name: "New Course",
-    onclickme: () => setIsSearch(false),
-  };
 
   const setSearchClassForAdd = (obj) => {
     setIsSearch(false);
@@ -38,6 +33,11 @@ const AddClass = ({
     setNumber(obj.number);
   };
 
+  const addClass = {
+    number: "+",
+    name: "New Course",
+    onClickMe: () => setSearchClassForAdd({ name: "", number: null }),
+  };
   const onSubmitNewClass = () => {
     handleSubmitAddClass({
       name,
@@ -73,8 +73,8 @@ const AddClass = ({
           return (
             <div
               onClick={
-                !!classID.navigate
-                  ? classID.navigate
+                !!classID.onClickMe
+                  ? classID.onClickMe
                   : () => setSearchClassForAdd(classID)
               }
               className="row"
@@ -90,13 +90,12 @@ const AddClass = ({
   ) : (
     <div className="class-form-root">
       {classes && classes.length > 0 && (
-        <span
-          style={{ color: "blue", cursor: "pointer" }}
-          onClick={() => setIsSearch(true)}
-        >
-          {"< Back to search"}
+        <span className="back" onClick={() => setIsSearch(true)}>
+          {"< Return to search"}
         </span>
       )}
+      <br />
+      <br />
       <div className="row">
         {getSpan("Course Title", false, false)}
         {getForm(name, setName)}
@@ -121,7 +120,7 @@ const AddClass = ({
       </div>
       <div className="button-float-right">
         <Button className="button orange-bg" onClick={onSubmitNewClass}>
-          Add
+          Submit
         </Button>
       </div>
     </div>

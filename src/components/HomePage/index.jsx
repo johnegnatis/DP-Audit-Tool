@@ -141,17 +141,23 @@ const HomePage = () => {
             UTD CS/SE Graduate Advising Degree Plan and Audit Tool
           </div>
           {getUploadBox()}
-          <div className="create-button">
-            <Button
-              onClick={handleCreateDocumentClick}
-              className="button orange-bg"
-              size="large"
-            >
-              CREATE DOCUMENTS
-            </Button>
-          </div>
         </div>
       </div>
+      <footer>
+        <div className="support">
+          <Icon icon={iconNames.question} className="icon orange xs" />
+          <span>Support</span>
+        </div>
+        <div className="create-button">
+          <Button
+            onClick={handleCreateDocumentClick}
+            className="button orange-bg"
+            size="large"
+          >
+            CREATE DOCUMENTS
+          </Button>
+        </div>
+      </footer>
     </>
   );
 };

@@ -1,9 +1,15 @@
 import { Icon } from "@iconify/react";
 import { iconNames } from "../../../../utils/constants";
-import { Popover, Menu } from "antd";
+import { Popover, Menu, Checkbox } from "antd";
 import { useState } from "react";
 
-export const getColumn = ({ onEdit, onMove, onDelete, disabled }) => {
+export const getColumn = ({
+  onEdit,
+  onMove,
+  onDelete,
+  disabled,
+  onLevelingChange,
+}) => {
   const keyToFunctionMapping = {
     1: onEdit,
     2: onMove,
@@ -33,7 +39,7 @@ export const getColumn = ({ onEdit, onMove, onDelete, disabled }) => {
     );
   };
 
-  return [
+  const columns = [
     {
       title: " ",
       width: "5%",
@@ -93,4 +99,28 @@ export const getColumn = ({ onEdit, onMove, onDelete, disabled }) => {
       align: "center",
     },
   ];
+
+  if (onLevelingChange) {
+    columns.push({
+      title: "Leveling",
+      key: "leveling",
+      align: "center",
+      render: (record) => {
+        return (
+          <Checkbox
+            checked={record.leveling}
+            onChange={(e) =>
+              onLevelingChange({
+                checked: e.target.checked,
+                table: record.type,
+                key: record.key,
+              })
+            }
+          />
+        );
+      },
+    });
+  }
+
+  return columns;
 };

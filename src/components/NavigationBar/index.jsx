@@ -1,49 +1,59 @@
-import React, { useState } from "react";
-import { pages } from "../../utils/constants";
-import { useGlobalState, setGlobalState } from "../GlobalState";
-import ConfirmPageSwitch from "./confirmPageSwitch";
+import React, { useMemo, useState } from "react";
+import { iconNames, pages } from "../../utils/constants";
+import {
+  useGlobalState,
+  setGlobalState,
+  getSelectedStudent,
+} from "../GlobalState";
+import ConfirmCloseStudent from "./confirmCloseStudent";
+import { Icon } from "@iconify/react";
 
-const NavigationBar = ({ saveStudentObject }) => {
+const NavigationBar = ({ saveStudentObject, helpButton }) => {
   const [students] = useGlobalState("students");
   const [selectedId] = useGlobalState("selectedId");
-  const [open, setOpen] = useState(false);
-  const [selected, setSelected] = useState("");
+  const selectedStudent = useMemo(
+    () => getSelectedStudent(students, selectedId),
+    [students, selectedId]
+  );
+  const [studentForDelete, setStudentForDelete] = useState(false);
 
   const handlePageSwap = (id) => {
-    const currentStudent = students.find(
-      (studentObj) => studentObj.student.studentId === selectedId
-    );
-
-    if (!currentStudent) {
+    if (!selectedStudent) {
       setGlobalState("selectedId", id);
       return;
     }
 
-    const alreadyOnStudentPage = currentStudent.student.studentId === id;
-    if (alreadyOnStudentPage || currentStudent.page !== pages.degreePlan) {
+    const alreadyOnStudentPage = selectedStudent.student.studentId === id;
+    if (alreadyOnStudentPage || selectedStudent.page !== pages.degreePlan) {
       setGlobalState("selectedId", id);
       return;
     }
-
-    saveStudentObject();
+    saveStudentObject && saveStudentObject();
     setGlobalState("selectedId", id);
-    // setOpen(true);
-    // setSelected(id);
   };
 
-  // const handleConfirmBoxResponse = (response) => {
-  //   if (response === "ok") setGlobalState("selectedId", selected);
-  // };
+  const handleConfirmBoxResponse = (response) => {
+    if (response === "Delete") {
+      const newStudents = [...students].filter(
+        (stud) => stud.student.studentId !== studentForDelete.studentId
+      );
+      setGlobalState("students", newStudents);
+      if (studentForDelete.studentId === selectedId) {
+        setGlobalState("selectedId", "");
+      }
+    }
+    setStudentForDelete(false);
+  };
 
   return (
     <>
-      {/* <ConfirmPageSwitch
-        open={open}
-        setOpen={setOpen}
-        okText="Yes"
-        okType="danger"
+      <ConfirmCloseStudent
+        open={!!studentForDelete}
+        message={`Are you sure you want to delete ${
+          studentForDelete && studentForDelete.name
+        }`}
         handleConfirmBoxResponse={handleConfirmBoxResponse}
-      /> */}
+      />
       <header className="navigation-bar">
         <div
           className={`plus-icon ${!!selectedId && "selected-id"}`}
@@ -63,13 +73,19 @@ const NavigationBar = ({ saveStudentObject }) => {
                 onClick={() => handlePageSwap(studentId)}
               >
                 <span>{name}</span>
+                <Icon
+                  icon={iconNames.close}
+                  onClick={() => setStudentForDelete({ name, studentId })}
+                />
               </div>
             );
           })}
         </nav>
-        <div className="help-icon">
-          <span>?</span>
-        </div>
+        {helpButton && (
+          <div className="help-icon">
+            <span>?</span>
+          </div>
+        )}
       </header>
     </>
   );
