@@ -68,7 +68,7 @@ def mockStudent(unsure = False):
             Class('Operating System Concepts', 'CS 5348', '', '', '', '', 'unsure'),
             Class('Probability & Statistics in CS<<', 'CS 3341<<','', '', '*** A- ***', '', 'unsure'),
         ]
-        return Student('Lasso, Ted', 2021504218, False, False, '21F', '', classes, '')
+        return Student('Lasso, Ted', 2021504218, False, False, '21F', '', classes, 'Data Science')
     else:
         classes = [
             Class('Statistical Methods for Data Sciences', 'CS 6313', '22S', '', 'A', '', 'core'),
