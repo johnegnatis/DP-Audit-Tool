@@ -1,10 +1,12 @@
+
 import pdfplumber
 import json
-#from objects import Class, Student, StudentEncoder
-from scripts.objects import Class, Student, StudentEncoder
+try:
+    from scripts.objects import Class, Student, StudentEncoder
+except Exception:
+    from objects import Class, Student, StudentEncoder
 import re
 import pandas as pd
-# from tkinter import filedialog
 from collections import namedtuple
 
 
@@ -49,15 +51,15 @@ def getDataFromTranscriptMethod(file_path):
             line = " ".join(line.split())
             if re.compile(r'^Name').match(line): # STUDENT NAME
                 name = line.split(" ")
-                student_name = " ".join(name[1:len(name)])
+                student_name = " ".join(name[1:])
                 
-            if re.compile(r'^Student ID').match(line): # STUDENT ID
+            elif re.compile(r'^Student ID').match(line): # STUDENT ID
                 id = line.split(" ")
                 student_id = "".join(id[2])
             
-            if re.compile(r'^\d{4}\-\d{2}\-\d{2}\:\s.*Major$').match(line): # STUDENT MAJOR - bypasses undergrad major if necessary
+            elif re.compile(r'^\d{4}\-\d{2}\-\d{2}\:\s.*Major$').match(line): # STUDENT MAJOR - bypasses undergrad major if necessary
                 x = line.split(" ")
-                major = " ".join(x[1:len(x) - 1])
+                major = " ".join(x[1:-1])
             
             # TO PREVENT UNDERGRAD INFO FROM BEING EXTRACTED
             if extractingGradInfo==True or re.compile(r'^Beginning of Graduate Record').match(line) or re.compile(r'^Transfer Credit from UT Dallas Fast Track').match(line) or re.compile(r'^Transfer Credit from The University of Texas at Dallas').match(line):
@@ -65,75 +67,76 @@ def getDataFromTranscriptMethod(file_path):
                 extractingGradInfo = True
             
                 # FAST TRACK SECTION OCCURS BEFORE TRANSFER
-                if re.compile(r'^Transfer Credit from UT Dallas Fast Track').match(line):
-                    fasttrackCt = 1
+            elif re.compile(r'^Transfer Credit from UT Dallas Fast Track').match(line):
+                fasttrackCt = 1
                 
                 # TRANSFER SECTION OCCURS BEFORE GRAD RECORD
-                if re.compile(r'^Transfer Credit from The University of Texas at Dallas').match(line):
-                    fasttrackCt = 0 # fast track classes done, new transfer section in transcript
-                    transferOption = ""
-                    transferCt = 1
+            elif re.compile(r'^Transfer Credit from The University of Texas at Dallas').match(line):
+                fasttrackCt = 0 # fast track classes done, new transfer section in transcript
+                transferOption = ""
+                transferCt = 1
 
                 # HELPER - finds semester_admitted, resets fast_track and transfer (no more past this point)
-                if re.compile(r'^Beginning of Graduate Record').match(line):
-                    foundSemAdmitted += 1
-                    fasttrackCt = 0
-                    transferCt = 0
-                    transferOption = ""
+            elif re.compile(r'^Beginning of Graduate Record').match(line):
+                foundSemAdmitted += 1
+                fasttrackCt = 0
+                transferCt = 0
+                transferOption = ""
 
-                if re.compile(r'^\d{4}\s').match(line): # SEMESTER + SEMESTER ADMITTED
-                    if foundSemAdmitted == 1:
-                        semester_admitted = line
-                        semester_admitted = semester_admitted[2:4] + "" + semester_admitted[5]
-                        foundSemAdmitted = 0
-                    semester = line[2:4] + line[5]
+            elif re.compile(r'^\d{4}\s').match(line): # SEMESTER + SEMESTER ADMITTED
+                if foundSemAdmitted == 1:
+                    semester_admitted = line
+                    semester_admitted = semester_admitted[2:4] + "" + semester_admitted[5]
+                    foundSemAdmitted = 0
+                semester = line[2:4] + line[5]
             
-                if re.compile(r'^Combined Cum GPA').match(line): # TOTAL COMBINED COMULATIVE GPA
-                    x = line.split(" ")
-                    combined_cumulative_GPA = x[3]
+            elif re.compile(r'^Combined Cum GPA').match(line): # TOTAL COMBINED COMULATIVE GPA
+                x = line.split(" ")
+                combined_cumulative_GPA = x[3]
+                                    
 
                 # COURSE PREFIX + CODE, COURSE NAME/DESCRIPTION, ATTEMPTED CREDITS, GRADE, TRANSFER/FAST TRACK
-                if re.compile(r'^[A-Za-z0-9]+\s[0-9]+ .*').match(line):
+            elif re.compile(r'^[A-Za-z0-9]+\s[0-9]+ .*').match(line):
                     new_class_col= line.split(" ")
-                    course_prefix = " ".join(new_class_col[0:1])
+                    course_prefix = " ".join(new_class_col[:1])
                     course_code = " ".join(new_class_col[1:2])
-                    course_num = " ".join(new_class_col[0:2])
+                    course_num = " ".join(new_class_col[:2])
 
-                    if(transferCt == 1):
+            if(transferCt == 1):
                         fasttrackCt = 0 # no more fast track classes
                         transferOption = "Transfer"
                         
-                    if (fasttrackCt == 1):
-                        transferOption = "Fast Track"
+            if (fasttrackCt == 1):
+                transferOption = "Fast Track"
 
-                    temp = new_class_col[(len(new_class_col)-4)]
-                    if( not(temp[0] == "3" or temp[0]=="0" or temp[0]=="1") ): # if grade is blank (class is being currently attempted)
+            temp = new_class_col[(len(new_class_col)-4)]
+            if temp[0] not in ["3", "0", "1"]: # if grade is blank (class is being currently attempted)
                         course_name = " ".join(new_class_col[2:len(new_class_col)-3])
                         grade = ""
                         attempted_credits = "".join(new_class_col[(len(new_class_col)-3):(len(new_class_col)-2)])
-                    else: # if grade is not blank
-                        course_name = " ".join(new_class_col[2:len(new_class_col)-4])
-                        grade = "".join(new_class_col[(len(new_class_col)-2):(len(new_class_col)-1)])
-                        attempted_credits = "".join(new_class_col[(len(new_class_col)-4):(len(new_class_col)-3)])
+            else: # if grade is not blank
+                course_name = " ".join(new_class_col[2:len(new_class_col)-4])
+                grade = "".join(new_class_col[len(new_class_col)-2:-1])
+                attempted_credits = "".join(new_class_col[(len(new_class_col)-4):(len(new_class_col)-3)])
                     
-                    # ADDING TO CLASS OBJECT
-                    if(course_prefix != "ECSC"): # ignores CS IPP Assignment (+ any other blacklisted classes)
+            # ADDING TO CLASS OBJECT
+            if (course_prefix != "ECSC"): # ignores CS IPP Assignment (+ any other blacklisted classes)
                         
-                        # if transfer course
-                        if(transferOption == "Transfer"):
-                            myClass = Class(course_name, course_num, semester, 'transfer', grade, attempted_credits) 
-                        # if fast_track course
-                        elif(transferOption == "Fast Track"):
-                            myClass = Class(course_name, course_num, semester, 'fast_track', grade, attempted_credits) 
+            # if fasttrack course
+                if  (transferOption == "Fast Track"):
+                    myClass = Class(course_name, course_num, semester, semester,'fast_track', grade, attempted_credits) 
+                    # if transfer course
+                elif(transferOption == "Transfer"):
+                    myClass = Class(course_name, course_num, semester, 'transfer', grade, attempted_credits) 
                         # if neither
-                        else:
-                            myClass = Class(course_name, course_num, semester, '', grade, attempted_credits) 
+                else:
+                    myClass = Class(course_name, course_num, semester, '', grade, attempted_credits) 
 
-                        classes.append(myClass)
-                        line_items.append(data(semester, course_prefix, course_code, course_name, attempted_credits, grade, transferOption))
+                classes.append(myClass)
+                line_items.append(data(semester, course_prefix, course_code, course_name, attempted_credits, grade, transferOption))
                     
-                    else:
-                        blacklist.append(data(semester, course_prefix, course_code, course_name, attempted_credits, grade, transferOption))
+            else:
+                blacklist.append(data(semester, course_prefix, course_code, course_name, attempted_credits, grade, transferOption))
         
         # ------------ section will be removed later (for debugging)
         df = pd.DataFrame(line_items)
@@ -150,12 +153,20 @@ def getDataFromTranscriptMethod(file_path):
         return studentObj.packStudentObject()
 
     except IOError as ex:
-        print ('IOError thrown. Details: ' + ' %s' % ex)
-        # If file cannot be opened, IOError is thrown as well, so exit the function to avoid calling "f.close()" in "finally"
+        print ('IOError thrown. File not found. Details: {ex}')
+        # If file cannot be opened, IOError is thrown to exit the function
     except ConnectionError as ex:
-        print ('ConnectionError thrown. Details: ' + ' %s' % ex)
+        print ('ConnectionError thrown. Details: {ex}')
     except Exception as e:
-            print (e)
+        print (e)
+    # except ValueError:
+    #     print("Not valid. Please try again.")
+    # except OSError as e:
+    #     print(f"Unable to open.")
+    # except SyntaxError:
+    #     print("Student ID not found.")
+    except:
+        print("Wrong input")
     else:
         pdf.close()
 
