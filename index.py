@@ -25,8 +25,8 @@ def makeDegreePlan(studentObject):
     return scripts.makeDegreePlanMethod(studentObject)
 
 @eel.expose
-def DoAudit(studentObject):
-    scripts.doAuditMethod(studentObject)
+def doAudit(studentObject):
+    return scripts.doAuditMethod(studentObject)
 
 @eel.expose
 def getFilePaths():

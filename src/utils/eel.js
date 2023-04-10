@@ -24,3 +24,8 @@ eel.expose(designateClasses);
 async function designateClasses(studentObject) {
   return await eel.designateClasses(studentObject)();
 }
+
+eel.expose(doAudit);
+async function doAudit(studentObject) {
+  return await eel.doAudit(studentObject)();
+}

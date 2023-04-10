@@ -7,7 +7,12 @@ import { changePage, useGlobalState } from "../GlobalState";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 import NavigationBar from "../NavigationBar";
 import { eel } from "../../utils/eel";
-import { sendError, sendSuccess } from "../../utils/methods";
+import {
+  sendError,
+  sendLoading,
+  sendSuccess,
+  sendWarning,
+} from "../../utils/methods";
 
 export default function PdfPreview() {
   const [studentList] = useGlobalState("students");
@@ -28,9 +33,25 @@ export default function PdfPreview() {
         sendSuccess(`PDF saved to ${result} as ${pdfName}`);
       })
       .catch((e) => {
-      sendError("PDF could not be saved.");
-      console.error(e);
-    });
+        sendError("PDF could not be saved.");
+        console.error(e);
+      });
+  };
+  const handleDownloadAuditReport = () => {
+    const key = "waiting";
+    sendLoading("Waiting on Audit Creation", key);
+    eel
+      .doAudit(studentObj.student)()
+      .then((result) => {
+        if (!result) {
+          sendWarning("Canceled", key);
+        } else {
+          sendSuccess("Audit Report Saved at " + result, key);
+        }
+      })
+      .catch((e) => {
+        sendError("Audit Report Unsuccessful", key);
+      });
   };
   const [path, setPath] = useState("");
   const [resetSignal, setResetSignal] = useState(false);
@@ -108,14 +129,14 @@ export default function PdfPreview() {
               size="large"
             >
               <Icon icon={iconNames.import} className="icon xxs grey" />
-              <span>Save PDF</span>
+              <span>Download PDF</span>
             </Button>
             <Button
-              onClick={() => {}}
+              onClick={() => handleDownloadAuditReport()}
               className="button orange-bg"
               size="large"
             >
-              Continue to Audit Report
+              Download Audit Report
             </Button>
           </div>
         </footer>

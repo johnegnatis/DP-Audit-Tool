@@ -4,7 +4,7 @@ import { Icon } from "@iconify/react";
 import { iconNames, pages } from "../../utils/constants";
 import React, { useCallback, useState } from "react";
 import { eel } from "../../utils/eel";
-import { extractErrorMessage } from "../../utils/methods";
+import { sendError } from "../../utils/methods";
 import { useGlobalState, setGlobalState } from "../GlobalState";
 import { getEelResponse } from "./apiHelper";
 import NavigationBar from "../NavigationBar";
@@ -33,6 +33,7 @@ const HomePage = () => {
         );
         setNegativeIndex((num) => num - promises.length);
         Promise.all(promises).then((students) => {
+          const fails = [];
           const fileStudentsToAdd = [];
           students &&
             students.forEach((studentObj, index) => {
@@ -42,6 +43,7 @@ const HomePage = () => {
                   status: "error",
                   student: null,
                 });
+                fails.push(fileList[index]);
               } else {
                 fileStudentsToAdd.push({
                   file: fileList[index],
@@ -52,22 +54,40 @@ const HomePage = () => {
             });
           setFileStudentList((arr) => [...fileStudentsToAdd, ...arr]);
           setLoading(false);
+          if (fails.length > 0) {
+            sendError(
+              <div style={{ minWidth: "650px" }}>
+                <h3>The following file uploads were unsuccessful:</h3>
+                <ol>
+                  {fails.map((filename) => {
+                    const parts = filename.split("/");
+                    const fileName = parts[parts.length - 1];
+                    return (
+                      <li style={{ textAlign: "left", fontSize: "14px" }}>
+                        {fileName}
+                      </li>
+                    );
+                  })}
+                </ol>
+              </div>
+            );
+          }
         });
       });
   }, [loading, eel, negativeIndex, setLoading]);
 
   const handleCreateDocumentClick = () => {
-    const tempStudents = fileStudentList.map((obj) => {
-      if (obj.student) return obj.student;
-    });
+    const tempStudents = fileStudentList
+      .filter(
+        (obj) => obj.student && obj.student !== null && obj.status !== "error"
+      )
+      .map((obj) => obj.student);
     setGlobalState("students", [...tempStudents, ...globalStudents]);
-    if (
-      tempStudents &&
-      tempStudents.length > 0 &&
-      tempStudents[0].student &&
-      tempStudents[0].student.studentId
-    ) {
+    console.log(tempStudents);
+    if (tempStudents && tempStudents.length > 0) {
       setGlobalState("selectedId", tempStudents[0].student.studentId);
+    } else {
+      sendError("No PDFs were successfully parsed");
     }
   };
 
@@ -105,7 +125,7 @@ const HomePage = () => {
               );
             return (
               <span className="file-element border" key={index}>
-                <Icon icon={iconNames.checkbox} className="icon orange small" />
+                {status}
                 <span>{fileName}</span>
                 <Icon
                   icon={iconNames.trash}

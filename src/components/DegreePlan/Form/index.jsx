@@ -50,6 +50,7 @@ const Form = ({
     pdfName,
     setPdfName,
   } = props;
+  const disableSubmitButton = !(track && name && studentId && admittedDate && graduationDate)
   const [trackFormOpen, setTrackFormOpen] = useState(!track);
   const fullLayout = [
     {
@@ -211,7 +212,7 @@ const Form = ({
             onClick={generatePDF}
             className="button orange-bg"
             size="large"
-            disabled={allDisabled}
+            disabled={allDisabled || disableSubmitButton}
           >
             Preview Degree Plan
           </Button>

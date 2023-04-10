@@ -41,6 +41,8 @@ def open_database():
             f = open(test_dev)
     return json.load(f)
 
+
+# TODO: test on class ID, not on name
 def find_add_classes(newClasses, classList, typeList, typeKey):
     found = False
     for j in range(0, len(typeList)):

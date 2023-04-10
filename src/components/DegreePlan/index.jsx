@@ -16,6 +16,10 @@ import {
 import NavigationBar from "../NavigationBar";
 
 const DegreePlan = ({ student }) => {
+
+  // TODO: required must be filled before continue
+  // TODO: on click leveling, open up menu to select options 'completed, required:... see objects.py
+
   // STUDENT OBJ LOGIC
   const [students] = useGlobalState("students");
   const formProps = useStudentObject(student);

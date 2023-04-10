@@ -14,6 +14,11 @@ export const sendError = (content, key = null) => {
 export const sendWarning = (content, key = null) => {
   message.open({ type: "warning", content, key });
 };
+
+export const sendLoading = (content, key = null) => {
+  message.open({ type: "loading", content, duration: 0, key });
+};
+
 export const sendWaiting = (content, key, cleanup) => {
   message.open({
     key,

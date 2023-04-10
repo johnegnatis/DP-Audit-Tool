@@ -19,11 +19,20 @@ def savePDFMethod(file_name):
     root.wm_attributes('-topmost', 1)
 
     # destination
-    dir_to_save = filedialog.askdirectory(title="Select Place To Save PDF")
+    dir_to_save = getDirectory("Save Degree Plan")
 
     # source
     file_path = get_server_path() + '/' + file_name
 
     copy2(file_path, dir_to_save, follow_symlinks=True)
 
+    return dir_to_save
+
+def getDirectory(message):
+    root = Tk()
+    root.withdraw()
+    root.wm_attributes('-topmost', 1)
+
+    # destination
+    dir_to_save = filedialog.askdirectory(title=message)
     return dir_to_save
