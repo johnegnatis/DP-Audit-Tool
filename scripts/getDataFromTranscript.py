@@ -148,7 +148,7 @@ def getDataFromTranscriptMethod(file_path):
         print(df)
         print(df2)
         # ------------ name, studentId, fastTrack, thesis, admitted_date, expected_graduation, classes
-        studentObj = Student(student_name, student_id, True, False, semester_admitted, '1/1/2023', classes)
+        studentObj = Student(student_name, student_id, True, False, semester_admitted, '', classes)
         return studentObj.packStudentObject()
 
     except IOError as ex:

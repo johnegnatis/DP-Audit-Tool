@@ -1,9 +1,9 @@
 import React from "react";
-import { getForm } from "../inputComponents";
-import { getSpan } from "../gridLayout";
+import { getForm } from "../Form/inputComponents";
+import { getSpan } from "../Form/gridLayout";
 import { Button } from "antd";
-import { useEditClass } from "../../hook";
-import { getNumberForm } from "../inputComponents";
+import { useEditClass } from "../../Hooks/degreePlanHooks";
+import { getNumberForm } from "../Form/inputComponents";
 const EditClass = ({ handleSubmit, classObj }) => {
   const {
     name,

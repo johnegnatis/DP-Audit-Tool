@@ -29,3 +29,8 @@ eel.expose(doAudit);
 async function doAudit(studentObject) {
   return await eel.doAudit(studentObject)();
 }
+
+eel.expose(getFrontendOptions);
+async function getFrontendOptions() {
+  return await eel.getFrontendOptions()();
+}

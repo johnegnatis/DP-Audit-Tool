@@ -3,7 +3,7 @@ import { iconNames } from "../../../utils/constants";
 import react, { useMemo, useState } from "react";
 import { getSpan } from "../Form/gridLayout";
 import { getForm, getNumberForm } from "../Form/inputComponents";
-import { useEditClass } from "../hook";
+import { useEditClass } from "../../Hooks/degreePlanHooks";
 import { Button } from "antd";
 
 const AddClass = ({
@@ -55,7 +55,7 @@ const AddClass = ({
         obj.name.includes(searchInput.toUpperCase())
     );
     return [addClass, ...filtered];
-  }, [searchInput]);
+  }, [searchInput, classes]);
 
   const onInputChange = (e) => {
     setSearchInput(e.target.value);

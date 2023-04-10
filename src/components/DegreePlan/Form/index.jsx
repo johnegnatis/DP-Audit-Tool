@@ -1,20 +1,13 @@
-import {
-  getNumberForm,
-  getForm,
-  getRadio,
-} from "./inputComponents";
+import { getNumberForm, getForm, getRadio } from "./inputComponents";
 import { formatGrid, formatHalfGrid, getSpan } from "./gridLayout";
 import { Button } from "antd";
-import {
-  defaultSearchOptions,
-  tableTypes,
-  tracks,
-} from "../../../utils/constants";
+import { tableTypes } from "../../../utils/constants";
 import ClassTable from "./Table";
 import SelectTrack from "../TrackForm";
 import { useState, useMemo } from "react";
 
 const Form = ({
+  classOptions,
   allDisabled,
   props,
   setAddClassDrawerOpen,
@@ -27,6 +20,7 @@ const Form = ({
   handleMoveToTopClick,
   handleSelectTrack,
   handleLevelingChange,
+  trackOptions,
 }) => {
   const {
     track,
@@ -50,7 +44,8 @@ const Form = ({
     pdfName,
     setPdfName,
   } = props;
-  const disableSubmitButton = !(track && name && studentId && admittedDate && graduationDate)
+  const { coreOptions, followingOptions, prerequisiteOptions } = classOptions;
+  const disableSubmitButton = !(track && name && studentId && admittedDate && graduationDate);
   const [trackFormOpen, setTrackFormOpen] = useState(!track);
   const fullLayout = [
     {
@@ -88,7 +83,6 @@ const Form = ({
   const sharedTableDependencies = [
     tableTypes,
     allDisabled,
-    defaultSearchOptions,
     selectedRow,
     setAddClassDrawerOpen,
     setClassForEdit,
@@ -105,9 +99,7 @@ const Form = ({
         title="Core Courses"
         allDisabled={allDisabled}
         classes={core}
-        openAddClassDrawer={() =>
-          setAddClassDrawerOpen(tableTypes.core, defaultSearchOptions)
-        }
+        openAddClassDrawer={() => setAddClassDrawerOpen(tableTypes.core, coreOptions)}
         setClassForEdit={setClassForEdit}
         setClassForMove={setClassForMove}
         handleMoveClick={handleMoveClick}
@@ -116,7 +108,7 @@ const Form = ({
         selectedRow={selectedRow}
       />
     ),
-    [core, ...sharedTableDependencies]
+    [core, coreOptions, ...sharedTableDependencies]
   );
   const followingTable = useMemo(
     () => (
@@ -126,9 +118,7 @@ const Form = ({
         subtitle=""
         allDisabled={allDisabled}
         classes={following}
-        openAddClassDrawer={() =>
-          setAddClassDrawerOpen(tableTypes.following, defaultSearchOptions)
-        }
+        openAddClassDrawer={() => setAddClassDrawerOpen(tableTypes.following, followingOptions)}
         setClassForEdit={setClassForEdit}
         setClassForMove={setClassForMove}
         handleMoveClick={handleMoveClick}
@@ -137,7 +127,7 @@ const Form = ({
         selectedRow={selectedRow}
       />
     ),
-    [following, ...sharedTableDependencies]
+    [following, followingOptions, ...sharedTableDependencies]
   );
   const electiveTable = useMemo(
     () => (
@@ -147,9 +137,7 @@ const Form = ({
         subtitle=""
         allDisabled={allDisabled}
         classes={elective}
-        openAddClassDrawer={() =>
-          setAddClassDrawerOpen(tableTypes.electives, [])
-        }
+        openAddClassDrawer={() => setAddClassDrawerOpen(tableTypes.electives, [])}
         setClassForEdit={setClassForEdit}
         setClassForMove={setClassForMove}
         handleMoveClick={handleMoveClick}
@@ -168,9 +156,7 @@ const Form = ({
         subtitle=""
         allDisabled={allDisabled}
         classes={prerequisites}
-        openAddClassDrawer={() =>
-          setAddClassDrawerOpen(tableTypes.prerequisites, defaultSearchOptions)
-        }
+        openAddClassDrawer={() => setAddClassDrawerOpen(tableTypes.prerequisites, prerequisiteOptions)}
         setClassForEdit={setClassForEdit}
         setClassForMove={setClassForMove}
         handleMoveClick={handleMoveClick}
@@ -180,7 +166,7 @@ const Form = ({
         onLevelingChange={handleLevelingChange}
       />
     ),
-    [prerequisites, ...sharedTableDependencies]
+    [prerequisites, prerequisiteOptions, ...sharedTableDependencies]
   );
 
   return (
@@ -190,7 +176,7 @@ const Form = ({
         setTrack={setTrack}
         handleConfirmTrack={handleConfirmTrack}
         open={trackFormOpen}
-        options={tracks}
+        options={trackOptions}
       />
       <h1 className="title">Degree Plan</h1>
       <div className="general-info">
@@ -208,12 +194,7 @@ const Form = ({
           {getForm(signature, setSignature, allDisabled)}
         </div> */}
         <div className="generate-button">
-          <Button
-            onClick={generatePDF}
-            className="button orange-bg"
-            size="large"
-            disabled={allDisabled || disableSubmitButton}
-          >
+          <Button onClick={generatePDF} className="button orange-bg" size="large" disabled={allDisabled || disableSubmitButton}>
             Preview Degree Plan
           </Button>
         </div>

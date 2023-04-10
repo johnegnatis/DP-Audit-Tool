@@ -1,6 +1,6 @@
 import { Icon } from "@iconify/react";
 import { iconNames } from "../../../../utils/constants";
-import { Popover, Menu, Checkbox } from "antd";
+import { Popover, Tooltip, Menu, Checkbox } from "antd";
 import { useState } from "react";
 
 export const getColumn = ({
@@ -33,7 +33,7 @@ export const getColumn = ({
         items={[
           { label: "Edit", key: 1 },
           { label: "Move", key: 2 },
-          { label: "Delete", key: 3, className: "red-text" }, // TODO: delete is RED
+          { label: "Delete", key: 3, className: "red-text" },
         ]}
       />
     );
@@ -107,16 +107,18 @@ export const getColumn = ({
       align: "center",
       render: (record) => {
         return (
-          <Checkbox
-            checked={record.leveling}
-            onChange={(e) =>
-              onLevelingChange({
-                checked: e.target.checked,
-                table: record.type,
-                key: record.key,
-              })
-            }
-          />
+          <Tooltip placement="right" title={record.leveling || 'Click to make leveling course'}>
+            <Checkbox
+              checked={!!record.leveling}
+              onChange={(e) =>
+                onLevelingChange({
+                  checked: e.target.checked,
+                  table: record.type,
+                  key: record.key,
+                })
+              }
+            />
+          </Tooltip>
         );
       },
     });

@@ -7,19 +7,21 @@ import { pages } from "../../utils/constants";
 import { eel } from "../../utils/eel";
 import NavigationBar from "../NavigationBar";
 import { message } from "antd";
+import { useDatabase } from "../Hooks/databaseHooks";
 
 const Router = () => {
   const selectedStudent = getSelectedStudentHook() || null;
-  const currentPage =
-    (!!selectedStudent && selectedStudent.page) || pages.homePage;
-  const studentId =
-    (!!selectedStudent && selectedStudent.student.studentId) || 0;
+  const currentPage = (!!selectedStudent && selectedStudent.page) || pages.homePage;
+  const studentId = (!!selectedStudent && selectedStudent.student.studentId) || 0;
+
+  const databaseProps = useDatabase()
+
   const component = useMemo(() => {
     switch (currentPage) {
       case pages.homePage:
         return <HomePage />;
       case pages.degreePlan:
-        return <DegreePlan key={studentId} student={selectedStudent.student} />;
+        return <DegreePlan key={studentId} student={selectedStudent.student} databaseProps={databaseProps} />;
       case pages.pdfPreview:
         return <PdfPreview key={studentId} student={selectedStudent.student} />;
       case pages.notFound:
@@ -28,7 +30,7 @@ const Router = () => {
     }
   }, [currentPage, studentId, selectedStudent]);
 
-// Removes any hanging message on page navigation
+  // Removes any hanging message on page navigation
   useEffect(() => {
     message.destroy();
   }, [component]);

@@ -42,9 +42,7 @@ export function useStudentObject(student) {
     setName(student.name || "");
     setStudentId(student.studentId || -1);
     setAdmittedDate((student.dates && student.dates.admitted) || "");
-    setGraduationDate(
-      (student.dates && student.dates.expected_graduation) || ""
-    );
+    setGraduationDate((student.dates && student.dates.expected_graduation) || "");
     setFastTrack((student.options && student.options.fastTrack) || false);
     setThesis((student.options && student.options.thesis) || false);
     setSearchInput("");

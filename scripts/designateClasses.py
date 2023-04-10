@@ -1,9 +1,11 @@
 try:
     from scripts.objects import Class, Student, mockStudent, json_to_student
     from scripts.helpers import tree_printer
+    from scripts.database import open_database
 except:
     from objects import Class, Student, mockStudent, json_to_student
     from helpers import tree_printer
+    from database import open_database
 import json
 import pandas as pd
 import numpy as np
@@ -26,21 +28,6 @@ def type_key(obj):
         return types.index(obj.type)
     except ValueError:
         return types.index('')
-
-def open_database():
-    base_prod = './build/database.json'
-    base_dev = './public/database.json'
-    test_dev = '../public/database.json'
-
-    try:
-        f = open(base_prod)
-    except:
-        try:
-            f = open(base_dev)
-        except:
-            f = open(test_dev)
-    return json.load(f)
-
 
 # TODO: test on class ID, not on name
 def find_add_classes(newClasses, classList, typeList, typeKey):

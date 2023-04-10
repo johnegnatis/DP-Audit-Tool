@@ -21,15 +21,31 @@ export const pages = {
   notFound: "not-found",
 };
 
-export const defaultSearchOptions = [
-  { number: "CS6314", name: "WEB PROGRAMMING LANGUAGES" },
-  { number: "CS6363", name: "DESIGN & ANALYS-COMP ALGORITHM" },
-  { number: "CS6375", name: "MACHINE LEARNING" },
-  { number: "CS6320", name: "NATURAL LANGUAGE PROCESSING" },
-  { number: "CS6322", name: "INFORMATION RETRIEVAL" },
-  { number: "CS6360", name: "DATABASE DESIGN" },
-  { number: "CS6364", name: "ARTIFICIAL INTELLIGENCE" },
-];
+export const levelingOptions = [
+  {
+    label: "Completed",
+    key: "2",
+  },
+  {
+    label: "Waived",
+    key: "3",
+  },
+  {
+    label: "Not required by plan or electives",
+    key: "4",
+  },
+  {
+    label: "Other",
+    key: "5",
+  },
+]
+export const levelingMap = {
+  none: 'None',
+  completed: 'Completed',
+  waived: 'Waived',
+  notRequired: 'Not required by plan or electives',
+  other: 'Other',
+}
 
 export const tableTypes = {
   core: 'core',
@@ -44,41 +60,6 @@ export const tableNames = {
   electives: 'Approved 6000 Level Courses',
   prerequisites: 'Prerequisites',
 }
-
-export const tracks = [
-  {
-    label: "Data Science",
-    key: "1",
-  },
-  {
-    label: "Intelligent Systems",
-    key: "2",
-  },
-  {
-    label: "Interactive Computing",
-    key: "3",
-  },
-  {
-    label: "Networks and Telecommunication",
-    key: "4",
-  },
-  {
-    label: "Software Engineering",
-    key: "5",
-  },
-  {
-    label: "Systems",
-    key: "6",
-  },
-  {
-    label: "Traditional",
-    key: "7",
-  },
-  {
-    label: "Cyber Security",
-    key: "8",
-  },
-];
 
 export const genericStudent = {
   name: "Generic Student",
@@ -100,7 +81,7 @@ export const genericStudent = {
       grade: "A",
       attempted_credits: "",
       type: "core",
-      leveling: false,
+      leveling: '',
     },
     {
       name: "Big Data Management and Analytics",
@@ -110,7 +91,7 @@ export const genericStudent = {
       grade: "B+",
       attempted_credits: "",
       type: "core",
-      leveling: false,
+      leveling: '',
     },
     {
       name: "Design and Analysis of Computer Algorithms",
@@ -120,7 +101,7 @@ export const genericStudent = {
       grade: "A-",
       attempted_credits: "",
       type: "core",
-      leveling: false,
+      leveling: '',
     },
     {
       name: "Machine Learning",
@@ -130,7 +111,7 @@ export const genericStudent = {
       grade: "A",
       attempted_credits: "",
       type: "core",
-      leveling: false,
+      leveling: '',
     },
     {
       name: "Social Network Analytics",
@@ -140,7 +121,7 @@ export const genericStudent = {
       grade: "",
       attempted_credits: "",
       type: "following",
-      leveling: false,
+      leveling: '',
     },
     {
       name: "Natural Language Processing",
@@ -150,7 +131,7 @@ export const genericStudent = {
       grade: "",
       attempted_credits: "",
       type: "following",
-      leveling: false,
+      leveling: '',
     },
     {
       name: "Video Analytics",
@@ -160,7 +141,7 @@ export const genericStudent = {
       grade: "",
       attempted_credits: "",
       type: "following",
-      leveling: false,
+      leveling: '',
     },
     {
       name: "Statistics for Machine Learning",
@@ -170,7 +151,7 @@ export const genericStudent = {
       grade: "",
       attempted_credits: "",
       type: "following",
-      leveling: false,
+      leveling: '',
     },
     {
       name: "Database Design",
@@ -180,7 +161,7 @@ export const genericStudent = {
       grade: "A-",
       attempted_credits: "",
       type: "following",
-      leveling: false,
+      leveling: '',
     },
     {
       name: "Virtual Reality",
@@ -190,7 +171,7 @@ export const genericStudent = {
       grade: "B",
       attempted_credits: "",
       type: "electives",
-      leveling: false,
+      leveling: '',
     },
     {
       name: "Theory of Computation",
@@ -200,7 +181,7 @@ export const genericStudent = {
       grade: "A",
       attempted_credits: "",
       type: "electives",
-      leveling: false,
+      leveling: '',
     },
     {
       name: "Natural Language Processing",
@@ -210,7 +191,7 @@ export const genericStudent = {
       grade: "A",
       attempted_credits: "",
       type: "electives",
-      leveling: false,
+      leveling: '',
     },
     {
       name: "Network Security",
@@ -220,7 +201,7 @@ export const genericStudent = {
       grade: "",
       attempted_credits: "",
       type: "electives",
-      leveling: false,
+      leveling: '',
     },
     {
       name: "Sftwr Test/Validatn/Verificatn",
@@ -230,7 +211,7 @@ export const genericStudent = {
       grade: "",
       attempted_credits: "",
       type: "electives",
-      leveling: false,
+      leveling: '',
     },
     {
       name: "Software Maint Evolut & Re-Eng",
@@ -240,7 +221,7 @@ export const genericStudent = {
       grade: "",
       attempted_credits: "",
       type: "electives",
-      leveling: false,
+      leveling: '',
     },
     {
       name: "Computer Science I",
@@ -250,7 +231,7 @@ export const genericStudent = {
       grade: "",
       attempted_credits: "",
       type: "electives",
-      leveling: false,
+      leveling: '',
     },
     {
       name: "Computer Science II",
@@ -260,7 +241,7 @@ export const genericStudent = {
       grade: "",
       attempted_credits: "",
       type: "prerequisites",
-      leveling: true,
+      leveling: levelingMap.notRequired,
     },
     {
       name: "Discrete Structures",
@@ -270,7 +251,7 @@ export const genericStudent = {
       grade: "",
       attempted_credits: "",
       type: "prerequisites",
-      leveling: false,
+      leveling: '',
     },
     {
       name: "Algorithm Analysis & Data Structures",
@@ -280,7 +261,7 @@ export const genericStudent = {
       grade: "",
       attempted_credits: "",
       type: "prerequisites",
-      leveling: true,
+      leveling: levelingMap.waived,
     },
     {
       name: "Operating System Concepts",
@@ -290,7 +271,7 @@ export const genericStudent = {
       grade: "",
       attempted_credits: "",
       type: "prerequisites",
-      leveling: true,
+      leveling: levelingMap.completed,
     },
     {
       name: "Probability & Statistics in CS<<",
@@ -300,7 +281,7 @@ export const genericStudent = {
       grade: "*** A- ***",
       attempted_credits: "",
       type: "prerequisites",
-      leveling: false,
+      leveling: '',
     },
   ],
   track: "Data Science",

@@ -36,7 +36,7 @@ typeOptions = {
     }
 
 class Class:
-    def __init__(self, name, number, semester, transfer, grade, attempted_credits, type = 'unsure', leveling=False):
+    def __init__(self, name, number, semester, transfer, grade, attempted_credits, type = 'unsure', leveling=''):
         self.name = name
         self.number = number
         self.semester = semester
