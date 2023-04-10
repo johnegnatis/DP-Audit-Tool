@@ -44,6 +44,11 @@ def open_database():
 
 # TODO: test on class ID, not on name
 def find_add_classes(newClasses, classList, typeList, typeKey):
+
+    # TODO: NIYA: change the test_strings method to check classList[i].number, typeList[j]['id']
+    #              - Make sure to format the string so the test does not fail i.e. remove spaces,
+    #               anything that is not number or letter. make all letters uppercase, ext..
+
     found = False
     for j in range(0, len(typeList)):
         for i in range(0, len(classList)):
