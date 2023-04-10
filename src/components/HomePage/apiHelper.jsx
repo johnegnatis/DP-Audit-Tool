@@ -15,8 +15,6 @@ export const getEelResponse = (filePath, index) => {
     })
     .catch((error) => {
       console.log(error);
-      // TODO: add error handling to method
-      // setError(error.errorText && extractErrorMessage(error.errorText));
       return undefined;
     });
 };

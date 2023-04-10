@@ -40,6 +40,10 @@ def savePDF(fileName):
 def designateClasses(studentObject):
     return scripts.designateClassesMethod(studentObject)
 
+@eel.expose
+def getFrontendOptions():
+    return scripts.get_options_for_frontend()
+
 if NO_CONSOLE and getattr(sys, 'frozen', False):
     import pyi_splash
 
