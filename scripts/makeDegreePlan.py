@@ -1,5 +1,5 @@
 try:
-    from scripts.objects import Class, Student, mockStudent
+    from scripts.objects import Class, Student, mockStudent, json_to_student
     from scripts.helpers import get_server_path
 except:
     from objects import Class, Student, mockStudent
@@ -21,12 +21,12 @@ def fillPDFForms(studentObject, path):
     else:
         isThesis = "Yes"
 
-    coreName = [""]*5
-    coreNum = [""]*5
-    coreSem = [""]*5
-    coreTransfer = [""]*5
-    coreGrade = [""]*5
-    coreAC = [""]*5
+    coreName = [""]*6
+    coreNum = [""]*6
+    coreSem = [""]*6
+    coreTransfer = [""]*6
+    coreGrade = [""]*6
+    coreAC = [""]*6
 
     j = 0
     class_data = studentObject.classes
@@ -50,7 +50,7 @@ def fillPDFForms(studentObject, path):
     j = 0
     class_data = studentObject.classes
     for i in class_data:
-        if (i.type == "one_of_the_following"):
+        if (i.type == "following"):
             followingName[j] = (i.name)
             followingNum[j] = (i.number)
             followingSem[j] = (i.semester)
@@ -69,7 +69,7 @@ def fillPDFForms(studentObject, path):
     j = 0
     class_data = studentObject.classes
     for i in class_data:
-        if (i.type == "core_electives"):
+        if (i.type == "electives"):
             electiveName[j] = (i.name)
             electiveNum[j] = (i.number)
             electiveSem[j] = (i.semester)
@@ -78,12 +78,12 @@ def fillPDFForms(studentObject, path):
             electiveAC[j] = (i.attempted_credits)
             j = j+1
 
-    prereqName = [""]*8
-    prereqNum = [""]*8
-    prereqSem = [""]*8
-    prereqTransfer = [""]*8
-    prereqGrade = [""]*8
-    prereqAC = [""]*8
+    prereqName = [""]*9
+    prereqNum = [""]*9
+    prereqSem = [""]*9
+    prereqWaiver = [""]*9
+    prereqGrade = [""]*9
+    prereqAC = [""]*9
 
     j = 0
     class_data = studentObject.classes
@@ -92,12 +92,12 @@ def fillPDFForms(studentObject, path):
             prereqName[j] = i.name
             prereqNum[j] = i.number
             prereqSem[j] = i.semester
-            prereqTransfer[j] = i.transfer
+            prereqWaiver[j] = i.transfer
             prereqGrade[j] = i.grade
             prereqAC[j] = i.attempted_credits
             j = j+1
 
-    if (studentObject.track == "Software Engineering" or studentObject.track == "Telecommunication"):
+    if (studentObject.track == "Software Engineering" or studentObject.track == "Networks and Telecommunication"):
       data_dict = {
         "Name of Student": studentObject.name,
         "Student ID Number": studentObject.studentId,
@@ -128,11 +128,11 @@ def fillPDFForms(studentObject, path):
         "coreSem5": coreSem[4],
         "coreTransfer5": coreTransfer[4],
         "coreGrade5": coreGrade[4],
-        "ct6": studentObject.packStudentObject(),
-        "cn6": "",
-        "coreSem6": "",
-        "coreTransfer6": "",
-        "coreGrade6": "",
+        "ct6": coreNum[5],
+        "cn6": coreNum[5],
+        "coreSem6": coreSem[5],
+        "coreTransfer6": coreTransfer[5],
+        "coreGrade6": coreGrade[5],
         "ct7": electiveName[0],
         "ct8": electiveName[1],
         "ct9": electiveName[2],
@@ -156,48 +156,48 @@ def fillPDFForms(studentObject, path):
         "prereq1": prereqName[0],
         "cn17": prereqNum[0],
         "Sem17": prereqSem[0],
-        "Waiver1": "",
+        "Waiver1": prereqWaiver[0],
         "Grade17": prereqGrade[0],
         "prereq2": prereqName[1],
         "cn18": prereqNum[1],
         "Sem18": prereqSem[1],
-        "Waiver2": "",
+        "Waiver2": prereqWaiver[1],
         "Grade18": prereqGrade[1],
         "prereq3": prereqName[2],
         "cn19": prereqNum[2],
         "Sem19": prereqSem[2],
-        "Waiver3": "",
+        "Waiver3": prereqWaiver[2],
         "Grade19": prereqGrade[2],
         "prereq4": prereqName[3],
         "cn20": prereqNum[3],
         "Sem20": prereqSem[3],
-        "Waiver4": "",
+        "Waiver4": prereqWaiver[3],
         "Grade20": prereqGrade[3],
         "prereq5": prereqName[4],
         "cn21": prereqNum[4],
         "Sem21": prereqSem[4],
-        "Waiver5": "",
+        "Waiver5": prereqWaiver[4],
         "Grade21": prereqGrade[4],
         "prereq6": prereqName[5],
         "cn22": prereqNum[5],
         "Sem22": prereqSem[5],
-        "Waiver6": "",
+        "Waiver6": prereqWaiver[5],
         "Grade22": prereqGrade[5],
         "prereq7": prereqName[6],
         "cn23": prereqNum[6],
         "Sem23": prereqSem[6],
-        "Waiver7": "",
+        "Waiver7": prereqWaiver[6],
         "Grade23": prereqGrade[6],
         "prereq8": prereqName[7],
         "cn24": prereqNum[7],
         "Sem24": prereqSem[7],
-        "Waiver8": "",
+        "Waiver8": prereqWaiver[7],
         "Grade24": prereqGrade[7],
-        "prereq9": "",
-        "cn25": "",
-        "Sem25": "",
-        "Waiver9": "",
-        "Grade25": "",
+        "prereq9": prereqName[8],
+        "cn25": prereqNum[8],
+        "Sem25": prereqSem[8],
+        "Waiver9": prereqWaiver[8],
+        "Grade25": prereqGrade[8],
         "Academic Advisor": "",
         "Date Submitted": "",
         "cn7": electiveNum[0],
@@ -262,11 +262,11 @@ def fillPDFForms(studentObject, path):
         "coreSem4": coreSem[3],
         "coreTransfer4": coreTransfer[3],
         "coreGrade4": coreGrade[3],
-        "ct5": "",
-        "cn5": "",
-        "coreSem5": "",
-        "coreTransfer5": "",
-        "coreGrade5": "",
+        "ct5": coreName[4],
+        "cn5": coreNum[4],
+        "coreSem5": coreSem[4], 
+        "coreTransfer5": coreTransfer[4],
+        "coreGrade5": coreGrade[4],
         "OtherReq1": "",
         "ct20": "",
         "cn20": "",
@@ -282,42 +282,42 @@ def fillPDFForms(studentObject, path):
         "ct22": prereqName[0],
         "cn22": prereqNum[0],
         "sem22": prereqSem[0],
-        "transfer22": prereqTransfer[0],
+        "transfer22": prereqWaiver[0],
         "grade22": prereqGrade[0],
         "ct23": prereqName[1],
         "cn23": prereqNum[1],
         "sem23": prereqSem[1],
-        "transfer23": prereqTransfer[1],
+        "transfer23": prereqWaiver[1],
         "grade23": prereqGrade[1],
         "ct24": prereqName[2],
         "cn24": prereqNum[2],
         "sem24": prereqSem[2],
-        "transfer24": prereqTransfer[2],
+        "transfer24": prereqWaiver[2],
         "grade24": prereqGrade[2],
         "ct25": prereqName[3],
         "cn25": prereqNum[3],
         "sem25": prereqSem[3],
-        "transfer25": prereqTransfer[3],
+        "transfer25": prereqWaiver[3],
         "grade25": prereqGrade[3],
         "ct26": prereqName[4],
         "cn26": prereqNum[4],
         "sem26": prereqSem[4],
-        "transfer26": prereqTransfer[4],
+        "transfer26": prereqWaiver[4],
         "grade26": prereqGrade[4],
         "ct27": prereqName[5],
         "cn27": prereqNum[5],
         "sem27": prereqSem[5],
-        "transfer27": prereqTransfer[5],
+        "transfer27": prereqWaiver[5],
         "grade27": prereqGrade[5],
         "ct28": prereqName[6],
         "cn28": prereqNum[6],
         "sem28": prereqSem[6],
-        "transfer28": prereqTransfer[6],
+        "transfer28": prereqWaiver[6],
         "grade28": prereqGrade[6],
         "ct29": prereqName[7],
         "cn29": prereqNum[7],
         "sem29": prereqSem[7],
-        "transfer29": prereqTransfer[7],
+        "transfer29": prereqWaiver[7],
         "grade29": prereqGrade[7],
         "Academic Advisor": "",
         "Date Submitted": "",
@@ -326,7 +326,7 @@ def fillPDFForms(studentObject, path):
         "ct8": followingName[2],
         "ct9": followingName[3],
         "ct10": followingName[4],
-        "ct11": studentObject.packStudentObject(),
+        "ct11": followingName[5],
         "cn6": followingNum[0],
         "cn7": followingNum[1],
         "cn8": followingNum[2],
@@ -357,40 +357,40 @@ def fillPDFForms(studentObject, path):
         "grade15": electiveGrade[3],
         "grade16": electiveGrade[4],
         "grade17": electiveGrade[5],
-        "grade18": "",
-        "grade19": "",
+        "grade18": electiveGrade[6],
+        "grade19": electiveGrade[7],
         "cn12": electiveNum[0],
         "cn13": electiveNum[1],
         "cn14": electiveNum[2],
         "cn15": electiveNum[3],
         "cn16": electiveNum[4],
         "cn17": electiveNum[5],
-        "cn18": "",
-        "cn19": "",
+        "cn18": electiveNum[6],
+        "cn19": electiveNum[7],
         "ct12": electiveName[0],
         "ct13": electiveName[1],
         "ct14": electiveName[2],
         "ct15": electiveName[3],
         "ct16": electiveName[4],
         "ct17": electiveName[5],
-        "ct18": "",
-        "ct19": "",
+        "ct18": electiveName[6],
+        "ct19": electiveName[7],
         "sem12": electiveSem[0],
         "sem13": electiveSem[1],
         "sem14": electiveSem[2],
         "sem15": electiveSem[3],
         "sem16": electiveSem[4],
         "sem17": electiveSem[5],
-        "sem18": "",
-        "sem19": "",
+        "sem18": electiveSem[6],
+        "sem19": electiveSem[7],
         "transfer12": electiveTransfer[0],
         "transfer13": electiveTransfer[1],
         "transfer14": electiveTransfer[2],
         "transfer15": electiveTransfer[3],
         "transfer16": electiveTransfer[4],
         "transfer17": electiveTransfer[5],
-        "transfer18": "",
-        "transfer19": "",
+        "transfer18": electiveTransfer[6],
+        "transfer19": electiveTransfer[7],
         "fastTrack": isFT,
         "thesis": isThesis,
         "object": studentObject.packStudentObject()
@@ -399,11 +399,11 @@ def fillPDFForms(studentObject, path):
     base_dev = './public/degreePlans/'
     base_prod = './build/degreePlans/'
     file_lookup = {
-        "CyberSecurity": 'DP-Cybersecurity.pdf',
+        "Cyber Security": 'DP-Cybersecurity.pdf',
         "Data Science": 'DP-DataScience.pdf',
         "Intelligent Systems": 'DP-Intelligent-Systems.pdf',
         "Interactive Computing": 'DP-Interactive-Computing.pdf',
-        "Telecommunication": 'DP-Networks-Telecommunication.pdf',
+        "Networks and Telecommunication": 'DP-Networks-Telecommunication.pdf',
         "Software Engineering": 'DP-Software-Engineering.pdf',
         "Systems": 'DP-Systems.pdf',
         "Traditional": 'DP-Traditional.pdf',
@@ -419,10 +419,13 @@ def getStudentFile(name):
 def makeDegreePlanMethod(studentObject):
     if (studentObject == 'mock'):
         studentObject = mockStudent()
+    else:
+        studentObject = json_to_student(studentObject)
     
-    file_path = get_server_path() + '/' + getStudentFile(studentObject.name)
+    file_name = getStudentFile(studentObject.name)
+    file_path = get_server_path() + '/' + file_name
     fillPDFForms(studentObject, file_path)
-    return file_path
+    return file_name
 
 if __name__ == '__main__':
     makeDegreePlanMethod('mock')

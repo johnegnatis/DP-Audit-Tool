@@ -42,11 +42,10 @@
     flex-direction: row;
 
     div {
-      &.selected-id {
-        background: $white;
-      }
+      justify-content: space-between;
+      display: flex;
       cursor: pointer;
-      padding: 0px 20px;
+      padding: 0px 10px;
       border: 1px $white solid;
       border-top: none;
       border-bottom: none;
@@ -55,10 +54,29 @@
       overflow-x: hidden;
 
       span {
+        padding-right: 10px;
         line-height: 18.6px;
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
+      }
+      svg {
+        padding: 3px;
+        border-radius: 5px;
+        &:hover {
+          background-color: $grey;
+          color: black;
+        }
+      }
+      &.selected-id {
+        background: $white;
+
+        svg {
+          &:hover {
+            background-color: $light-grey;
+            color: $grey;
+          }
+        }
       }
     }
   }
