@@ -47,6 +47,9 @@ body {
     &:hover {
       color: $white;
     }
+    &.ant-btn-default:disabled {
+      background-color: rgba(0,0,0,0.25);
+    }
   }
   &.grey-border {
     border-color: $grey;
@@ -59,13 +62,29 @@ body {
       color: $grey;
     }
   }
+  &.grey-bg {
+    background-color: $grey;
+    color: black;
+    font-weight: 700;
+    &:hover {
+      color: black;
+    }
+  }
+  &.red-bg {
+    background-color: $red;
+    color: $white;
+    font-weight: 700;
+    &:hover {
+      color: $white;
+    }
+  }
 }
 
-.d-dropdown{
-  button:first-child {
-    width: 100%;
-    text-align: left;
-  }
+.ant-modal-body {
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .icon {
@@ -97,5 +116,23 @@ body {
   }
   &.pointer {
     cursor: pointer;
+  }
+}
+
+.red-text {
+  color: red;
+}
+
+.split5050 {
+  display: flex;
+  justify-content: space-between;
+  div {
+    width: 48%;
+  }
+}
+
+.ant-message-info {
+  svg, .anticon-info-circle {
+    display: none;
   }
 }

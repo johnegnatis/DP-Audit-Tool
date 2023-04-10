@@ -25,16 +25,20 @@ def makeDegreePlan(studentObject):
     return scripts.makeDegreePlanMethod(studentObject)
 
 @eel.expose
-def DoAudit(studentObject):
-    scripts.doAuditMethod(studentObject)
+def doAudit(studentObject):
+    return scripts.doAuditMethod(studentObject)
 
 @eel.expose
 def getFilePaths():
     return scripts.getFilePathsMethod()
 
 @eel.expose
-def getPDF():
-    return scripts.getPDFMethod()
+def savePDF(fileName):
+    return scripts.savePDFMethod(fileName)
+
+@eel.expose
+def designateClasses(studentObject):
+    return scripts.designateClassesMethod(studentObject)
 
 if NO_CONSOLE and getattr(sys, 'frozen', False):
     import pyi_splash

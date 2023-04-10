@@ -1,7 +1,9 @@
 try:
-    from scripts.objects import Class, Student, StudentEncoder
+    from scripts.objects import Class, Student, StudentEncoder, mockStudent, json_to_student
+    from scripts.fileSystemInteraction import getDirectory
 except:
-    from objects import Class, Student, StudentEncoder
+    from objects import Class, Student, StudentEncoder, mockStudent, json_to_student
+    from fileSystemInteraction import getDirectory
 import re
 from docx import Document
 from docx.shared import Pt
@@ -10,17 +12,31 @@ from docx.enum.section import WD_SECTION
 
 def doAuditMethod(studentObject):
 
+    if (studentObject == 'mock'):
+        studentObject = mockStudent()
+    else:
+        studentObject = json_to_student(studentObject)
+
+    file_path = getDirectory('Save Audit Report')
+    if not file_path:
+        return
+
+    destination = file_path + '/' + studentObject.name + '.docx'
+    generateAudit(studentObject, destination)
+    return destination
+
+def generateAudit(studentObject, destination):
     print('Starting audit generation...')
 
     # Class tracking for GPA
-    core_complete = [course for course in studentObject.classes if course.grade and (course.type == 'core' or course.type == 'one_of_the_following')]
+    core_complete = [course for course in studentObject.classes if course.grade and (course.type == 'core' or course.type == 'following')]
     core_incomplete = [course for course in studentObject.classes if not course.grade and course.type == 'core']
 
-    elective_complete = [course for course in studentObject.classes if course.grade and course.type == 'core_electives']
-    elective_incomplete = [course for course in studentObject.classes if not course.grade and course.type == 'core_electives']
+    elective_complete = [course for course in studentObject.classes if course.grade and course.type == 'electives']
+    elective_incomplete = [course for course in studentObject.classes if not course.grade and course.type == 'electives']
 
-    total_complete = [course for course in studentObject.classes if course.grade and (course.type == 'core' or course.type == 'core_electives' or course.type == 'one_of_the_following')]
-    total_incomplete = [course for course in studentObject.classes if not course.grade and (course.type == 'core' or course.type == 'core_electives')]
+    total_complete = [course for course in studentObject.classes if course.grade and (course.type == 'core' or course.type == 'electives' or course.type == 'following')]
+    total_incomplete = [course for course in studentObject.classes if not course.grade and (course.type == 'core' or course.type == 'electives')]
 
 
     doc = Document()
@@ -36,13 +52,18 @@ def doAuditMethod(studentObject):
 
     # basic information
     para = doc.add_paragraph()
+
+    inch = 914400
+    tab_stops = para.paragraph_format.tab_stops
+    tab_stop = tab_stops.add_tab_stop(round(inch*4))
+
     para.add_run('Name: ').bold = True
-    para.add_run(studentObject.name.ljust(24,' '))
-    para.add_run('ID: ').bold = True
+    para.add_run(studentObject.name)
+    para.add_run('\tID: ').bold = True
     para.add_run(str(studentObject.studentId))
     para.add_run('\nPlan: ').bold = True
-    para.add_run('Master'.ljust(24,' '))
-    para.add_run('Major: ').bold = True
+    para.add_run('Master')
+    para.add_run('\tMajor: ').bold = True
     if studentObject.track == 'Software Engineering':
         para.add_run('Software Engineering')
     else:
@@ -117,10 +138,7 @@ def doAuditMethod(studentObject):
     
     para.add_run('\n' + overall_status + ", ".join(course.number for course in total_incomplete))
 
-    doc.save('Sample Audit.docx')
-    print('Sample audit created.')
-
-    return
+    doc.save(destination)
 
 def calculateRequiredGPA(required_GPA, GPA, completed_courses, remaining_courses):
     target = (required_GPA * (len(completed_courses) + len(remaining_courses)) - (GPA * len(completed_courses))) / len(remaining_courses)
@@ -151,8 +169,9 @@ def calculateRequiredGPA(required_GPA, GPA, completed_courses, remaining_courses
 
 def letterToGPA(letter):
     letter = " ".join(re.findall("[a-zA-Z][\+\-]?", letter))
+    letter = letter.upper() # incase DP enters lowercase letter
 
-    if letter == 'A':
+    if letter == 'A' or letter == 'A+':
         return 4.0
     if letter == 'A-':
         return 3.670
@@ -165,7 +184,7 @@ def letterToGPA(letter):
     if letter == 'C+':
         return 2.330
     if letter == 'C':
-        return 'C-'
+        return 2.000
     if letter == 'F':
         return 0.0
     
@@ -174,38 +193,21 @@ def letterToGPA(letter):
 def getGPA(completed_courses):
 
     gpa = 0.0
+    courseCount = 0
+
     for course in completed_courses:
-        gpa += letterToGPA(course.grade)
+        grade = letterToGPA(course.grade)
+        if (grade == 'Ignore'):
+            continue
+        
+        courseCount = courseCount + 1
+        gpa += grade
     
-    return gpa / len(completed_courses)
-
-
-
-# test case
-classes = [
-        Class('Statistical Methods for Data Sciences', 'CS 6313', '22S', '', 'A', '', 'core'),
-        Class('Big Data Management and Analytics', 'CS 6350', '22s', '', 'B+', '', 'core'),
-        Class('Design and Analysis of Computer Algorithms', 'CS 6363','22s', '', 'A-', '', 'core'),
-        Class('Machine Learning', 'CS 6375',  '21f', '', 'A', '', 'core'),
-        Class('Social Network Analytics', 'CS 6301',  '22f', '', '', '', 'one_of_the_following'),
-        Class('Natural Language Processing', 'CS 6320',   '21f', '', '', '', 'one_of_the_following'),
-        Class('Video Analytics', 'CS 6327',   '', '', '', '', 'one_of_the_following'),
-        Class('Statistics for Machine Learning', 'CS 6347',   '', '', '', '', 'one_of_the_following'),
-        Class('Database Design', 'CS 6360',   '', '', 'A-', '', 'one_of_the_following'),
-        Class('Virtual Reality', 'CS 6334',   '', '', 'B', '', 'core_electives'),
-        Class('Theory of Computation', 'CS 6382', '21f', '', 'A', '', 'core_electives'),
-        Class('Natural Language Processing', 'CS 6320',   '22s', '', 'A', '', 'core_electives'),
-        Class('Network Security', 'CS 6349',  '22f', '', '', '', 'core_electives'),
-        Class('Sftwr Test/Validatn/Verificatn', 'CS 6367','22f', '', '', '', 'core_electives'),
-        Class('Software Maint Evolut & Re-Eng', 'SE 6356','23s', '', '', '', 'core_electives'),
-        Class('Computer Science I', 'CS 5303','23s', '', '', '', 'additional_electives'),
-        Class('Computer Science II', 'CS 5330',   '23s', '', '', '', 'prerequisites'),
-        Class('Discrete Structures', 'CS 5333',   '', '', '', '', 'prerequisites'),
-        Class('Algorithm Analysis & Data Structures', 'CS 5343',  '', '', '', '', 'prerequisites'),
-        Class('Operating System Concepts', 'CS 5348', '', '', '', '', 'prerequisites'),
-        Class('Probability & Statistics in CS<<', 'CS 3341<<','', '', '*** A- ***', '', 'prerequisites'),
-    ]
-mock = Student('Ted Lasso', 2021504218, False, False, '21F', '', classes, 'Data Science')
+    try:
+        return gpa / courseCount
+    except:
+        # DIVIDE BY 0 ERROR?
+        return 0
 
 if __name__ == '__main__':
-    doAuditMethod(mock)
+    doAuditMethod('mock')

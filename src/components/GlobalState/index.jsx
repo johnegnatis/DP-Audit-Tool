@@ -1,48 +1,58 @@
 import { createGlobalState } from "react-hooks-global-state";
-import { pages } from "../../utils/constants";
+import { genericStudent, pages } from "../../utils/constants";
 
 const { setGlobalState, useGlobalState } = createGlobalState({
-  students: [
-    {
-      page: pages.pdfPreview,
-      student: {
-        name: "Generic Student",
-        studentId: 111,
-        dates: {
-          expectedGraduation: "12/01/2023",
-          semesterAdmitted: "06/09/2020",
-        },
-      },
-    },
-  ],
-  selectedId: '',
+  // students: [
+  //   {
+  //     page: pages.degreePlan,
+  //     student: genericStudent,
+  //   },
+  // ],
+  students: [],
+  selectedId: "",
 });
 
-const getSelectedStudent = () => {
-  const [students] = useGlobalState("students");
-  const [selectedId] = useGlobalState("selectedId");
+const getSelectedStudent = (students, selectedId) => {
   return (
     students &&
     students.find((studentObj) => studentObj.student.studentId === selectedId)
   );
 };
 
-const changePage = (studentList, student, page) => {
+const getSelectedStudentHook = () => {
+  const [students] = useGlobalState("students");
+  const [selectedId] = useGlobalState("selectedId");
+  return getSelectedStudent(students, selectedId);
+};
+
+const changePage = (
+  studentList,
+  student,
+  newPage,
+  previousStudentId = null,
+  pdfName = null
+) => {
   const index =
     studentList &&
     studentList.findIndex(
       (studentObj) =>
-        studentObj.student.studentId === student.student.studentId
+        studentObj.student.studentId === student.student.studentId ||
+        (previousStudentId &&
+          studentObj.student.studentId === previousStudentId)
     );
 
   if (index < 0) return;
-  studentList[index].page = page;
+  if (newPage) student.page = newPage;
+  if (pdfName) student.student.pdfName = pdfName;
+  studentList[index] = student;
   setGlobalState("students", [...studentList]);
+  setGlobalState("selectedId", student.student.studentId);
 };
 
 export {
   changePage,
   useGlobalState,
   setGlobalState,
+  getSelectedStudentHook,
   getSelectedStudent,
 };

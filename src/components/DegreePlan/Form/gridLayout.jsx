@@ -45,12 +45,12 @@ const formatGrid = (layout, x1, x2) => {
       </div>
     );
   };
-  const getSpan = (name) => {
+  const getSpan = (name, required=true, colon=true) => {
     return (
       <span>
-        <span className="asterisk">*</span>
+        {required && <span className="asterisk">*</span>}
         <span className="name">{name}</span>
-        <span className="colon">:</span>
+        {colon && <span className="colon">:</span>}
       </span>
     );
   };
