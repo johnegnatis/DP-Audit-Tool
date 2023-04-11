@@ -10,14 +10,14 @@ import { eel } from "../../utils/eel";
 import { pages, tableNames } from "../../utils/constants";
 import { sendError, sendSuccess, sendWaiting, sendWarning } from "../../utils/methods";
 import NavigationBar from "../NavigationBar";
-import { useClassOptions } from "../Hooks/databaseHooks";
+import { useTrackOptions } from "../Hooks/databaseHooks";
 
 const DegreePlan = ({ student, databaseProps }) => {
   // STUDENT OBJ LOGIC
   const [students] = useGlobalState("students");
   const formProps = useStudentObject(student);
   const { searchInput, setSearchInput, getClassSetter, studentObjectJSON, track, setClasses } = formProps;
-  const classOptionProps = useClassOptions(track);
+  const classOptionProps = useTrackOptions(track);
 
   const handleSelectTrack = () => {
     const newStudent = student;

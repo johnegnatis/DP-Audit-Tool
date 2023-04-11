@@ -1,7 +1,7 @@
 import { getNumberForm, getForm, getRadio } from "./inputComponents";
 import { formatGrid, formatHalfGrid, getSpan } from "./gridLayout";
 import { Button } from "antd";
-import { tableTypes } from "../../../utils/constants";
+import { numberToStringDict, tableTypes } from "../../../utils/constants";
 import ClassTable from "./Table";
 import SelectTrack from "../TrackForm";
 import { useState, useMemo } from "react";
@@ -44,8 +44,8 @@ const Form = ({
     pdfName,
     setPdfName,
   } = props;
-  const { coreOptions, followingOptions, prerequisiteOptions } = classOptions;
-  const disableSubmitButton = !(track && name && studentId && admittedDate && graduationDate);
+  const { coreOptions, followingOptions, prerequisiteOptions, nOfTheFollowing, tableCounts } = classOptions;
+  const disableSubmitButton = !(track && name && studentId && admittedDate && graduationDate) && false;
   const [trackFormOpen, setTrackFormOpen] = useState(!track);
   const fullLayout = [
     {
@@ -111,10 +111,10 @@ const Form = ({
     [core, coreOptions, ...sharedTableDependencies]
   );
   const followingTable = useMemo(
-    () => (
+    () => nOfTheFollowing > 0 && (
       <ClassTable
         type={tableTypes.following}
-        title="One of the Following Courses"
+        title={`${numberToStringDict[nOfTheFollowing]} of the Following Courses`}
         subtitle=""
         allDisabled={allDisabled}
         classes={following}
@@ -127,7 +127,7 @@ const Form = ({
         selectedRow={selectedRow}
       />
     ),
-    [following, followingOptions, ...sharedTableDependencies]
+    [following, followingOptions, nOfTheFollowing, ...sharedTableDependencies]
   );
   const electiveTable = useMemo(
     () => (

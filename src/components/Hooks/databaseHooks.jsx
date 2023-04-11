@@ -34,10 +34,12 @@ export function useDatabase() {
   return { loading, trackOptions };
 }
 
-export function useClassOptions(track) {
+export function useTrackOptions(track) {
   const [coreOptions, setCoreOptions] = useState([]);
   const [followingOptions, setFollowingOptions] = useState([]);
   const [prerequisiteOptions, setPrerequisiteOptions] = useState([]);
+  const [tableCounts, setTableCounts] = useState({});
+  const [nOfTheFollowing, setNOfTheFollowing] = useState(0);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -47,11 +49,13 @@ export function useClassOptions(track) {
       .getFrontendOptions()()
       .then((result) => {
         const jsonResult = JSON.parse(result);
-        const database = jsonResult.tracks.find((dbTrack) => (dbTrack.name = track));
+        const database = jsonResult.tracks.find((dbTrack) => (dbTrack.name == track));
         if (!database) throw "Track not found";
         setCoreOptions(getClassOptions(database, tableTypes.core));
         setFollowingOptions(getClassOptions(database, tableTypes.following));
         setPrerequisiteOptions(getClassOptions(database, tableTypes.prerequisites));
+        setNOfTheFollowing(database["N-of-the-following"] | 0);
+        setTableCounts(database["pdf-table-size"]);
         setLoading(false);
       })
       .catch((e) => {
@@ -71,5 +75,5 @@ export function useClassOptions(track) {
     });
   }
 
-  return { loading, coreOptions, followingOptions, prerequisiteOptions };
+  return { loading, coreOptions, followingOptions, prerequisiteOptions, nOfTheFollowing, tableCounts };
 }
