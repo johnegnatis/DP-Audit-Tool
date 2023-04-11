@@ -39,12 +39,33 @@ const Form = ({
     setThesis,
     core,
     following,
-    elective,
+    elective: electives,
     prerequisites,
-    pdfName,
-    setPdfName,
   } = props;
   const { coreOptions, followingOptions, prerequisiteOptions, nOfTheFollowing, tableCounts } = classOptions;
+  const {
+    core: coreTableSize,
+    following: followingTableSize,
+    electives: electiveTableSize,
+    prerequisites: prerequisiteTableSize,
+  } = tableCounts;
+  const tableTooBigWarning = useMemo(
+    () =>
+      coreTableSize - core.length < 0 ||
+      electiveTableSize - electives.length < 0 ||
+      followingTableSize - following.length < 0 ||
+      prerequisiteTableSize - prerequisites.length < 0,
+    [
+      core.length,
+      coreTableSize,
+      following.length,
+      followingTableSize,
+      electives.length,
+      electiveTableSize,
+      prerequisites.length,
+      prerequisiteTableSize,
+    ]
+  );
   const disableSubmitButton = !(track && name && studentId && admittedDate && graduationDate) && false;
   const [trackFormOpen, setTrackFormOpen] = useState(!track);
   const fullLayout = [
@@ -106,37 +127,40 @@ const Form = ({
         handleMoveToTopClick={handleMoveToTopClick}
         deleteClass={deleteClass}
         selectedRow={selectedRow}
+        size={coreTableSize}
       />
     ),
-    [core, coreOptions, ...sharedTableDependencies]
+    [core, coreOptions, coreTableSize, ...sharedTableDependencies]
   );
   const followingTable = useMemo(
-    () => nOfTheFollowing > 0 && (
-      <ClassTable
-        type={tableTypes.following}
-        title={`${numberToStringDict[nOfTheFollowing]} of the Following Courses`}
-        subtitle=""
-        allDisabled={allDisabled}
-        classes={following}
-        openAddClassDrawer={() => setAddClassDrawerOpen(tableTypes.following, followingOptions)}
-        setClassForEdit={setClassForEdit}
-        setClassForMove={setClassForMove}
-        handleMoveClick={handleMoveClick}
-        handleMoveToTopClick={handleMoveToTopClick}
-        deleteClass={deleteClass}
-        selectedRow={selectedRow}
-      />
-    ),
-    [following, followingOptions, nOfTheFollowing, ...sharedTableDependencies]
+    () =>
+      nOfTheFollowing > 0 && (
+        <ClassTable
+          type={tableTypes.following}
+          title={`${numberToStringDict[nOfTheFollowing]} of the Following Courses`}
+          subtitle=""
+          allDisabled={allDisabled}
+          classes={following}
+          openAddClassDrawer={() => setAddClassDrawerOpen(tableTypes.following, followingOptions)}
+          setClassForEdit={setClassForEdit}
+          setClassForMove={setClassForMove}
+          handleMoveClick={handleMoveClick}
+          handleMoveToTopClick={handleMoveToTopClick}
+          deleteClass={deleteClass}
+          selectedRow={selectedRow}
+          size={followingTableSize}
+        />
+      ),
+    [following, followingOptions, followingTableSize, nOfTheFollowing, ...sharedTableDependencies]
   );
-  const electiveTable = useMemo(
+  const electivesTable = useMemo(
     () => (
       <ClassTable
         type={tableTypes.electives}
         title="Approved 6000 Level Courses"
         subtitle=""
         allDisabled={allDisabled}
-        classes={elective}
+        classes={electives}
         openAddClassDrawer={() => setAddClassDrawerOpen(tableTypes.electives, [])}
         setClassForEdit={setClassForEdit}
         setClassForMove={setClassForMove}
@@ -144,9 +168,10 @@ const Form = ({
         handleMoveToTopClick={handleMoveToTopClick}
         selectedRow={selectedRow}
         deleteClass={deleteClass}
+        size={electiveTableSize}
       />
     ),
-    [elective, ...sharedTableDependencies]
+    [electives, electiveTableSize, ...sharedTableDependencies]
   );
   const prerequisiteTable = useMemo(
     () => (
@@ -164,9 +189,10 @@ const Form = ({
         deleteClass={deleteClass}
         selectedRow={selectedRow}
         onLevelingChange={handleLevelingChange}
+        size={prerequisiteTableSize}
       />
     ),
-    [prerequisites, prerequisiteOptions, ...sharedTableDependencies]
+    [prerequisites, prerequisiteTableSize, prerequisiteOptions, ...sharedTableDependencies]
   );
 
   return (
@@ -185,14 +211,10 @@ const Form = ({
         {formatHalfGrid(halfLayout, 5, 5, 9, 5)}
         {coreTable}
         {followingTable}
-        {electiveTable}
+        {electivesTable}
         {prerequisiteTable}
       </div>
       <div>
-        {/* <div className="signature">
-          <span>Academic Advisor Signature : </span>
-          {getForm(signature, setSignature, allDisabled)}
-        </div> */}
         <div className="generate-button">
           <Button onClick={generatePDF} className="button orange-bg" size="large" disabled={allDisabled || disableSubmitButton}>
             Preview Degree Plan

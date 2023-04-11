@@ -18,6 +18,7 @@ const ClassTable = ({
   allDisabled,
   selectedRow: rowSelectedForEditOrMove,
   onLevelingChange,
+  size,
 }) => {
   const [headerHover, setHeaderHover] = useState(false);
   const classList =
@@ -65,6 +66,7 @@ const ClassTable = ({
       {notes && notes.map((note) => <span>{note}</span>)}
       <Table
         className={TableCSS}
+        rowClassName={(_, index) => (index >= size ? 'warning-table-full' : '')}
         dataSource={classList}
         columns={getColumn({
           onEdit: setClassForEdit,

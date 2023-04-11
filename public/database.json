@@ -7,7 +7,7 @@
             "pdf-table-size": {
               "core": 5,
               "following": 6,
-              "elective": 6,
+              "electives": 6,
               "prerequisites": 8
             },
             "core": [
@@ -89,7 +89,7 @@
         "pdf-table-size": {
             "core": 5,
             "following": 6,
-            "elective": 9,
+            "electives": 9,
             "prerequisites": 8
         },
         "core": [
@@ -179,7 +179,7 @@
         "pdf-table-size": {
             "core": 5,
             "following": 6,
-            "elective": 9,
+            "electives": 9,
             "prerequisites": 8
         },
         "core": [
@@ -257,7 +257,7 @@
         "pdf-table-size": {
             "core": 5,
             "following": 6,
-            "elective": 9,
+            "electives": 9,
             "prerequisites": 8
         },
         "core": [
@@ -343,7 +343,7 @@
         "pdf-table-size": {
           "core": 6,
           "following": 5,
-          "elective": 8,
+          "electives": 8,
           "prerequisites": 9
         },
         "core": [
@@ -416,7 +416,7 @@
         "pdf-table-size": {
             "core": 5,
             "following": 6,
-            "elective": 9,
+            "electives": 9,
             "prerequisites": 8
         },
         "core": [
@@ -502,7 +502,7 @@
         "pdf-table-size": {
             "core": 5,
             "following": 6,
-            "elective": 9,
+            "electives": 9,
             "prerequisites": 8
         },
         "core": [
@@ -580,7 +580,7 @@
         "pdf-table-size": {
             "core": 6,
             "following": 5,
-            "elective": 8,
+            "electives": 8,
             "prerequisites": 9
         },
         "core": [
