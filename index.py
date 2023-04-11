@@ -1,4 +1,6 @@
 import sys, io
+# sys.stdout = io.StringIO() # to fix --no console, must be the first three lines, so we cannot use NO_CONSOLE flag
+# sys.stderr = io.StringIO() # https://github.com/python-eel/Eel/issues/654
 
 ## Determine which flags we are using and set variables accordingly
 DEVELOPMENT = False
@@ -7,10 +9,7 @@ for i in sys.argv:
     if (i == '--noconsole'):
         NO_CONSOLE = True
     if (i == '--develop'):
-        DEVELOPMENT = True
-if not DEVELOPMENT and NO_CONSOLE:
-    sys.stdout = io.StringIO() # to fix --no console
-    sys.stderr = io.StringIO() # https://github.com/python-eel/Eel/issues/654
+        DEVELOPMENT = True    
 
 import eel, os, scripts, server
 from multiprocessing import Process, freeze_support
@@ -49,6 +48,7 @@ if NO_CONSOLE and getattr(sys, 'frozen', False):
 
 EEL_PORT = 8888
 WEB_SERVER_PORT = 8000
+# TODO: pass these ports into the javascript through an exposed function, maybe make them dynamic?
 
 def run_eel():
     if (DEVELOPMENT):
