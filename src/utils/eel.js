@@ -34,3 +34,13 @@ eel.expose(getFrontendOptions);
 async function getFrontendOptions() {
   return await eel.getFrontendOptions()();
 }
+
+eel.expose(getEelPort);
+async function getEelPort() {
+  return await eel.getEelPort()();
+}
+
+eel.expose(getServerPort);
+async function getServerPort() {
+  return await eel.getServerPort()();
+}

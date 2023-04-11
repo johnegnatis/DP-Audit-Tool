@@ -10,14 +10,14 @@ import { eel } from "../../utils/eel";
 import { sendError, sendLoading, sendSuccess, sendWarning } from "../../utils/methods";
 import AskSignature from "./AskSignature";
 
-export default function PdfPreview() {
+export default function PdfPreview({ serverPort }) {
   const [studentList] = useGlobalState("students");
   const [selectedId] = useGlobalState("selectedId");
   const studentObj = studentList.find((student) => student.student.studentId === selectedId);
   const pdfName = studentObj.student.pdfName;
   const getStudentFile = () => {
     return {
-      url: "http://localhost:8000/" + pdfName,
+      url: `http://localhost:${serverPort}/` + pdfName,
     };
   };
   const [askSignatureOpen, setAskSignatureOpen] = useState(false);

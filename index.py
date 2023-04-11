@@ -43,12 +43,15 @@ def designateClasses(studentObject):
 def getFrontendOptions():
     return scripts.get_options_for_frontend()
 
-if NO_CONSOLE and getattr(sys, 'frozen', False):
-    import pyi_splash
-
 EEL_PORT = 8888
+@eel.expose
+def getEelPort():
+    return EEL_PORT
+
 WEB_SERVER_PORT = 8000
-# TODO: pass these ports into the javascript through an exposed function, maybe make them dynamic?
+@eel.expose
+def getServerPort():
+    return WEB_SERVER_PORT
 
 def run_eel():
     if (DEVELOPMENT):
@@ -59,8 +62,6 @@ def run_eel():
             print(e)
     else:
         eel.init('build')
-        if NO_CONSOLE and getattr(sys, 'frozen', False):
-            pyi_splash.close()
         eel.start('index.html', host="localhost", port=EEL_PORT)
 
 if __name__ == '__main__':
