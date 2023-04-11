@@ -56,7 +56,7 @@ def getServerPort():
 def run_eel():
     if (DEVELOPMENT):
         try:
-            eel.init('client')
+            eel.init('src')
             eel.start({"port": 3000}, host="localhost", port=EEL_PORT, mode=None) # Remove mode=None to see the chrome app pop up.
         except Exception as e:
             print(e)
