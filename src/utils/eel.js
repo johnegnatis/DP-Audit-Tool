@@ -11,8 +11,8 @@ async function getFilePaths(filePath) {
 }
 
 eel.expose(savePDF);
-async function savePDF(fileName) {
-  return await eel.savePDF(fileName)();
+async function savePDF(fileName, signature) {
+  return await eel.savePDF(fileName, signature, flatten)();
 }
 
 eel.expose(makeDegreePlan);

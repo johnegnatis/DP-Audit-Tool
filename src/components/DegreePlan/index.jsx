@@ -28,7 +28,7 @@ const DegreePlan = ({ student, databaseProps }) => {
         const newStudent = JSON.parse(result);
         setClasses(newStudent.classes);
       })
-      .catch((e) => console.log(e, "error at track selection"));
+      .catch((e) => console.error(e, "error at track selection"));
   };
 
   const navigatePage = (page, pdfName = null) => {
@@ -61,7 +61,6 @@ const DegreePlan = ({ student, databaseProps }) => {
   const [classOptions, setClassOptions] = useState([]);
   const handleAddClassDrawerOpen = useCallback(
     (type, options) => {
-      console.log(options);
       setAddClassTable(type);
       setIsSearch(options && options.length > 0); // if there are options, start with searching options
       setClassOptions(options);

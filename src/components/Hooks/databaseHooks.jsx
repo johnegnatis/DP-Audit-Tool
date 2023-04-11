@@ -17,7 +17,7 @@ export function useDatabase() {
         setLoading(false);
       })
       .catch((e) => {
-        console.log(e, "error at database fetch");
+        console.error(e, "error at database fetch");
         setLoading(false);
       });
   }, []);
@@ -59,7 +59,7 @@ export function useTrackOptions(track) {
         setLoading(false);
       })
       .catch((e) => {
-        console.log(e, "error at database fetch");
+        console.error(e, "error at database fetch");
         setLoading(false);
       });
   }, [track]);

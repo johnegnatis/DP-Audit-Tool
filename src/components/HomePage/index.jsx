@@ -83,7 +83,6 @@ const HomePage = () => {
       )
       .map((obj) => obj.student);
     setGlobalState("students", [...tempStudents, ...globalStudents]);
-    console.log(tempStudents);
     if (tempStudents && tempStudents.length > 0) {
       setGlobalState("selectedId", tempStudents[0].student.studentId);
     } else {

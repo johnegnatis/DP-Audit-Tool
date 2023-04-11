@@ -14,7 +14,7 @@ export const getEelResponse = (filePath, index) => {
       return studentObj;
     })
     .catch((error) => {
-      console.log(error);
+      console.error(error);
       return undefined;
     });
 };

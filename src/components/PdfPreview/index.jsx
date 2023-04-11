@@ -7,33 +7,42 @@ import { changePage, useGlobalState } from "../GlobalState";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 import NavigationBar from "../NavigationBar";
 import { eel } from "../../utils/eel";
-import {
-  sendError,
-  sendLoading,
-  sendSuccess,
-  sendWarning,
-} from "../../utils/methods";
+import { sendError, sendLoading, sendSuccess, sendWarning } from "../../utils/methods";
+import AskSignature from "./AskSignature";
 
 export default function PdfPreview() {
   const [studentList] = useGlobalState("students");
   const [selectedId] = useGlobalState("selectedId");
-  const studentObj = studentList.find(
-    (student) => student.student.studentId === selectedId
-  );
+  const studentObj = studentList.find((student) => student.student.studentId === selectedId);
   const pdfName = studentObj.student.pdfName;
   const getStudentFile = () => {
     return {
       url: "http://localhost:8000/" + pdfName,
     };
   };
+  const [askSignatureOpen, setAskSignatureOpen] = useState(false);
+  const [signature, setSignature] = useState(false);
   const onSavePDF = () => {
+    setSignature("");
+    setAskSignatureOpen(true);
+  };
+  const onClose = () => {
+    setSignature("");
+    setAskSignatureOpen(false);
+  };
+  const savePdfWithSignature = (hasSignature, flattenPDF) => {
+    const sign = hasSignature ? signature : "";
+    const key = "loading";
+    setAskSignatureOpen(false);
+    sendLoading("Waiting on Degree Plan Creation", key);
     eel
-      .savePDF(pdfName)()
+      .savePDF(pdfName, sign, flattenPDF)()
       .then((result) => {
-        sendSuccess(`PDF saved to ${result} as ${pdfName}`);
+        sendSuccess(`PDF saved to ${result} as ${pdfName}`, key);
       })
       .catch((e) => {
-        sendError("PDF could not be saved.");
+        if (e.errorText === "FileNotFoundError(2, 'No such file or directory')") sendWarning("Directory not valid", key);
+        else sendError("PDF could not be saved.", key);
         console.error(e);
       });
   };
@@ -85,9 +94,7 @@ export default function PdfPreview() {
       <div className="pdf-preview-root">
         <div className="pdf-preview">
           <h1 className="title">DOCUMENT PREVIEW</h1>
-          <h5 className="warning">
-            ***Edits to this page will not be saved***
-          </h5>
+          <h5 className="warning">***Edits to this page will not be saved***</h5>
           <div className="viewer" style={{ pointerEvents: "none" }}>
             <Document
               file={path}
@@ -101,46 +108,31 @@ export default function PdfPreview() {
         </div>
         <footer>
           <div className="return">
-            <span
-              onClick={() =>
-                changePage(studentList, studentObj, pages.degreePlan)
-              }
-            >
-              {"< Return to edit"}
-            </span>
+            <span onClick={() => changePage(studentList, studentObj, pages.degreePlan)}>{"< Return to edit"}</span>
           </div>
           <div className="zoom">
-            <Icon
-              icon={iconNames.zoomOut}
-              onClick={() => zoomOut()}
-              className="icon xs pointer grey"
-            />
+            <Icon icon={iconNames.zoomOut} onClick={() => zoomOut()} className="icon xs pointer grey" />
             <span className="percent">{Math.round(zoom * 100) + "%"}</span>
-            <Icon
-              icon={iconNames.zoomIn}
-              onClick={() => zoomIn()}
-              className="icon xs pointer grey"
-            />
+            <Icon icon={iconNames.zoomIn} onClick={() => zoomIn()} className="icon xs pointer grey" />
           </div>
           <div className="save-continue">
-            <Button
-              onClick={() => onSavePDF()}
-              className="button grey-border white-bg"
-              size="large"
-            >
+            <Button onClick={() => onSavePDF()} className="button grey-border white-bg" size="large">
               <Icon icon={iconNames.import} className="icon xxs grey" />
               <span>Download PDF</span>
             </Button>
-            <Button
-              onClick={() => handleDownloadAuditReport()}
-              className="button orange-bg"
-              size="large"
-            >
+            <Button onClick={() => handleDownloadAuditReport()} className="button orange-bg" size="large">
               Download Audit Report
             </Button>
           </div>
         </footer>
       </div>
+      <AskSignature
+        open={askSignatureOpen}
+        savePDF={savePdfWithSignature}
+        signature={signature}
+        setSignature={setSignature}
+        onClose={onClose}
+      />
     </>
   );
 }

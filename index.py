@@ -32,8 +32,8 @@ def getFilePaths():
     return scripts.getFilePathsMethod()
 
 @eel.expose
-def savePDF(fileName):
-    return scripts.savePDFMethod(fileName)
+def savePDF(fileName, signature, flatten):
+    return scripts.savePDFMethod(fileName, signature, flatten)
 
 @eel.expose
 def designateClasses(studentObject):
