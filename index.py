@@ -1,6 +1,6 @@
 import sys, io
-sys.stdout = io.StringIO() # to fix --no console, must be the first three lines, so we cannot use NO_CONSOLE flag
-sys.stderr = io.StringIO() # https://github.com/python-eel/Eel/issues/654
+# sys.stdout = io.StringIO() # to fix --no console, must be the first three lines, so we cannot use NO_CONSOLE flag
+# sys.stderr = io.StringIO() # https://github.com/python-eel/Eel/issues/654
 
 ## Determine which flags we are using and set variables accordingly
 DEVELOPMENT = False

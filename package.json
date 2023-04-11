@@ -20,16 +20,19 @@
     "start:js": "react-scripts start",
     "start:eel": "python index.py --develop",
     "start:dist": "start dist/Senior-Project.exe",
-    "build": "npm-run-all kill-port build:js build:eel",
+    "build": "npm-run-all kill-port build:js build:eel-noconsole",
+    "build-dev": "npm-run-all kill-port build:js build:eel",
     "build:js": "react-scripts build",
     "build:eel": "python -m eel index.py build --onedir --name Senior-Project",
     "build:eel-noconsole": "python -m eel index.py build --noconsole --onedir --name Senior-Project",
-    "clean": "npm-run-all clean:*",
+    "clean": "npm-run-all -p clean:*",
     "clean:build": "rmdir /s /q build 2>NUL",
     "clean:dist": "rmdir /s /q dist 2>NUL",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "kill-port": "npx kill-port 8888"
+    "kill-ports": "npm-run-all -p kill-8888 kill-8000",
+    "kill-8888": "npx kill-port 8888",
+    "kill-8000": "npx kill-port 8000"
   },
   "devDependencies": {
     "@iconify/react": "^4.1.0",
