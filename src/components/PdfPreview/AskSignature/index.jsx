@@ -20,7 +20,7 @@ const AskSignature = ({ open, signature, setSignature, savePDF, onClose }) => {
       {getForm(signature, setSignature)}
       <br />
       <div style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
-        <Checkbox ref={checkboxRef}>Remove Forms From PDF</Checkbox>
+        <Checkbox ref={checkboxRef}>Save an uneditable version</Checkbox>
         <Button
           className="button orange-bg"
           disabled={!signature}

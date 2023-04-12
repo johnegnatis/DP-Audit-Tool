@@ -7,6 +7,7 @@ import SelectTrack from "../TrackForm";
 import { useState, useMemo } from "react";
 
 const Form = ({
+  handleReturnToHome,
   classOptions,
   allDisabled,
   props,
@@ -203,6 +204,7 @@ const Form = ({
         handleConfirmTrack={handleConfirmTrack}
         open={trackFormOpen}
         options={trackOptions}
+        handleReturnToHome={handleReturnToHome}
       />
       <h1 className="title">Degree Plan</h1>
       <div className="general-info">

@@ -4,7 +4,7 @@ import { useStudentObject } from "../Hooks/degreePlanHooks";
 import AddClass from "./AddClass";
 import Form from "./Form";
 import { Button, Drawer, message } from "antd";
-import { useGlobalState, changePage, setGlobalState } from "../GlobalState";
+import { useGlobalState, changePage, returnToHome } from "../GlobalState";
 import EditClass from "./EditClass";
 import { eel } from "../../utils/eel";
 import { pages, tableNames } from "../../utils/constants";
@@ -294,6 +294,7 @@ const DegreePlan = ({ student, databaseProps }) => {
       <NavigationBar saveStudentObject={saveStudentObject} />
       <div className={`degree-plan-root ${allDisabled ? "moving" : ""}`}>
         <Form
+          handleReturnToHome={returnToHome}
           classOptions={classOptionProps}
           trackOptions={trackOptions}
           allDisabled={allDisabled}
