@@ -107,7 +107,7 @@ footer {
   height: $footer-height;
   width: 100%;
   top: calc(100% - $footer-height);
-  color: black;
+  color: $black;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -127,6 +127,18 @@ footer {
       padding-left: 5px;
       font-weight: 700;
       font-size: 16px;
+    }
+  }
+}
+.setting-root {
+  width: 100%;
+  .buttons { display: flex; justify-content: space-between; padding-block: 10px;}
+  .row {
+    padding: 5px;
+    .row-upper{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
   }
 }

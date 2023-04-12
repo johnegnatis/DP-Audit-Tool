@@ -5,14 +5,17 @@ from tkinter import *
 from shutil import copy2
 try:
     from scripts.helpers import get_server_path
+    from scripts.settings import get_setting
 except:
     from helpers import get_server_path
+    from settings import get_setting 
 
 def getFilePathsMethod():
     root = Tk()
     root.withdraw()
     root.wm_attributes('-topmost', 1)
-    file_paths = filedialog.askopenfilename(filetypes=(("PDF Files", "*.pdf"),("All Files", "*.*")), title="Select Transcript(s)", multiple=True)
+    default_path = get_setting("default-path-for-transcript")
+    file_paths = filedialog.askopenfilename(filetypes=(("PDF Files", "*.pdf"),("All Files", "*.*")), title="Select Transcript(s)", multiple=True, initialdir=default_path)
     return file_paths
 
 def savePDFMethod(file_name, signature, flatten):
@@ -20,8 +23,10 @@ def savePDFMethod(file_name, signature, flatten):
     root.withdraw()
     root.wm_attributes('-topmost', 1)
 
+
+    default_path = get_setting("default-path-for-degree-plan")
     # destination
-    dir_to_save = getDirectory("Save Degree Plan")
+    dir_to_save = getDirectory("Save Degree Plan", default_path)
 
     # source
     file_path = get_server_path() + '/' + file_name
@@ -33,13 +38,13 @@ def savePDFMethod(file_name, signature, flatten):
 
     return dir_to_save
 
-def getDirectory(message):
+def getDirectory(message="Select directory", default_path = None):
     root = Tk()
     root.withdraw()
     root.wm_attributes('-topmost', 1)
 
     # destination
-    dir_to_save = filedialog.askdirectory(title=message)
+    dir_to_save = filedialog.askdirectory(title=message, initialdir=default_path)
     return dir_to_save
 
 def giveSignature(file_path, dir_to_save, signature, flatten):

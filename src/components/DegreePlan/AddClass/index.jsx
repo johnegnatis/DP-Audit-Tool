@@ -3,7 +3,7 @@ import { iconNames } from "../../../utils/constants";
 import react, { useMemo, useState } from "react";
 import { getSpan } from "../Form/gridLayout";
 import { getForm, getNumberForm } from "../Form/inputComponents";
-import { useEditClass } from "../../Hooks/degreePlanHooks";
+import { useClassForm } from "../../Hooks/degreePlanHooks";
 import { Button } from "antd";
 
 const AddClass = ({
@@ -11,7 +11,7 @@ const AddClass = ({
   setSearchInput,
   isSearch,
   setIsSearch,
-  classes,
+  searchOptions,
   handleSubmitAddClass,
 }) => {
   const {
@@ -25,7 +25,7 @@ const AddClass = ({
     setTransfer,
     grade,
     setGrade,
-  } = useEditClass(null, isSearch);
+  } = useClassForm(null, searchOptions);
 
   const setSearchClassForAdd = (obj) => {
     setIsSearch(false);
@@ -49,13 +49,13 @@ const AddClass = ({
   };
 
   const filterClasses = useMemo(() => {
-    const filtered = classes.filter(
+    const filtered = searchOptions.filter(
       (obj) =>
         obj.number.includes(searchInput.toUpperCase()) ||
         obj.name.includes(searchInput.toUpperCase())
     );
     return [addClass, ...filtered];
-  }, [searchInput, classes]);
+  }, [searchInput, searchOptions]);
 
   const onInputChange = (e) => {
     setSearchInput(e.target.value);
@@ -89,7 +89,7 @@ const AddClass = ({
     </div>
   ) : (
     <div className="class-form-root">
-      {classes && classes.length > 0 && (
+      {searchOptions && searchOptions.length > 0 && (
         <span className="back" onClick={() => setIsSearch(true)}>
           {"< Return to search"}
         </span>

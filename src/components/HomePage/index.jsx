@@ -8,6 +8,7 @@ import { sendError } from "../../utils/methods";
 import { useGlobalState, setGlobalState } from "../GlobalState";
 import { getEelResponse } from "./apiHelper";
 import NavigationBar from "../NavigationBar";
+import SettingsForm from "./SettingsForm";
 
 const HomePage = () => {
   const [globalStudents] = useGlobalState("students");
@@ -28,9 +29,7 @@ const HomePage = () => {
           return;
         }
         // TODO: handle same file uploaded error
-        const promises = fileList.map((file, index) =>
-          getEelResponse(file, negativeIndex - index)
-        );
+        const promises = fileList.map((file, index) => getEelResponse(file, negativeIndex - index));
         setNegativeIndex((num) => num - promises.length);
         Promise.all(promises).then((students) => {
           const fails = [];
@@ -62,11 +61,7 @@ const HomePage = () => {
                   {fails.map((filename) => {
                     const parts = filename.split("/");
                     const fileName = parts[parts.length - 1];
-                    return (
-                      <li style={{ textAlign: "left", fontSize: "14px" }}>
-                        {fileName}
-                      </li>
-                    );
+                    return <li style={{ textAlign: "left", fontSize: "14px" }}>{fileName}</li>;
                   })}
                 </ol>
               </div>
@@ -78,9 +73,7 @@ const HomePage = () => {
 
   const handleCreateDocumentClick = () => {
     const tempStudents = fileStudentList
-      .filter(
-        (obj) => obj.student && obj.student !== null && obj.status !== "error"
-      )
+      .filter((obj) => obj.student && obj.student !== null && obj.status !== "error")
       .map((obj) => obj.student);
     setGlobalState("students", [...tempStudents, ...globalStudents]);
     if (tempStudents && tempStudents.length > 0) {
@@ -113,9 +106,7 @@ const HomePage = () => {
       return (
         <div className="upload-box-list">
           {fileStudentList.map((fileObj, index) => {
-            const fileName =
-              fileObj &&
-              fileObj.file.split("/")[fileObj.file.split("/").length - 1];
+            const fileName = fileObj && fileObj.file.split("/")[fileObj.file.split("/").length - 1];
             const status =
               fileObj && fileObj.status === "success" ? (
                 <Icon icon={iconNames.checkbox} className="icon orange small" />
@@ -126,19 +117,11 @@ const HomePage = () => {
               <span className="file-element border" key={index}>
                 {status}
                 <span>{fileName}</span>
-                <Icon
-                  icon={iconNames.trash}
-                  className="icon orange small pointer"
-                  onClick={() => removeElement(fileObj.file)}
-                />
+                <Icon icon={iconNames.trash} className="icon orange small pointer" onClick={() => removeElement(fileObj.file)} />
               </span>
             );
           })}
-          <span
-            className="file-element pointer"
-            key={-1}
-            onClick={() => handleUploadClick()}
-          >
+          <span className="file-element pointer" key={-1} onClick={() => handleUploadClick()}>
             <Icon icon={iconNames.plus} className="icon grey small" />
             <span>Add File</span>
             <Icon icon={iconNames.checkbox} className="icon small hide" />
@@ -148,17 +131,23 @@ const HomePage = () => {
     }
   };
 
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const topRightIcon = (
+    <Icon icon={iconNames.settings} onClick={() => setSettingsOpen(true)} className="icon grey small pointer" />
+  );
+  const handleCloseSettings = () => {
+    setSettingsOpen(false);
+  };
+
   return (
     <>
-      <NavigationBar />
+      <NavigationBar topRightIcon={topRightIcon} />
       <div className="home-page-root">
         <div className="home-page">
           <div>
             <img src={UTDLogo} alt="utd logo" />
           </div>
-          <div className="title">
-            UTD CS/SE Graduate Advising Degree Plan and Audit Tool
-          </div>
+          <div className="title">UTD CS/SE Graduate Advising Degree Plan and Audit Tool</div>
           {getUploadBox()}
         </div>
       </div>
@@ -168,15 +157,12 @@ const HomePage = () => {
           <span>Support</span>
         </div>
         <div className="create-button">
-          <Button
-            onClick={handleCreateDocumentClick}
-            className="button orange-bg"
-            size="large"
-          >
+          <Button onClick={handleCreateDocumentClick} className="button orange-bg" size="large">
             CREATE DOCUMENTS
           </Button>
         </div>
       </footer>
+      <SettingsForm open={settingsOpen} onClose={() => handleCloseSettings()}/>
     </>
   );
 };

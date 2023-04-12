@@ -319,7 +319,7 @@ const DegreePlan = ({ student, databaseProps }) => {
             setSearchInput={setSearchInput}
             isSearch={isSearch}
             setIsSearch={setIsSearch}
-            classes={classOptions}
+            searchOptions={classOptions}
             handleSubmitAddClass={handleSubmitAddClass}
           />
         </Drawer>

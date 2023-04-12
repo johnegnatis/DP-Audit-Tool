@@ -8,7 +8,7 @@ import {
 import ConfirmCloseStudent from "./confirmCloseStudent";
 import { Icon } from "@iconify/react";
 
-const NavigationBar = ({ saveStudentObject, helpButton }) => {
+const NavigationBar = ({ saveStudentObject, topRightIcon }) => {
   const [students] = useGlobalState("students");
   const [selectedId] = useGlobalState("selectedId");
   const selectedStudent = useMemo(
@@ -81,9 +81,9 @@ const NavigationBar = ({ saveStudentObject, helpButton }) => {
             );
           })}
         </nav>
-        {helpButton && (
+        {topRightIcon && (
           <div className="help-icon">
-            <span>?</span>
+            {topRightIcon}
           </div>
         )}
       </header>

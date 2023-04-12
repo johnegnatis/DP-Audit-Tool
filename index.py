@@ -53,6 +53,14 @@ WEB_SERVER_PORT = 8000
 def getServerPort():
     return WEB_SERVER_PORT
 
+@eel.expose
+def getDirectory():
+    return scripts.getDirectory()
+
+@eel.expose
+def settingAPI(action, payload):
+    return scripts.settings(action, payload)
+
 def run_eel():
     if (DEVELOPMENT):
         try:

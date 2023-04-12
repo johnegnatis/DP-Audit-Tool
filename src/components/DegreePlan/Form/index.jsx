@@ -1,7 +1,7 @@
 import { getNumberForm, getForm, getRadio } from "./inputComponents";
 import { formatGrid, formatHalfGrid, getSpan } from "./gridLayout";
 import { Button } from "antd";
-import { numberToStringDict, tableTypes } from "../../../utils/constants";
+import { getNumberToString, tableTypes } from "../../../utils/constants";
 import ClassTable from "./Table";
 import SelectTrack from "../TrackForm";
 import { useState, useMemo } from "react";
@@ -137,7 +137,7 @@ const Form = ({
       nOfTheFollowing > 0 && (
         <ClassTable
           type={tableTypes.following}
-          title={`${numberToStringDict[nOfTheFollowing]} of the Following Courses`}
+          title={`${getNumberToString(nOfTheFollowing)} of the Following Courses`}
           subtitle=""
           allDisabled={allDisabled}
           classes={following}

@@ -1,14 +1,15 @@
 try:
     from scripts.objects import Class, Student, StudentEncoder, mockStudent, json_to_student
     from scripts.fileSystemInteraction import getDirectory
+    from scripts.settings import get_setting 
 except:
     from objects import Class, Student, StudentEncoder, mockStudent, json_to_student
     from fileSystemInteraction import getDirectory
+    from settings import get_setting  
 import re
 from docx import Document
 from docx.shared import Pt
 from docx.enum.section import WD_SECTION
-
 
 def doAuditMethod(studentObject):
 
@@ -17,7 +18,8 @@ def doAuditMethod(studentObject):
     else:
         studentObject = json_to_student(studentObject)
 
-    file_path = getDirectory('Save Audit Report')
+    default_path = get_setting("default-path-for-audit")
+    file_path = getDirectory('Save Audit Report', default_path)
     if not file_path:
         return
 

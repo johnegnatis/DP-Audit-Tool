@@ -29,6 +29,11 @@ $input-height: 40px;
       padding-bottom: 20px;
     }
     .subtitle {
+      display: flex;
+      align-items: center;
+      svg {
+        margin-left: 10px;
+      }
       font-weight: 700;
       size: 20px;
       line-height: 20px;
@@ -108,7 +113,6 @@ $input-height: 40px;
             background-color: goldenrod;
           }
         }
-
       }
     }
 

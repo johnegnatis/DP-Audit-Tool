@@ -2,7 +2,7 @@ import React from "react";
 import { getForm } from "../Form/inputComponents";
 import { getSpan } from "../Form/gridLayout";
 import { Button } from "antd";
-import { useEditClass } from "../../Hooks/degreePlanHooks";
+import { useClassForm } from "../../Hooks/degreePlanHooks";
 import { getNumberForm } from "../Form/inputComponents";
 const EditClass = ({ handleSubmit, classObj }) => {
   const {
@@ -16,7 +16,7 @@ const EditClass = ({ handleSubmit, classObj }) => {
     setTransfer,
     grade,
     setGrade,
-  } = useEditClass(classObj);
+  } = useClassForm(classObj);
 
   const onSubmitClick = () => {
     handleSubmit({

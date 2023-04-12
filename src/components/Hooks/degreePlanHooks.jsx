@@ -124,7 +124,7 @@ export function useStudentObject(student) {
   };
 }
 
-export function useEditClass(classObj, deleteSignal) {
+export function useClassForm(classObj, deleteSignal) {
   const [name, setName] = useState("");
   const [number, setNumber] = useState("");
   const [semester, setSemester] = useState("");

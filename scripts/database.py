@@ -1,8 +1,8 @@
 import json
 def open_database():
-    base_prod = './build/database.json'
-    base_dev = './public/database.json'
-    test_dev = '../public/database.json'
+    base_prod = './build/databases/database.json'
+    base_dev = './public/databases/database.json'
+    test_dev = '../public/databases/database.json'
 
     try:
         f = open(base_prod)

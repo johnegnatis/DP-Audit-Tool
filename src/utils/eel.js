@@ -44,3 +44,12 @@ eel.expose(getServerPort);
 async function getServerPort() {
   return await eel.getServerPort()();
 }
+
+eel.expose(getDirectory);
+async function getDirectory() {
+  return await eel.getDirectory()();
+}
+eel.expose(settingAPI);
+async function settingAPI(action, payload) {
+  return await eel.settingAPI(action, payload)();
+}
