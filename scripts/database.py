@@ -1,17 +1,20 @@
 import json
 def open_database():
-    base_prod = './build/database.json'
-    base_dev = './public/database.json'
-    test_dev = '../public/database.json'
+    base_prod = './build/databases/database.json'
+    base_dev = './public/databases/database.json'
+    test_dev = '../public/databases/database.json'
 
     try:
-        f = open(base_prod)
-    except:
         try:
-            f = open(base_dev)
+            f = open(base_prod)
         except:
-            f = open(test_dev)
-    return json.load(f)
+            try:
+                f = open(base_dev)
+            except:
+                f = open(test_dev)
+        return json.load(f)
+    except:
+        raise Exception("Error: Open Database was unsuccessful. Check that databases/database.json exists and try again.")
 
 def get_options_for_frontend():
     database = open_database()

@@ -3,29 +3,14 @@ import { iconNames } from "../../../utils/constants";
 import react, { useMemo, useState } from "react";
 import { getSpan } from "../Form/gridLayout";
 import { getForm, getNumberForm } from "../Form/inputComponents";
-import { useEditClass } from "../../Hooks/degreePlanHooks";
+import { useClassForm } from "../../Hooks/degreePlanHooks";
 import { Button } from "antd";
 
-const AddClass = ({
-  searchInput,
-  setSearchInput,
-  isSearch,
-  setIsSearch,
-  classes,
-  handleSubmitAddClass,
-}) => {
-  const {
-    name,
-    setName,
-    number,
-    setNumber,
-    semester,
-    setSemester,
-    transfer,
-    setTransfer,
-    grade,
-    setGrade,
-  } = useEditClass(null, isSearch);
+const AddClass = ({ searchInput, setSearchInput, isSearch, setIsSearch, searchOptions, handleSubmitAddClass }) => {
+  const { name, setName, number, setNumber, semester, setSemester, transfer, setTransfer, grade, setGrade } = useClassForm(
+    null,
+    searchOptions
+  );
 
   const setSearchClassForAdd = (obj) => {
     setIsSearch(false);
@@ -45,17 +30,17 @@ const AddClass = ({
       semester,
       transfer,
       grade,
+      leveling: "",
+      attempted_credits: "",
     });
   };
 
   const filterClasses = useMemo(() => {
-    const filtered = classes.filter(
-      (obj) =>
-        obj.number.includes(searchInput.toUpperCase()) ||
-        obj.name.includes(searchInput.toUpperCase())
+    const filtered = searchOptions.filter(
+      (obj) => obj.number.includes(searchInput.toUpperCase()) || obj.name.includes(searchInput.toUpperCase())
     );
     return [addClass, ...filtered];
-  }, [searchInput, classes]);
+  }, [searchInput, searchOptions]);
 
   const onInputChange = (e) => {
     setSearchInput(e.target.value);
@@ -72,11 +57,7 @@ const AddClass = ({
         {filterClasses.map((classID, index) => {
           return (
             <div
-              onClick={
-                !!classID.onClickMe
-                  ? classID.onClickMe
-                  : () => setSearchClassForAdd(classID)
-              }
+              onClick={!!classID.onClickMe ? classID.onClickMe : () => setSearchClassForAdd(classID)}
               className="row"
               key={index}
             >
@@ -89,7 +70,7 @@ const AddClass = ({
     </div>
   ) : (
     <div className="class-form-root">
-      {classes && classes.length > 0 && (
+      {searchOptions && searchOptions.length > 0 && (
         <span className="back" onClick={() => setIsSearch(true)}>
           {"< Return to search"}
         </span>

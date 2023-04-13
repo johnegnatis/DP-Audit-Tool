@@ -1,5 +1,4 @@
-import { Input, InputNumber, DatePicker, Radio, Dropdown, Button } from "antd";
-import { useState } from "react";
+import { Input, DatePicker, Radio, Dropdown, Button } from "antd";
 
 const getForm = (value, setValue, disabled = false) => {
   const handleFormInput = (e) => {

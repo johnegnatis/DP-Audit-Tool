@@ -1,6 +1,6 @@
 import { Button, Modal } from "antd";
 import { getDropdown } from "../Form/inputComponents";
-const SelectTrack = ({ open, track, setTrack, handleConfirmTrack, options }) => {
+const SelectTrack = ({ open, track, setTrack, handleConfirmTrack, handleReturnToHome, options }) => {
   return (
     <Modal
       title="Select Track"
@@ -15,7 +15,7 @@ const SelectTrack = ({ open, track, setTrack, handleConfirmTrack, options }) => 
     >
       {getDropdown(track, setTrack, options)}
       <br/>
-      <div style={{ display: 'flex', justifyContent: 'center'}}>
+      <div style={{ display: 'flex', justifyContent: 'space-evenly'}}>
           <Button
             className="button orange-bg"
             disabled={!track}
@@ -23,6 +23,15 @@ const SelectTrack = ({ open, track, setTrack, handleConfirmTrack, options }) => 
           >
             Confirm Selection
           </Button>
+      </div>
+      <span>- OR -</span>
+      <div style={{ display: 'flex', justifyContent: 'space-evenly'}}>
+        <Button
+              className="button orange-bg"
+              onClick={() => handleReturnToHome()}
+            >
+              Back
+            </Button>
       </div>
     </Modal>
   );

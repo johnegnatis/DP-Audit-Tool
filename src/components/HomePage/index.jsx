@@ -4,10 +4,11 @@ import { Icon } from "@iconify/react";
 import { iconNames, pages } from "../../utils/constants";
 import React, { useCallback, useState } from "react";
 import { eel } from "../../utils/eel";
-import { sendError } from "../../utils/methods";
+import { handleError, sendError, sendLoading, sendSuccess } from "../../utils/methods";
 import { useGlobalState, setGlobalState } from "../GlobalState";
 import { getEelResponse } from "./apiHelper";
 import NavigationBar from "../NavigationBar";
+import SettingsForm from "./SettingsForm";
 
 const HomePage = () => {
   const [globalStudents] = useGlobalState("students");
@@ -16,21 +17,18 @@ const HomePage = () => {
   const [negativeIndex, setNegativeIndex] = useState(-1);
 
   const handleUploadClick = useCallback(() => {
+    const key = "popup-upload";
     if (loading) {
       return;
     }
     setLoading(true);
+    sendLoading("Selecting Files", key);
     eel
       .getFilePaths()()
       .then((fileList) => {
-        if (!fileList) {
-          setLoading(false);
-          return;
-        }
         // TODO: handle same file uploaded error
-        const promises = fileList.map((file, index) =>
-          getEelResponse(file, negativeIndex - index)
-        );
+        sendLoading("Parsing Transcripts", key);
+        const promises = fileList.map((file, index) => getEelResponse(file, negativeIndex - index));
         setNegativeIndex((num) => num - promises.length);
         Promise.all(promises).then((students) => {
           const fails = [];
@@ -63,27 +61,31 @@ const HomePage = () => {
                     const parts = filename.split("/");
                     const fileName = parts[parts.length - 1];
                     return (
-                      <li style={{ textAlign: "left", fontSize: "14px" }}>
+                      <li key={fileName} style={{ textAlign: "left", fontSize: "14px" }}>
                         {fileName}
                       </li>
                     );
                   })}
                 </ol>
-              </div>
+              </div>,
+              key
             );
+          } else {
+            sendSuccess("Transcripts parsed successfully", key);
           }
         });
+      })
+      .catch((e) => {
+        handleError(e, key);
+        setLoading(false);
       });
   }, [loading, eel, negativeIndex, setLoading]);
 
   const handleCreateDocumentClick = () => {
     const tempStudents = fileStudentList
-      .filter(
-        (obj) => obj.student && obj.student !== null && obj.status !== "error"
-      )
+      .filter((obj) => obj.student && obj.student !== null && obj.status !== "error")
       .map((obj) => obj.student);
     setGlobalState("students", [...tempStudents, ...globalStudents]);
-    console.log(tempStudents);
     if (tempStudents && tempStudents.length > 0) {
       setGlobalState("selectedId", tempStudents[0].student.studentId);
     } else {
@@ -114,9 +116,7 @@ const HomePage = () => {
       return (
         <div className="upload-box-list">
           {fileStudentList.map((fileObj, index) => {
-            const fileName =
-              fileObj &&
-              fileObj.file.split("/")[fileObj.file.split("/").length - 1];
+            const fileName = fileObj && fileObj.file.split("/")[fileObj.file.split("/").length - 1];
             const status =
               fileObj && fileObj.status === "success" ? (
                 <Icon icon={iconNames.checkbox} className="icon orange small" />
@@ -127,19 +127,11 @@ const HomePage = () => {
               <span className="file-element border" key={index}>
                 {status}
                 <span>{fileName}</span>
-                <Icon
-                  icon={iconNames.trash}
-                  className="icon orange small pointer"
-                  onClick={() => removeElement(fileObj.file)}
-                />
+                <Icon icon={iconNames.trash} className="icon orange small pointer" onClick={() => removeElement(fileObj.file)} />
               </span>
             );
           })}
-          <span
-            className="file-element pointer"
-            key={-1}
-            onClick={() => handleUploadClick()}
-          >
+          <span className="file-element pointer" key={-1} onClick={() => handleUploadClick()}>
             <Icon icon={iconNames.plus} className="icon grey small" />
             <span>Add File</span>
             <Icon icon={iconNames.checkbox} className="icon small hide" />
@@ -149,17 +141,23 @@ const HomePage = () => {
     }
   };
 
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const topRightIcon = (
+    <Icon icon={iconNames.settings} onClick={() => setSettingsOpen(true)} className="icon grey small pointer" />
+  );
+  const handleCloseSettings = () => {
+    setSettingsOpen(false);
+  };
+
   return (
     <>
-      <NavigationBar />
+      <NavigationBar topRightIcon={topRightIcon} />
       <div className="home-page-root">
         <div className="home-page">
           <div>
             <img src={UTDLogo} alt="utd logo" />
           </div>
-          <div className="title">
-            UTD CS/SE Graduate Advising Degree Plan and Audit Tool
-          </div>
+          <div className="title">UTD CS/SE Graduate Advising Degree Plan and Audit Tool</div>
           {getUploadBox()}
         </div>
       </div>
@@ -173,11 +171,13 @@ const HomePage = () => {
             onClick={handleCreateDocumentClick}
             className="button orange-bg"
             size="large"
+            disabled={fileStudentList.length <= 0}
           >
             CREATE DOCUMENTS
           </Button>
         </div>
       </footer>
+      <SettingsForm open={settingsOpen} onClose={() => handleCloseSettings()} />
     </>
   );
 };

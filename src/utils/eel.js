@@ -11,8 +11,8 @@ async function getFilePaths(filePath) {
 }
 
 eel.expose(savePDF);
-async function savePDF(fileName) {
-  return await eel.savePDF(fileName)();
+async function savePDF(fileName, signature) {
+  return await eel.savePDF(fileName, signature, flatten)();
 }
 
 eel.expose(makeDegreePlan);
@@ -33,4 +33,23 @@ async function doAudit(studentObject) {
 eel.expose(getFrontendOptions);
 async function getFrontendOptions() {
   return await eel.getFrontendOptions()();
+}
+
+eel.expose(getEelPort);
+async function getEelPort() {
+  return await eel.getEelPort()();
+}
+
+eel.expose(getServerPort);
+async function getServerPort() {
+  return await eel.getServerPort()();
+}
+
+eel.expose(getDirectory);
+async function getDirectory() {
+  return await eel.getDirectory()();
+}
+eel.expose(settingAPI);
+async function settingAPI(action, payload) {
+  return await eel.settingAPI(action, payload)();
 }

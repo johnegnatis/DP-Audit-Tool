@@ -12,8 +12,8 @@ const genericStudentState = {
 };
 const defaultStartingState = {
   students: [],
-  selectedId: '',
-}
+  selectedId: "",
+};
 
 const { setGlobalState, useGlobalState } = createGlobalState(defaultStartingState);
 
@@ -27,7 +27,7 @@ const getSelectedStudentHook = () => {
   return getSelectedStudent(students, selectedId);
 };
 
-const changePage = (studentList, student, newPage, previousStudentId = null, pdfName = null) => {
+const changePage = (studentList, student, newPage = null, previousStudentId = null, pdfName = null) => {
   const index =
     studentList &&
     studentList.findIndex(
@@ -44,4 +44,8 @@ const changePage = (studentList, student, newPage, previousStudentId = null, pdf
   setGlobalState("selectedId", student.student.studentId);
 };
 
-export { changePage, useGlobalState, setGlobalState, getSelectedStudentHook, getSelectedStudent };
+const returnToHome = () => {
+  setGlobalState("selectedId", "");
+};
+
+export { changePage, useGlobalState, setGlobalState, getSelectedStudentHook, getSelectedStudent, returnToHome };

@@ -29,6 +29,11 @@ $input-height: 40px;
       padding-bottom: 20px;
     }
     .subtitle {
+      display: flex;
+      align-items: center;
+      svg {
+        margin-left: 10px;
+      }
       font-weight: 700;
       size: 20px;
       line-height: 20px;
@@ -99,6 +104,15 @@ $input-height: 40px;
       }
       td {
         font-size: 16px;
+      }
+
+      .warning-table-full {
+        td {
+          background-color: gold;
+          &.ant-table-cell-row-hover {
+            background-color: goldenrod;
+          }
+        }
       }
     }
 

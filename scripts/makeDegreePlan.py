@@ -1,16 +1,64 @@
 try:
     from scripts.objects import Class, Student, mockStudent, json_to_student
     from scripts.helpers import get_server_path
+    from scripts.database import open_database
 except:
     from objects import Class, Student, mockStudent
     from helpers import get_server_path
+    from database import open_database
+
+import fillpdf
 from fillpdf import fillpdfs 
+
 import json
 from tkinter import filedialog
 from tkinter import *
 import os
 
+def get_pdf_type_from_database(database, student_track):
+    track_obj = None
+    for track in database["tracks"]:
+        if track["name"] == student_track:
+            track_obj = track
+            break
+
+    if not track_obj:
+        raise Exception("Error:Track name not valid")
+
+    pdf_type_found = None
+    for pdf_type in database["pdf-types"].keys():
+        if track_obj["pdf-type"] == pdf_type:
+            pdf_type_found = pdf_type
+    
+    if not pdf_type_found:
+        raise Exception("Error:PDF Type not found")
+    
+    return pdf_type_found
+
+def get_pdf_name_from_database(database, student_track):
+    track_obj = None
+    for track in database["tracks"]:
+        if track["name"] == student_track:
+            track_obj = track
+            break
+
+    if not track_obj:
+        raise Exception("Error:Track name not valid")
+
+    return track_obj["pdf"]
+
 def fillPDFForms(studentObject, path):
+    database = open_database()
+    pdf_name = get_pdf_name_from_database(database, studentObject.track)
+    pdf_type = get_pdf_type_from_database(database, studentObject.track)
+    pdf_table_sizes = database["pdf-types"][pdf_type]["pdf-table-size"]
+    core_max_size = int(pdf_table_sizes["core"])
+    following_max_size = int(pdf_table_sizes["following"])
+    electives_max_size = int(pdf_table_sizes["electives"])
+    additional_max_size = int(pdf_table_sizes["additional"])
+    prerequisites_max_size = int(pdf_table_sizes["prerequisites"])
+    padding = 10
+
     if (studentObject.options['fastTrack'] == False):
         isFT = "No"
     else:
@@ -21,12 +69,12 @@ def fillPDFForms(studentObject, path):
     else:
         isThesis = "Yes"
 
-    coreName = [""]*6
-    coreNum = [""]*6
-    coreSem = [""]*6
-    coreTransfer = [""]*6
-    coreGrade = [""]*6
-    coreAC = [""]*6
+    coreName = [""] * (core_max_size + padding) 
+    coreNum = [""] * (core_max_size + padding) 
+    coreSem = [""] * (core_max_size + padding) 
+    coreTransfer = [""] * (core_max_size + padding) 
+    coreGrade = [""] * (core_max_size + padding) 
+    coreAC = [""] * (core_max_size + padding) 
 
     j = 0
     class_data = studentObject.classes
@@ -39,13 +87,15 @@ def fillPDFForms(studentObject, path):
             coreGrade[j] = i.grade
             coreAC[j] = i.attempted_credits
             j = j+1
+            if (j >= core_max_size):
+                break # if we are to combine all the data into one here, we simply append the arrays we just modified with the new classes we find
 
-    followingName = [""]*6
-    followingNum = [""]*6
-    followingSem = [""]*6
-    followingTransfer = [""]*6
-    followingGrade = [""]*6
-    followingAC = [""]*6
+    followingName = [""] * (following_max_size + padding) 
+    followingNum = [""] * (following_max_size + padding) 
+    followingSem = [""] * (following_max_size + padding) 
+    followingTransfer = [""] * (following_max_size + padding) 
+    followingGrade = [""] * (following_max_size + padding) 
+    followingAC = [""] * (following_max_size + padding) 
 
     j = 0
     class_data = studentObject.classes
@@ -58,13 +108,15 @@ def fillPDFForms(studentObject, path):
             followingGrade[j] = i.grade
             followingAC[j] = i.attempted_credits
             j = j+1
+            if (j >= following_max_size):
+                break # if we are to combine all the data into one here, we simply append the arrays we just modified with the new classes we find
 
-    electiveName = [""]*8
-    electiveNum = [""]*8
-    electiveSem = [""]*8
-    electiveTransfer = [""]*8
-    electiveGrade = [""]*8
-    electiveAC = [""]*8
+    electiveName = [""] * (electives_max_size + padding) 
+    electiveNum = [""] * (electives_max_size + padding) 
+    electiveSem = [""] * (electives_max_size + padding) 
+    electiveTransfer = [""] * (electives_max_size + padding) 
+    electiveGrade = [""] * (electives_max_size + padding) 
+    electiveAC = [""] * (electives_max_size + padding) 
 
     j = 0
     class_data = studentObject.classes
@@ -77,27 +129,56 @@ def fillPDFForms(studentObject, path):
             electiveGrade[j] = (i.grade)
             electiveAC[j] = (i.attempted_credits)
             j = j+1
+            if (j >= electives_max_size):
+                break # if we are to combine all the data into one here, we simply append the arrays we just modified with the new classes we find
 
-    prereqName = [""]*9
-    prereqNum = [""]*9
-    prereqSem = [""]*9
-    prereqWaiver = [""]*9
-    prereqGrade = [""]*9
-    prereqAC = [""]*9
+    addElectiveName = [""] * (additional_max_size + padding) 
+    addElectiveNum = [""] * (additional_max_size + padding) 
+    addElectiveSem = [""] * (additional_max_size + padding) 
+    addElectiveTransfer = [""] * (additional_max_size + padding) 
+    addElectiveGrade = [""] * (additional_max_size + padding) 
+    addElectiveAC = [""] * (additional_max_size + padding) 
+
+    j = 0
+    class_data = studentObject.classes
+    for i in class_data:
+        if (i.type == "additional"):
+            addElectiveName[j] = (i.name)
+            addElectiveNum[j] = (i.number)
+            addElectiveSem[j] = (i.semester)
+            addElectiveTransfer[j] = (i.transfer)
+            addElectiveGrade[j] = (i.grade)
+            addElectiveAC[j] = (i.attempted_credits)
+            j = j+1
+            if (j >= additional_max_size):
+                break # if we are to combine all the data into one here, we simply append the arrays we just modified with the new classes we find
+
+    prereqName = [""] * (prerequisites_max_size + padding) 
+    prereqNum = [""] * (prerequisites_max_size + padding) 
+    prereqSem = [""] * (prerequisites_max_size + padding) 
+    prereqWaiver = [""] * (prerequisites_max_size + padding) 
+    prereqGrade = [""] * (prerequisites_max_size + padding) 
+    prereqAC = [""] * (prerequisites_max_size + padding) 
 
     j = 0
     class_data = studentObject.classes
     for i in class_data:
         if (i.type == "prerequisites"):
-            prereqName[j] = i.name
-            prereqNum[j] = i.number
+            if(i.leveling != ''):
+                prereqName[j] = "***" + i.name + "***"
+                prereqNum[j] = "***" + i.number + "***"
+            else:
+                prereqName[j] = i.name
+                prereqNum[j] = i.number
+            prereqGrade[j] = i.grade
             prereqSem[j] = i.semester
             prereqWaiver[j] = i.transfer
-            prereqGrade[j] = i.grade
             prereqAC[j] = i.attempted_credits
             j = j+1
+            if (j >= prerequisites_max_size):
+                break # if we are to combine all the data into one here, we simply append the arrays we just modified with the new classes we find
 
-    if (studentObject.track == "Software Engineering" or studentObject.track == "Networks and Telecommunication"):
+    if (int(pdf_type) == 2):
       data_dict = {
         "Name of Student": studentObject.name,
         "Student ID Number": studentObject.studentId,
@@ -128,7 +209,6 @@ def fillPDFForms(studentObject, path):
         "coreSem5": coreSem[4],
         "coreTransfer5": coreTransfer[4],
         "coreGrade5": coreGrade[4],
-        "ct6": coreNum[5],
         "cn6": coreNum[5],
         "coreSem6": coreSem[5],
         "coreTransfer6": coreTransfer[5],
@@ -138,15 +218,15 @@ def fillPDFForms(studentObject, path):
         "ct9": electiveName[2],
         "ct10": electiveName[3],
         "ct11": electiveName[4],
-        "ct12": electiveName[5],
-        "ct13": electiveName[6],
-        "ct14": electiveName[7],
+        "ct12": addElectiveName[0],
+        "ct13": addElectiveName[1],
+        "ct14": addElectiveName[2],
         "otherReq1": "",
         "ct15": "",
         "cn15": "",
         "Sem15": "",
         "Transfer15": "",
-        "Grade15": "",
+        "Grade15":"",
         "otherReq2": "",
         "ct16": "",
         "cn16": "",
@@ -205,9 +285,9 @@ def fillPDFForms(studentObject, path):
         "cn9": electiveNum[2],
         "cn10": electiveNum[3],
         "cn11": electiveNum[4],
-        "cn12": electiveNum[5],
-        "cn13": electiveNum[6],
-        "cn14": electiveNum[7],
+        "cn12": addElectiveNum[0],
+        "cn13": addElectiveNum[1],
+        "cn14": addElectiveNum[2],
         "Sem7": electiveSem[0],
         "Sem8": electiveSem[1],
         "Sem9": electiveSem[2],
@@ -223,20 +303,20 @@ def fillPDFForms(studentObject, path):
         "Grade9": electiveGrade[2],
         "Grade10": electiveGrade[3],
         "Grade11": electiveGrade[4],
-        "Sem12": electiveSem[5],
-        "Sem13": electiveSem[6],
-        "Sem14": electiveSem[7],
-        "Transfer12": electiveTransfer[5],
-        "Transfer13": electiveTransfer[6],
-        "Transfer14": electiveTransfer[7],
-        "Grade12": electiveGrade[5],
-        "Grade13": electiveGrade[6],
-        "Grade14": electiveGrade[7],
+        "Sem12": addElectiveSem[0],
+        "Sem13": addElectiveSem[1],
+        "Sem14": addElectiveSem[2],
+        "Transfer12": addElectiveSem[0],
+        "Transfer13": addElectiveSem[1],
+        "Transfer14": addElectiveSem[2],
+        "Grade12": addElectiveGrade[0],
+        "Grade13": addElectiveGrade[1],
+        "Grade14": addElectiveGrade[2],
         "fastTrack": isFT,
         "thesis": isThesis,
         "object": studentObject.packStudentObject()
-    }
-    else:
+        }
+    elif (int(pdf_type) == 1 or int(pdf_type) == 3):
      data_dict = {
         "Name of Student": studentObject.name,
         "Student ID Number": studentObject.studentId,
@@ -264,7 +344,7 @@ def fillPDFForms(studentObject, path):
         "coreGrade4": coreGrade[3],
         "ct5": coreName[4],
         "cn5": coreNum[4],
-        "coreSem5": coreSem[4], 
+        "coreSem5": coreSem[4],
         "coreTransfer5": coreTransfer[4],
         "coreGrade5": coreGrade[4],
         "OtherReq1": "",
@@ -356,65 +436,58 @@ def fillPDFForms(studentObject, path):
         "grade14": electiveGrade[2],
         "grade15": electiveGrade[3],
         "grade16": electiveGrade[4],
-        "grade17": electiveGrade[5],
-        "grade18": electiveGrade[6],
-        "grade19": electiveGrade[7],
+        "grade17": addElectiveGrade[0],
+        "grade18": addElectiveGrade[1],
+        "grade19": addElectiveGrade[2],
         "cn12": electiveNum[0],
         "cn13": electiveNum[1],
         "cn14": electiveNum[2],
         "cn15": electiveNum[3],
         "cn16": electiveNum[4],
-        "cn17": electiveNum[5],
-        "cn18": electiveNum[6],
-        "cn19": electiveNum[7],
+        "cn17": addElectiveNum[0],
+        "cn18": addElectiveNum[1],
+        "cn19": addElectiveNum[2],
         "ct12": electiveName[0],
         "ct13": electiveName[1],
         "ct14": electiveName[2],
         "ct15": electiveName[3],
         "ct16": electiveName[4],
-        "ct17": electiveName[5],
-        "ct18": electiveName[6],
-        "ct19": electiveName[7],
+        "ct17": addElectiveName[0],
+        "ct18": addElectiveName[1],
+        "ct19": addElectiveName[2],
         "sem12": electiveSem[0],
         "sem13": electiveSem[1],
         "sem14": electiveSem[2],
         "sem15": electiveSem[3],
         "sem16": electiveSem[4],
-        "sem17": electiveSem[5],
-        "sem18": electiveSem[6],
-        "sem19": electiveSem[7],
+        "sem17": addElectiveSem[0],
+        "sem18": addElectiveSem[1],
+        "sem19": addElectiveSem[2],
         "transfer12": electiveTransfer[0],
         "transfer13": electiveTransfer[1],
         "transfer14": electiveTransfer[2],
         "transfer15": electiveTransfer[3],
         "transfer16": electiveTransfer[4],
-        "transfer17": electiveTransfer[5],
-        "transfer18": electiveTransfer[6],
-        "transfer19": electiveTransfer[7],
+        "transfer17": addElectiveTransfer[0],
+        "transfer18": addElectiveTransfer[1],
+        "transfer19": addElectiveTransfer[2],
         "fastTrack": isFT,
         "thesis": isThesis,
         "object": studentObject.packStudentObject()
-    }
+      }
+    else:
+        raise Exception("Error:PDF Type not valid")
 
     base_dev = './public/degreePlans/'
     base_prod = './build/degreePlans/'
-    file_lookup = {
-        "Cyber Security": 'DP-Cybersecurity.pdf',
-        "Data Science": 'DP-DataScience.pdf',
-        "Intelligent Systems": 'DP-Intelligent-Systems.pdf',
-        "Interactive Computing": 'DP-Interactive-Computing.pdf',
-        "Networks and Telecommunication": 'DP-Networks-Telecommunication.pdf',
-        "Software Engineering": 'DP-Software-Engineering.pdf',
-        "Systems": 'DP-Systems.pdf',
-        "Traditional": 'DP-Traditional.pdf',
-    }
     try:
-        fillpdfs.write_fillable_pdf(base_dev + file_lookup[studentObject.track], path, data_dict)
+        fillpdfs.write_fillable_pdf(base_dev + pdf_name, path, data_dict)
     except:
-        fillpdfs.write_fillable_pdf(base_prod + file_lookup[studentObject.track], path, data_dict)
+        fillpdfs.write_fillable_pdf(base_prod + pdf_name, path, data_dict)
 
 def getStudentFile(name):
     return name.replace(" ", "") + '_DP' + '.pdf'
+             
 
 def makeDegreePlanMethod(studentObject):
     if (studentObject == 'mock'):
@@ -424,8 +497,10 @@ def makeDegreePlanMethod(studentObject):
     
     file_name = getStudentFile(studentObject.name)
     file_path = get_server_path() + '/' + file_name
+    
     fillPDFForms(studentObject, file_path)
     return file_name
+
 
 if __name__ == '__main__':
     makeDegreePlanMethod('mock')

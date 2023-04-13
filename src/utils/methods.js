@@ -1,7 +1,4 @@
 import { message } from "antd";
-export const extractErrorMessage = (errorText) => {
-  return errorText.replace("Exception('", "").replace("')", "");
-};
 
 export const sendSuccess = (content, key = null) => {
   message.open({ type: "success", content, key });
@@ -26,4 +23,19 @@ export const sendWaiting = (content, key, cleanup) => {
     content,
     duration: 0,
   });
+};
+
+const errorTypeMap = {
+  Error: sendError,
+  Warning: sendWarning,
+};
+export const handleError = (error, key) => {
+  try {
+    const msg = error.errorText.replace("Exception('", "").replace("')", "").split(":");
+    const sendErrorFunction = errorTypeMap[msg[0]];
+    const errMessage = msg[1];
+    sendErrorFunction(errMessage.trim(), key);
+  } catch {
+    sendError("Something went wrong", key);
+  }
 };

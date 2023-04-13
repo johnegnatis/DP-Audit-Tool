@@ -1,7 +1,7 @@
 import os
 
 def get_server_name():
-    return '__server';
+    return 'server';
 
 def get_server_path():
     return os.getcwd() + '/' + get_server_name()

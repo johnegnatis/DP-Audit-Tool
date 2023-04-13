@@ -4,20 +4,20 @@ import { useStudentObject } from "../Hooks/degreePlanHooks";
 import AddClass from "./AddClass";
 import Form from "./Form";
 import { Button, Drawer, message } from "antd";
-import { useGlobalState, changePage, setGlobalState } from "../GlobalState";
+import { useGlobalState, changePage, returnToHome } from "../GlobalState";
 import EditClass from "./EditClass";
 import { eel } from "../../utils/eel";
 import { pages, tableNames } from "../../utils/constants";
-import { sendError, sendSuccess, sendWaiting, sendWarning } from "../../utils/methods";
+import { handleError, sendError, sendSuccess, sendWaiting, sendWarning } from "../../utils/methods";
 import NavigationBar from "../NavigationBar";
-import { useClassOptions } from "../Hooks/databaseHooks";
+import { useTrackOptions } from "../Hooks/databaseHooks";
 
 const DegreePlan = ({ student, databaseProps }) => {
   // STUDENT OBJ LOGIC
   const [students] = useGlobalState("students");
   const formProps = useStudentObject(student);
   const { searchInput, setSearchInput, getClassSetter, studentObjectJSON, track, setClasses } = formProps;
-  const classOptionProps = useClassOptions(track);
+  const classOptionProps = useTrackOptions(track);
 
   const handleSelectTrack = () => {
     const newStudent = student;
@@ -28,7 +28,7 @@ const DegreePlan = ({ student, databaseProps }) => {
         const newStudent = JSON.parse(result);
         setClasses(newStudent.classes);
       })
-      .catch((e) => console.log(e, "error at track selection"));
+      .catch((e) => handleError(e));
   };
 
   const navigatePage = (page, pdfName = null) => {
@@ -44,7 +44,7 @@ const DegreePlan = ({ student, databaseProps }) => {
       .then((pdfName) => {
         navigatePage(pages.pdfPreview, pdfName);
       })
-      .catch((e) => console.log(e, "error at PDF creation"));
+      .catch((e) => handleError(e));
 
     // handle this async
   };
@@ -61,7 +61,6 @@ const DegreePlan = ({ student, databaseProps }) => {
   const [classOptions, setClassOptions] = useState([]);
   const handleAddClassDrawerOpen = useCallback(
     (type, options) => {
-      console.log(options);
       setAddClassTable(type);
       setIsSearch(options && options.length > 0); // if there are options, start with searching options
       setClassOptions(options);
@@ -295,6 +294,7 @@ const DegreePlan = ({ student, databaseProps }) => {
       <NavigationBar saveStudentObject={saveStudentObject} />
       <div className={`degree-plan-root ${allDisabled ? "moving" : ""}`}>
         <Form
+          handleReturnToHome={returnToHome}
           classOptions={classOptionProps}
           trackOptions={trackOptions}
           allDisabled={allDisabled}
@@ -320,7 +320,7 @@ const DegreePlan = ({ student, databaseProps }) => {
             setSearchInput={setSearchInput}
             isSearch={isSearch}
             setIsSearch={setIsSearch}
-            classes={classOptions}
+            searchOptions={classOptions}
             handleSubmitAddClass={handleSubmitAddClass}
           />
         </Drawer>
