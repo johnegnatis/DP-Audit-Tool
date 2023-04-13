@@ -440,6 +440,13 @@ def fillPDFForms(studentObject, path):
 def getStudentFile(name):
     return name.replace(" ", "") + '_DP' + '.pdf'
 
+
+def readStudentObject(file_path):
+    form_fields = fillpdfs.get_form_fields(file_path)
+    object  = form_fields["object"]
+    return object
+
+
 def makeDegreePlanMethod(studentObject):
     if (studentObject == 'mock'):
         studentObject = mockStudent()
