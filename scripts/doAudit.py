@@ -24,12 +24,13 @@ def doAuditMethod(studentObject):
         return
 
     destination = file_path + '/' + studentObject.name + '.docx'
-    generateAudit(studentObject, destination)
+    try:
+        generateAudit(studentObject, destination)
+    except:
+        raise Exception("Error: Error at audit generation. Please try again later.")
     return destination
 
 def generateAudit(studentObject, destination):
-    print('Starting audit generation...')
-
     # Class tracking for GPA
     core_complete = [course for course in studentObject.classes if course.grade and (course.type == 'core' or course.type == 'following')]
     core_incomplete = [course for course in studentObject.classes if not course.grade and course.type == 'core']
@@ -140,7 +141,10 @@ def generateAudit(studentObject, destination):
     
     para.add_run('\n' + overall_status + ", ".join(course.number for course in total_incomplete))
 
-    doc.save(destination)
+    try:
+        doc.save(destination)
+    except PermissionError:
+        raise Exception("Error: You do not have permissions to save here. Perhaps you have an older version open. Close out other applications and try again.")
 
 def calculateRequiredGPA(required_GPA, GPA, completed_courses, remaining_courses):
     target = (required_GPA * (len(completed_courses) + len(remaining_courses)) - (GPA * len(completed_courses))) / len(remaining_courses)

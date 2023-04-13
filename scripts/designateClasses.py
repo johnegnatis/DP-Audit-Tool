@@ -62,73 +62,74 @@ def find_add_classes(newClasses, classList, typeList, typeKey):
 
 
 def designateClassesMethod(studentObject):
-    if (studentObject == 'mock'):
-        studentObject = mockStudent(unsure=True)
-    else:
-        studentObject = json_to_student(studentObject)
+    try:
+        if (studentObject == 'mock'):
+            studentObject = mockStudent(unsure=True)
+        else:
+            studentObject = json_to_student(studentObject)
 
-    data = open_database()
-    classes = []
-    track_name = ''
-    cores = []
-    following = []
-    prerequisites = []
-    trackList = data['tracks']
-    num_of_following = 0 
+        data = open_database()
+        classes = []
+        track_name = ''
+        cores = []
+        following = []
+        prerequisites = []
+        trackList = data['tracks']
+        num_of_following = 0 
 
-    # EXTRACTING CORRECT TRACK FROM DB
-    for track in range(len(trackList)):
-        if (trackList[track]['name'] == studentObject.track):
-            track_name = trackList[track]['name']
-            cores = trackList[track][coreKey] 
-            num_of_following = trackList[track]["N-of-the-following"]
-            following = trackList[track][followingKey]
-            prerequisites = trackList[track][prerequisiteKey]
+        # EXTRACTING CORRECT TRACK FROM DB
+        for track in range(len(trackList)):
+            if (trackList[track]['name'] == studentObject.track):
+                track_name = trackList[track]['name']
+                cores = trackList[track][coreKey] 
+                num_of_following = trackList[track]["N-of-the-following"]
+                following = trackList[track][followingKey]
+                prerequisites = trackList[track][prerequisiteKey]
 
-    # UPDATING STUDENT'S CLASS TYPES, ADD IF NOT TAKEN
-    newClasses = []
-    find_add_classes(newClasses, studentObject.classes, cores, coreKey)
-    find_add_classes(newClasses, studentObject.classes, following, followingKey)
-    find_add_classes(newClasses, studentObject.classes, prerequisites, prerequisiteKey)
+        # UPDATING STUDENT'S CLASS TYPES, ADD IF NOT TAKEN
+        newClasses = []
+        find_add_classes(newClasses, studentObject.classes, cores, coreKey)
+        find_add_classes(newClasses, studentObject.classes, following, followingKey)
+        find_add_classes(newClasses, studentObject.classes, prerequisites, prerequisiteKey)
 
-    for i in range(0, len(studentObject.classes)): # update all untyped to 'electives'
-        if (test_strings(studentObject.classes[i].type, unsureKey)):
-            studentObject.classes[i].type = electiveKey    
+        for i in range(0, len(studentObject.classes)): # update all untyped to 'electives'
+            if (test_strings(studentObject.classes[i].type, unsureKey)):
+                studentObject.classes[i].type = electiveKey    
 
-    # Combine the classes
-    studentObject.classes = studentObject.classes + newClasses
+        # Combine the classes
+        studentObject.classes = studentObject.classes + newClasses
 
-    # CHANGING THE CAPITALS - electives won't be in DB
-    for i in range(0, len(studentObject.classes)):
-        if studentObject.classes[i].type == electiveKey: # current class type == elective, make it title case; non-electives are handled above
-            studentObject.classes[i].name = (studentObject.classes[i].name).title()
+        # CHANGING THE CAPITALS - electives won't be in DB
+        for i in range(0, len(studentObject.classes)):
+            if studentObject.classes[i].type == electiveKey: # current class type == elective, make it title case; non-electives are handled above
+                studentObject.classes[i].name = (studentObject.classes[i].name).title()
 
-    # Sorting by grade
-    studentObject.classes = sorted(studentObject.classes, key=grade_key)
-    
-    # IF the student has completed 2 of the following courses but the track only calls for 1,  
-    # then the higher grade one should stay and the lower grade one goes into electives.
-    count = 0
-    for classObj in studentObject.classes:
-        # only for following classes that have grades
-        if classObj.type != followingKey or not classObj.grade:
-            continue
+        # Sorting by grade
+        studentObject.classes = sorted(studentObject.classes, key=grade_key)
         
-        if count >= num_of_following: # if we have surpassed the limit of following classes, this following class becomes an elective
-            classObj.type = electiveKey
-        elif classObj.grade:
-            count = count + 1
+        # IF the student has completed 2 of the following courses but the track only calls for 1,  
+        # then the higher grade one should stay and the lower grade one goes into electives.
+        count = 0
+        for classObj in studentObject.classes:
+            # only for following classes that have grades
+            if classObj.type != followingKey or not classObj.grade:
+                continue
+            
+            if count >= num_of_following: # if we have surpassed the limit of following classes, this following class becomes an elective
+                classObj.type = electiveKey
+            elif classObj.grade:
+                count = count + 1
 
-    # Here is where to divide by additional and electives
-    
-    # Sorting by type
-    studentObject.classes = sorted(studentObject.classes, key=type_key)
+        # Here is where to divide by additional and electives
+        
+        # Sorting by type
+        studentObject.classes = sorted(studentObject.classes, key=type_key)
 
-    for i in range(0, len(studentObject.classes)):
-        print(f"{studentObject.classes[i].type.ljust(15)} {studentObject.classes[i].name}")
-    
-    print(studentObject.packStudentObject())
-    return studentObject.packStudentObject()
+        # for i in range(0, len(studentObject.classes)):
+            # print(f"{studentObject.classes[i].type.ljust(15)} {studentObject.classes[i].name}")
+        return studentObject.packStudentObject()
+    except:
+        raise Exception("Error: Error At Track Selection.")
 
 if __name__ == '__main__':
     designateClassesMethod('mock')

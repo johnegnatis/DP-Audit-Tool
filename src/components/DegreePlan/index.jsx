@@ -8,7 +8,7 @@ import { useGlobalState, changePage, returnToHome } from "../GlobalState";
 import EditClass from "./EditClass";
 import { eel } from "../../utils/eel";
 import { pages, tableNames } from "../../utils/constants";
-import { sendError, sendSuccess, sendWaiting, sendWarning } from "../../utils/methods";
+import { handleError, sendError, sendSuccess, sendWaiting, sendWarning } from "../../utils/methods";
 import NavigationBar from "../NavigationBar";
 import { useTrackOptions } from "../Hooks/databaseHooks";
 
@@ -28,7 +28,7 @@ const DegreePlan = ({ student, databaseProps }) => {
         const newStudent = JSON.parse(result);
         setClasses(newStudent.classes);
       })
-      .catch((e) => console.error(e, "error at track selection"));
+      .catch((e) => handleError(e));
   };
 
   const navigatePage = (page, pdfName = null) => {
@@ -44,7 +44,7 @@ const DegreePlan = ({ student, databaseProps }) => {
       .then((pdfName) => {
         navigatePage(pages.pdfPreview, pdfName);
       })
-      .catch((e) => console.log(e, "error at PDF creation"));
+      .catch((e) => handleError(e));
 
     // handle this async
   };

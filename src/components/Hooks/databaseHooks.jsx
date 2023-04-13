@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { eel } from "../../utils/eel";
 import { tableTypes } from "../../utils/constants";
+import { handleError } from "../../utils/methods";
 
 export function useDatabase() {
   const [trackOptions, setTrackOptions] = useState("");
@@ -17,7 +18,7 @@ export function useDatabase() {
         setLoading(false);
       })
       .catch((e) => {
-        console.error(e, "error at database fetch");
+        handleError(e);
         setLoading(false);
       });
   }, []);
@@ -49,17 +50,18 @@ export function useTrackOptions(track) {
       .getFrontendOptions()()
       .then((result) => {
         const jsonResult = JSON.parse(result);
-        const database = jsonResult.tracks.find((dbTrack) => (dbTrack.name == track));
+        const pdfTypes = jsonResult["pdf-types"];
+        const database = jsonResult.tracks.find((dbTrack) => dbTrack.name == track);
         if (!database) throw "Track not found";
         setCoreOptions(getClassOptions(database, tableTypes.core));
         setFollowingOptions(getClassOptions(database, tableTypes.following));
         setPrerequisiteOptions(getClassOptions(database, tableTypes.prerequisites));
         setNOfTheFollowing(database["N-of-the-following"] | 0);
-        setTableCounts(database["pdf-table-size"]);
+        setTableCounts(pdfTypes[database["pdf-type"] || "0"]["pdf-table-size"]);
         setLoading(false);
       })
       .catch((e) => {
-        console.error(e, "error at database fetch");
+        handleError(e);
         setLoading(false);
       });
   }, [track]);

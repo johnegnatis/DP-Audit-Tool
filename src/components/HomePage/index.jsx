@@ -4,7 +4,7 @@ import { Icon } from "@iconify/react";
 import { iconNames, pages } from "../../utils/constants";
 import React, { useCallback, useState } from "react";
 import { eel } from "../../utils/eel";
-import { sendError } from "../../utils/methods";
+import { handleError, sendError, sendLoading, sendSuccess } from "../../utils/methods";
 import { useGlobalState, setGlobalState } from "../GlobalState";
 import { getEelResponse } from "./apiHelper";
 import NavigationBar from "../NavigationBar";
@@ -17,18 +17,17 @@ const HomePage = () => {
   const [negativeIndex, setNegativeIndex] = useState(-1);
 
   const handleUploadClick = useCallback(() => {
+    const key = "popup-upload";
     if (loading) {
       return;
     }
     setLoading(true);
+    sendLoading("Selecting Files", key);
     eel
       .getFilePaths()()
       .then((fileList) => {
-        if (!fileList) {
-          setLoading(false);
-          return;
-        }
         // TODO: handle same file uploaded error
+        sendLoading("Parsing Transcripts", key);
         const promises = fileList.map((file, index) => getEelResponse(file, negativeIndex - index));
         setNegativeIndex((num) => num - promises.length);
         Promise.all(promises).then((students) => {
@@ -61,13 +60,24 @@ const HomePage = () => {
                   {fails.map((filename) => {
                     const parts = filename.split("/");
                     const fileName = parts[parts.length - 1];
-                    return <li style={{ textAlign: "left", fontSize: "14px" }}>{fileName}</li>;
+                    return (
+                      <li key={fileName} style={{ textAlign: "left", fontSize: "14px" }}>
+                        {fileName}
+                      </li>
+                    );
                   })}
                 </ol>
-              </div>
+              </div>,
+              key
             );
+          } else {
+            sendSuccess("Transcripts parsed successfully", key);
           }
         });
+      })
+      .catch((e) => {
+        handleError(e, key);
+        setLoading(false);
       });
   }, [loading, eel, negativeIndex, setLoading]);
 
@@ -157,12 +167,17 @@ const HomePage = () => {
           <span>Support</span>
         </div>
         <div className="create-button">
-          <Button onClick={handleCreateDocumentClick} className="button orange-bg" size="large">
+          <Button
+            onClick={handleCreateDocumentClick}
+            className="button orange-bg"
+            size="large"
+            disabled={fileStudentList.length <= 0}
+          >
             CREATE DOCUMENTS
           </Button>
         </div>
       </footer>
-      <SettingsForm open={settingsOpen} onClose={() => handleCloseSettings()}/>
+      <SettingsForm open={settingsOpen} onClose={() => handleCloseSettings()} />
     </>
   );
 };

@@ -2,18 +2,21 @@ from tinydb import TinyDB, Query
 import json
 
 def open_settings():
-    base_prod = './build/databases/settings.json'
-    base_dev = './public/databases/settings.json'
-    test_dev = '../public/databases/settings.json'
-
     try:
-        db = TinyDB(base_prod)
-    except:
+        base_prod = './build/databases/settings.json'
+        base_dev = './public/databases/settings.json'
+        test_dev = '../public/databases/settings.json'
+
         try:
-            db = TinyDB(base_dev)
+            db = TinyDB(base_prod)
         except:
-            db = TinyDB(test_dev)
-    return db
+            try:
+                db = TinyDB(base_dev)
+            except:
+                db = TinyDB(test_dev)
+        return db
+    except:
+        raise Exception("Error: Error opening settings.json file.")
 
 def get_all_settings():
     db = open_settings()
@@ -32,9 +35,9 @@ def settings(action, payload=[]):
         elif action == "get":
             return get_all_settings()
         else:
-            raise Exception("bad action")
+            raise Exception("Error: Unsupported settings action.")
     except:
-        raise Exception("setting save or get failed")
+        raise Exception("Error: Database interaction failed.")
 
 # find keys in frontend constants.js
 def get_setting(key):
@@ -44,6 +47,5 @@ def get_setting(key):
         query_result = db.search(query.key == key)
         query_result = query_result[0]
         return query_result['value']
-    except:
-        print('Error at get_query')
+    except Exception as e:
         return None

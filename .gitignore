@@ -9,9 +9,12 @@
 # production
 /build
 
-# misc
-/databases/settings.json
+# file systems
+/public/databases/settings.json
 __server
+server
+
+# misc
 .vscode
 .DS_Store
 .env.local

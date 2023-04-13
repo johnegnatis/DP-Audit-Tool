@@ -18,6 +18,7 @@ export function useStudentObject(student) {
   const [core, setCore] = useState([]);
   const [following, setFollowing] = useState([]);
   const [elective, setElective] = useState([]);
+  const [additional, setAdditional] = useState([]);
   const [prerequisites, setPrerequisites] = useState([]);
   const [pdfName, setPdfName] = useState(null);
 
@@ -25,6 +26,7 @@ export function useStudentObject(student) {
     core: setCore,
     following: setFollowing,
     electives: setElective,
+    additional: setAdditional,
     prerequisites: setPrerequisites,
   };
   const getClassSetter = (table) => {
@@ -49,6 +51,7 @@ export function useStudentObject(student) {
     setCore(filterClass(tableTypes.core, student.classes));
     setFollowing(filterClass(tableTypes.following, student.classes));
     setElective(filterClass(tableTypes.electives, student.classes));
+    setAdditional(filterClass(tableTypes.additional, student.classes));
     setPrerequisites(filterClass(tableTypes.prerequisites, student.classes));
   }, [student]);
 
@@ -56,11 +59,12 @@ export function useStudentObject(student) {
     setCore(filterClass(tableTypes.core, newClasses));
     setFollowing(filterClass(tableTypes.following, newClasses));
     setElective(filterClass(tableTypes.electives, newClasses));
+    setAdditional(filterClass(tableTypes.additional, newClasses));
     setPrerequisites(filterClass(tableTypes.prerequisites, newClasses));
   }, []);
 
   const studentObjectJSON = useMemo(() => {
-    const classList = [...core, ...following, ...elective, ...prerequisites];
+    const classList = [...core, ...following, ...elective, ...additional, ...prerequisites];
     return {
       name,
       studentId,
@@ -114,6 +118,8 @@ export function useStudentObject(student) {
     setFollowing,
     elective,
     setElective,
+    additional,
+    setAdditional,
     prerequisites,
     setPrerequisites,
     studentObjectJSON,

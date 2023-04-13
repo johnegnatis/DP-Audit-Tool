@@ -1,7 +1,7 @@
 import { getNumberForm, getForm, getRadio } from "./inputComponents";
 import { formatGrid, formatHalfGrid, getSpan } from "./gridLayout";
 import { Button } from "antd";
-import { getNumberToString, tableTypes } from "../../../utils/constants";
+import { getNumberToString, tableNames, tableTypes } from "../../../utils/constants";
 import ClassTable from "./Table";
 import SelectTrack from "../TrackForm";
 import { useState, useMemo } from "react";
@@ -41,6 +41,7 @@ const Form = ({
     core,
     following,
     elective: electives,
+    additional,
     prerequisites,
   } = props;
   const { coreOptions, followingOptions, prerequisiteOptions, nOfTheFollowing, tableCounts } = classOptions;
@@ -48,6 +49,7 @@ const Form = ({
     core: coreTableSize,
     following: followingTableSize,
     electives: electiveTableSize,
+    additional: additionalTableSize,
     prerequisites: prerequisiteTableSize,
   } = tableCounts;
   const tableTooBigWarning = useMemo(
@@ -118,7 +120,7 @@ const Form = ({
     () => (
       <ClassTable
         type={tableTypes.core}
-        title="Core Courses"
+        title={tableNames.core}
         allDisabled={allDisabled}
         classes={core}
         openAddClassDrawer={() => setAddClassDrawerOpen(tableTypes.core, coreOptions)}
@@ -158,7 +160,7 @@ const Form = ({
     () => (
       <ClassTable
         type={tableTypes.electives}
-        title="Approved 6000 Level Courses"
+        title={tableNames.electives}
         subtitle=""
         allDisabled={allDisabled}
         classes={electives}
@@ -174,11 +176,31 @@ const Form = ({
     ),
     [electives, electiveTableSize, ...sharedTableDependencies]
   );
+  const additionalTable = useMemo(
+    () => (
+      <ClassTable
+        type={tableTypes.additional}
+        title={tableNames.additional}
+        subtitle=""
+        allDisabled={allDisabled}
+        classes={additional}
+        openAddClassDrawer={() => setAddClassDrawerOpen(tableTypes.additional, [])}
+        setClassForEdit={setClassForEdit}
+        setClassForMove={setClassForMove}
+        handleMoveClick={handleMoveClick}
+        handleMoveToTopClick={handleMoveToTopClick}
+        selectedRow={selectedRow}
+        deleteClass={deleteClass}
+        size={additionalTableSize}
+      />
+    ),
+    [additional, additionalTableSize, ...sharedTableDependencies]
+  );
   const prerequisiteTable = useMemo(
     () => (
       <ClassTable
         type={tableTypes.prerequisites}
-        title="Prerequisites"
+        title={tableNames.prerequisites}
         subtitle=""
         allDisabled={allDisabled}
         classes={prerequisites}
@@ -214,6 +236,7 @@ const Form = ({
         {coreTable}
         {followingTable}
         {electivesTable}
+        {additionalTable}
         {prerequisiteTable}
       </div>
       <div>

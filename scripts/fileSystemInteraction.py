@@ -16,27 +16,32 @@ def getFilePathsMethod():
     root.wm_attributes('-topmost', 1)
     default_path = get_setting("default-path-for-transcript")
     file_paths = filedialog.askopenfilename(filetypes=(("PDF Files", "*.pdf"),("All Files", "*.*")), title="Select Transcript(s)", multiple=True, initialdir=default_path)
+    if not file_paths:
+        raise Exception("Warning: No files were selected.")
     return file_paths
 
 def savePDFMethod(file_name, signature, flatten):
-    root = Tk()
-    root.withdraw()
-    root.wm_attributes('-topmost', 1)
+    try:
+        root = Tk()
+        root.withdraw()
+        root.wm_attributes('-topmost', 1)
 
 
-    default_path = get_setting("default-path-for-degree-plan")
-    # destination
-    dir_to_save = getDirectory("Save Degree Plan", default_path)
+        default_path = get_setting("default-path-for-degree-plan")
+        # destination
+        dir_to_save = getDirectory("Save Degree Plan", default_path)
 
-    # source
-    file_path = get_server_path() + '/' + file_name
+        # source
+        file_path = get_server_path() + '/' + file_name
 
-    if signature or flatten == 1:
-        giveSignature(file_path, dir_to_save + '/' + file_name, signature, flatten)
-    else:
-        copy2(file_path, dir_to_save, follow_symlinks=True)
+        if signature or flatten == 1:
+            giveSignature(file_path, dir_to_save + '/' + file_name, signature, flatten)
+        else:
+            copy2(file_path, dir_to_save, follow_symlinks=True)
 
-    return dir_to_save
+        return dir_to_save
+    except:
+        raise Exception("Error: Error while saving PDF.")
 
 def getDirectory(message="Select directory", default_path = None):
     root = Tk()
@@ -45,6 +50,8 @@ def getDirectory(message="Select directory", default_path = None):
 
     # destination
     dir_to_save = filedialog.askdirectory(title=message, initialdir=default_path)
+    if not dir_to_save:
+        raise Exception("Warning: No directory was selected.")
     return dir_to_save
 
 def giveSignature(file_path, dir_to_save, signature, flatten):

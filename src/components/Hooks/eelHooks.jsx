@@ -1,5 +1,6 @@
 import { eel } from "../../utils/eel";
 import { useState, useEffect } from "react";
+import { handleError } from "../../utils/methods";
 export function useServerPort() {
   const [serverPort, setServerPort] = useState("");
 
@@ -7,7 +8,7 @@ export function useServerPort() {
     eel
       .getServerPort()()
       .then((port) => setServerPort(port))
-      .catch((e) => console.log(e, "Error with web server port"));
+      .catch((e) => handleError(e));
   }, []);
 
   return { serverPort };

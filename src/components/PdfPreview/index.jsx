@@ -7,7 +7,7 @@ import { changePage, useGlobalState } from "../GlobalState";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 import NavigationBar from "../NavigationBar";
 import { eel } from "../../utils/eel";
-import { sendError, sendLoading, sendSuccess, sendWarning } from "../../utils/methods";
+import { handleError, sendError, sendLoading, sendSuccess, sendWarning } from "../../utils/methods";
 import AskSignature from "./AskSignature";
 
 export default function PdfPreview({ serverPort }) {
@@ -41,9 +41,7 @@ export default function PdfPreview({ serverPort }) {
         sendSuccess(`PDF saved to ${result} as ${pdfName}`, key);
       })
       .catch((e) => {
-        if (e.errorText === "FileNotFoundError(2, 'No such file or directory')") sendWarning("Directory not valid", key);
-        else sendError("PDF could not be saved.", key);
-        console.error(e);
+        handleError(e, key);
       });
   };
   const handleDownloadAuditReport = () => {
@@ -59,7 +57,7 @@ export default function PdfPreview({ serverPort }) {
         }
       })
       .catch((e) => {
-        sendError("Audit Report Unsuccessful", key);
+        handleError(e, key);
       });
   };
   const [path, setPath] = useState("");

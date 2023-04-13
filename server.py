@@ -24,7 +24,7 @@ def host_server(port):
         if not os.path.exists(server_name):
             os.makedirs(server_name)
         os.chdir(server_name)
-        print("\nserving from build/__server/ at localhost:" + str(port))
+        print("\nserving from build/server/ at localhost:" + str(port))
         httpd.serve_forever()
     except KeyboardInterrupt:
         print("\n...shutting down http server")

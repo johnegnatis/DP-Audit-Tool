@@ -81,13 +81,21 @@ export const tableTypes = {
   core: "core",
   following: "following",
   electives: "electives",
+  additional: "additional",
   prerequisites: "prerequisites",
 };
-export const tableList = [tableTypes.core, tableTypes.following, tableTypes.electives, tableTypes.prerequisites];
+export const tableList = [
+  tableTypes.core,
+  tableTypes.following,
+  tableTypes.electives,
+  tableTypes.prerequisites,
+  tableTypes.additional,
+];
 export const tableNames = {
   core: "Core Courses",
   following: "One of the Following Courses",
   electives: "Approved 6000 Level Courses",
+  additional: "Additional Electives",
   prerequisites: "Prerequisites",
 };
 
@@ -250,7 +258,7 @@ export const genericStudent = {
       transfer: "",
       grade: "",
       attempted_credits: "",
-      type: "electives",
+      type: "additional",
       leveling: "",
     },
     {
@@ -260,7 +268,7 @@ export const genericStudent = {
       transfer: "",
       grade: "",
       attempted_credits: "",
-      type: "electives",
+      type: "additional",
       leveling: "",
     },
     {
@@ -304,21 +312,15 @@ export const genericStudent = {
       leveling: levelingMap.completed,
     },
     {
-      name: "Probability & Statistics in CS<<",
-      number: "CS 3341<<",
+      name: "Probability & Statistics in CS",
+      number: "CS 3341",
       semester: "",
       transfer: "",
-      grade: "*** A- ***",
+      grade: "A-",
       attempted_credits: "",
       type: "prerequisites",
       leveling: "",
     },
   ],
   track: "Data Science",
-};
-
-export const schoolSeasons = {
-  F: "Fall",
-  S: "Spring",
-  S: "Summer",
 };

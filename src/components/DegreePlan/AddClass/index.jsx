@@ -6,26 +6,11 @@ import { getForm, getNumberForm } from "../Form/inputComponents";
 import { useClassForm } from "../../Hooks/degreePlanHooks";
 import { Button } from "antd";
 
-const AddClass = ({
-  searchInput,
-  setSearchInput,
-  isSearch,
-  setIsSearch,
-  searchOptions,
-  handleSubmitAddClass,
-}) => {
-  const {
-    name,
-    setName,
-    number,
-    setNumber,
-    semester,
-    setSemester,
-    transfer,
-    setTransfer,
-    grade,
-    setGrade,
-  } = useClassForm(null, searchOptions);
+const AddClass = ({ searchInput, setSearchInput, isSearch, setIsSearch, searchOptions, handleSubmitAddClass }) => {
+  const { name, setName, number, setNumber, semester, setSemester, transfer, setTransfer, grade, setGrade } = useClassForm(
+    null,
+    searchOptions
+  );
 
   const setSearchClassForAdd = (obj) => {
     setIsSearch(false);
@@ -45,14 +30,14 @@ const AddClass = ({
       semester,
       transfer,
       grade,
+      leveling: "",
+      attempted_credits: "",
     });
   };
 
   const filterClasses = useMemo(() => {
     const filtered = searchOptions.filter(
-      (obj) =>
-        obj.number.includes(searchInput.toUpperCase()) ||
-        obj.name.includes(searchInput.toUpperCase())
+      (obj) => obj.number.includes(searchInput.toUpperCase()) || obj.name.includes(searchInput.toUpperCase())
     );
     return [addClass, ...filtered];
   }, [searchInput, searchOptions]);
@@ -72,11 +57,7 @@ const AddClass = ({
         {filterClasses.map((classID, index) => {
           return (
             <div
-              onClick={
-                !!classID.onClickMe
-                  ? classID.onClickMe
-                  : () => setSearchClassForAdd(classID)
-              }
+              onClick={!!classID.onClickMe ? classID.onClickMe : () => setSearchClassForAdd(classID)}
               className="row"
               key={index}
             >
