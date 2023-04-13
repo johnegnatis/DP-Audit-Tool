@@ -4,7 +4,10 @@ try:
 except:
     from objects import Class, Student, mockStudent
     from helpers import get_server_path
+
+import fillpdf
 from fillpdf import fillpdfs 
+
 import json
 from tkinter import filedialog
 from tkinter import *
@@ -59,12 +62,12 @@ def fillPDFForms(studentObject, path):
             followingAC[j] = i.attempted_credits
             j = j+1
 
-    electiveName = [""]*8
-    electiveNum = [""]*8
-    electiveSem = [""]*8
-    electiveTransfer = [""]*8
-    electiveGrade = [""]*8
-    electiveAC = [""]*8
+    electiveName = [""]*5
+    electiveNum = [""]*5
+    electiveSem = [""]*5
+    electiveTransfer = [""]*5
+    electiveGrade = [""]*5
+    electiveAC = [""]*5
 
     j = 0
     class_data = studentObject.classes
@@ -78,6 +81,25 @@ def fillPDFForms(studentObject, path):
             electiveAC[j] = (i.attempted_credits)
             j = j+1
 
+    addElectiveName = [""]*3
+    addElectiveNum = [""]*3
+    addElectiveSem = [""]*3
+    addElectiveTransfer = [""]*3
+    addElectiveGrade = [""]*3
+    addElectiveAC = [""]*3
+
+    j = 0
+    class_data = studentObject.classes
+    for i in class_data:
+        if (i.type == "additional_electives"):
+            addElectiveName[j] = (i.name)
+            addElectiveNum[j] = (i.number)
+            addElectiveSem[j] = (i.semester)
+            addElectiveTransfer[j] = (i.transfer)
+            addElectiveGrade[j] = (i.grade)
+            addElectiveAC[j] = (i.attempted_credits)
+            j = j+1
+
     prereqName = [""]*9
     prereqNum = [""]*9
     prereqSem = [""]*9
@@ -89,7 +111,10 @@ def fillPDFForms(studentObject, path):
     class_data = studentObject.classes
     for i in class_data:
         if (i.type == "prerequisites"):
-            prereqName[j] = i.name
+            if(i.leveling != ''):
+                prereqName[j] = "*" + i.name + "*"
+            else:
+                prereqName[j] = i.name
             prereqNum[j] = i.number
             prereqSem[j] = i.semester
             prereqWaiver[j] = i.transfer
@@ -128,7 +153,6 @@ def fillPDFForms(studentObject, path):
         "coreSem5": coreSem[4],
         "coreTransfer5": coreTransfer[4],
         "coreGrade5": coreGrade[4],
-        "ct6": coreNum[5],
         "cn6": coreNum[5],
         "coreSem6": coreSem[5],
         "coreTransfer6": coreTransfer[5],
@@ -138,15 +162,15 @@ def fillPDFForms(studentObject, path):
         "ct9": electiveName[2],
         "ct10": electiveName[3],
         "ct11": electiveName[4],
-        "ct12": electiveName[5],
-        "ct13": electiveName[6],
-        "ct14": electiveName[7],
+        "ct12": addElectiveName[0],
+        "ct13": addElectiveName[1],
+        "ct14": addElectiveName[2],
         "otherReq1": "",
         "ct15": "",
         "cn15": "",
         "Sem15": "",
         "Transfer15": "",
-        "Grade15": "",
+        "Grade15":"",
         "otherReq2": "",
         "ct16": "",
         "cn16": "",
@@ -205,9 +229,9 @@ def fillPDFForms(studentObject, path):
         "cn9": electiveNum[2],
         "cn10": electiveNum[3],
         "cn11": electiveNum[4],
-        "cn12": electiveNum[5],
-        "cn13": electiveNum[6],
-        "cn14": electiveNum[7],
+        "cn12": addElectiveNum[0],
+        "cn13": addElectiveNum[1],
+        "cn14": addElectiveNum[2],
         "Sem7": electiveSem[0],
         "Sem8": electiveSem[1],
         "Sem9": electiveSem[2],
@@ -223,15 +247,15 @@ def fillPDFForms(studentObject, path):
         "Grade9": electiveGrade[2],
         "Grade10": electiveGrade[3],
         "Grade11": electiveGrade[4],
-        "Sem12": electiveSem[5],
-        "Sem13": electiveSem[6],
-        "Sem14": electiveSem[7],
-        "Transfer12": electiveTransfer[5],
-        "Transfer13": electiveTransfer[6],
-        "Transfer14": electiveTransfer[7],
-        "Grade12": electiveGrade[5],
-        "Grade13": electiveGrade[6],
-        "Grade14": electiveGrade[7],
+        "Sem12": addElectiveSem[0],
+        "Sem13": addElectiveSem[1],
+        "Sem14": addElectiveSem[2],
+        "Transfer12": addElectiveSem[0],
+        "Transfer13": addElectiveSem[1],
+        "Transfer14": addElectiveSem[2],
+        "Grade12": addElectiveGrade[0],
+        "Grade13": addElectiveGrade[1],
+        "Grade14": addElectiveGrade[2],
         "fastTrack": isFT,
         "thesis": isThesis,
         "object": studentObject.packStudentObject()
@@ -264,7 +288,7 @@ def fillPDFForms(studentObject, path):
         "coreGrade4": coreGrade[3],
         "ct5": coreName[4],
         "cn5": coreNum[4],
-        "coreSem5": coreSem[4], 
+        "coreSem5": coreSem[4],
         "coreTransfer5": coreTransfer[4],
         "coreGrade5": coreGrade[4],
         "OtherReq1": "",
@@ -356,41 +380,41 @@ def fillPDFForms(studentObject, path):
         "grade14": electiveGrade[2],
         "grade15": electiveGrade[3],
         "grade16": electiveGrade[4],
-        "grade17": electiveGrade[5],
-        "grade18": electiveGrade[6],
-        "grade19": electiveGrade[7],
+        "grade17": addElectiveGrade[0],
+        "grade18": addElectiveGrade[1],
+        "grade19": addElectiveGrade[2],
         "cn12": electiveNum[0],
         "cn13": electiveNum[1],
         "cn14": electiveNum[2],
         "cn15": electiveNum[3],
         "cn16": electiveNum[4],
-        "cn17": electiveNum[5],
-        "cn18": electiveNum[6],
-        "cn19": electiveNum[7],
+        "cn17": addElectiveNum[0],
+        "cn18": addElectiveNum[1],
+        "cn19": addElectiveNum[2],
         "ct12": electiveName[0],
         "ct13": electiveName[1],
         "ct14": electiveName[2],
         "ct15": electiveName[3],
         "ct16": electiveName[4],
-        "ct17": electiveName[5],
-        "ct18": electiveName[6],
-        "ct19": electiveName[7],
+        "ct17": addElectiveName[0],
+        "ct18": addElectiveName[1],
+        "ct19": addElectiveName[2],
         "sem12": electiveSem[0],
         "sem13": electiveSem[1],
         "sem14": electiveSem[2],
         "sem15": electiveSem[3],
         "sem16": electiveSem[4],
-        "sem17": electiveSem[5],
-        "sem18": electiveSem[6],
-        "sem19": electiveSem[7],
+        "sem17": addElectiveSem[0],
+        "sem18": addElectiveSem[1],
+        "sem19": addElectiveSem[2],
         "transfer12": electiveTransfer[0],
         "transfer13": electiveTransfer[1],
         "transfer14": electiveTransfer[2],
         "transfer15": electiveTransfer[3],
         "transfer16": electiveTransfer[4],
-        "transfer17": electiveTransfer[5],
-        "transfer18": electiveTransfer[6],
-        "transfer19": electiveTransfer[7],
+        "transfer17": addElectiveTransfer[0],
+        "transfer18": addElectiveTransfer[1],
+        "transfer19": addElectiveTransfer[2],
         "fastTrack": isFT,
         "thesis": isThesis,
         "object": studentObject.packStudentObject()
@@ -424,7 +448,12 @@ def makeDegreePlanMethod(studentObject):
     
     file_name = getStudentFile(studentObject.name)
     file_path = get_server_path() + '/' + file_name
-    fillPDFForms(studentObject, file_path)
+    try:
+        fillPDFForms(studentObject, file_path)
+    except IndexError as e:
+        print(e)
+    
+    #fillPDFForms(studentObject, file_path)    
     return file_name
 
 if __name__ == '__main__':
