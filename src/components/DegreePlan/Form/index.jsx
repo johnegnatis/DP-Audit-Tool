@@ -1,10 +1,11 @@
 import { getNumberForm, getForm, getRadio } from "./inputComponents";
 import { formatGrid, formatHalfGrid, getSpan } from "./gridLayout";
-import { Button } from "antd";
-import { getNumberToString, tableNames, tableTypes } from "../../../utils/constants";
+import { Button, Collapse } from "antd";
+import { getNumberToString, iconNames, tableNames, tableTypes } from "../../../utils/constants";
 import ClassTable from "./Table";
 import SelectTrack from "../TrackForm";
 import { useState, useMemo } from "react";
+import { Icon } from "@iconify/react";
 
 const Form = ({
   handleReturnToHome,
@@ -217,7 +218,30 @@ const Form = ({
     ),
     [prerequisites, prerequisiteTableSize, prerequisiteOptions, ...sharedTableDependencies]
   );
-
+  const getAddClassButton = (type) => {
+    let options = [];
+    switch (type) {
+      case tableTypes.core:
+        options = coreOptions;
+        break;
+      case tableTypes.following:
+        options = followingOptions;
+        break;
+      case tableTypes.prerequisites:
+        options = prerequisiteOptions;
+    }
+    return (
+      <Icon
+        icon={iconNames.plus}
+        className="orange small icon"
+        onClick={(e) => {
+          setAddClassDrawerOpen(type, options);
+          e.stopPropagation();
+        }}
+      />
+    );
+  };
+  const { Panel } = Collapse;
   return (
     <div className="degree-plan">
       <SelectTrack
@@ -230,14 +254,27 @@ const Form = ({
       />
       <h1 className="title">Degree Plan</h1>
       <div className="general-info">
-        <h2 className="subtitle">General Information</h2>
-        {formatGrid(fullLayout, 5, 19)}
-        {formatHalfGrid(halfLayout, 5, 5, 9, 5)}
-        {coreTable}
-        {followingTable}
-        {electivesTable}
-        {additionalTable}
-        {prerequisiteTable}
+        <Collapse defaultActiveKey={["0", "1", "2", "3", "4", "5"]}>
+          <Panel header="General Information" key="0">
+            {formatGrid(fullLayout, 5, 19)}
+            {formatHalfGrid(halfLayout, 5, 5, 9, 5)}
+          </Panel>
+          <Panel header={`${tableNames.core} (${core.length} courses)`} key="1" extra={getAddClassButton(tableTypes.core)}>
+            {coreTable}
+          </Panel>
+          <Panel header={`${getNumberToString(nOfTheFollowing)} of the Following Courses (${following.length} courses)`} key="2" extra={getAddClassButton(tableTypes.following)}>
+            {followingTable}
+          </Panel>
+          <Panel header={`${tableNames.electives} (${electives.length} courses)`} key="3" extra={getAddClassButton(tableTypes.electives)}>
+            {electivesTable}
+          </Panel>
+          <Panel header={`${tableNames.additional} (${additional.length} courses)`} key="4" extra={getAddClassButton(tableTypes.additional)}>
+            {additionalTable}
+          </Panel>
+          <Panel header={`${tableNames.prerequisites} (${prerequisites.length} courses)`} key="5" extra={getAddClassButton(tableTypes.prerequisites)}>
+            {prerequisiteTable}
+          </Panel>
+        </Collapse>
       </div>
       <div>
         <div className="generate-button">

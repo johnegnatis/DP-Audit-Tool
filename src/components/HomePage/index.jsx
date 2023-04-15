@@ -1,4 +1,4 @@
-import UTDLogo from "../../assets/images/utd-home-logo.png";
+import Logo from "../../assets/images/logo.png";
 import { Button } from "antd";
 import { Icon } from "@iconify/react";
 import { iconNames, pages } from "../../utils/constants";
@@ -155,7 +155,7 @@ const HomePage = () => {
       <div className="home-page-root">
         <div className="home-page">
           <div>
-            <img src={UTDLogo} alt="utd logo" />
+            <img src={Logo} alt="UTD CS/SE Graduate Advising Degree Plan and Audit Tool Logo" />
           </div>
           <div className="title">UTD CS/SE Graduate Advising Degree Plan and Audit Tool</div>
           {getUploadBox()}

@@ -104,7 +104,8 @@ def getMockStudent():
 def get_key(json_obj, key):
     try:
         return json_obj[key]
-    except:
+    except Exception as e:
+        print(e)
         print(f"Key '{key}' not found in JSON object (non-issue unless key is important)")
         return ''
 

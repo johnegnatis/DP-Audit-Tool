@@ -2,7 +2,7 @@ try:
     from scripts.objects import Class, Student, mockStudent, json_to_student
     from scripts.helpers import get_server_path
     from scripts.database import open_database
-except:
+except Exception as e:
     from objects import Class, Student, mockStudent
     from helpers import get_server_path
     from database import open_database
@@ -482,7 +482,8 @@ def fillPDFForms(studentObject, path):
     base_prod = './build/degreePlans/'
     try:
         fillpdfs.write_fillable_pdf(base_dev + pdf_name, path, data_dict)
-    except:
+    except Exception as e:
+        print(e)
         fillpdfs.write_fillable_pdf(base_prod + pdf_name, path, data_dict)
 
 def getStudentFile(name):

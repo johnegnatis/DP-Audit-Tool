@@ -2,7 +2,7 @@ try:
     from scripts.objects import Class, Student, mockStudent, json_to_student
     from scripts.helpers import tree_printer
     from scripts.database import open_database
-except:
+except Exception as e:
     from objects import Class, Student, mockStudent, json_to_student
     from helpers import tree_printer
     from database import open_database
@@ -128,7 +128,8 @@ def designateClassesMethod(studentObject):
         # for i in range(0, len(studentObject.classes)):
             # print(f"{studentObject.classes[i].type.ljust(15)} {studentObject.classes[i].name}")
         return studentObject.packStudentObject()
-    except:
+    except Exception as e:
+        print(e)
         raise Exception("Error: Error At Track Selection.")
 
 if __name__ == '__main__':

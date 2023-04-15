@@ -50,7 +50,7 @@ const ClassTable = ({
   };
   return (
     <>
-      <div className="title-span">
+      {/* <div className="title-span">
         <div>
           <div>
             <h2 className="subtitle">
@@ -76,7 +76,7 @@ const ClassTable = ({
           </Button>
         </div>
       </div>
-      {notes && notes.map((note) => <span>{note}</span>)}
+      {notes && notes.map((note) => <span>{note}</span>)} */}
       <Table
         className={TableCSS}
         rowClassName={(_, index) => (index >= size ? "warning-table-full" : "")}

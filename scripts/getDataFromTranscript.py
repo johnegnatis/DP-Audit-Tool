@@ -39,6 +39,7 @@ def getDataFromTranscriptMethod(file_path):
         print ('IOError thrown. File not found. Details: {ex}')
         raise Exception("Error: File could not be opened.")
     except Exception as e:
+        print(e)
         raise Exception("Error: Error parsing transcript.")
 
     # EXTRACTION:

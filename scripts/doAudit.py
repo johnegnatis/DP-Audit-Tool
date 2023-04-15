@@ -2,7 +2,7 @@ try:
     from scripts.objects import Class, Student, StudentEncoder, mockStudent, json_to_student
     from scripts.fileSystemInteraction import getDirectory
     from scripts.settings import get_setting 
-except:
+except Exception as e:
     from objects import Class, Student, StudentEncoder, mockStudent, json_to_student
     from fileSystemInteraction import getDirectory
     from settings import get_setting  
@@ -26,7 +26,8 @@ def doAuditMethod(studentObject):
     destination = file_path + '/' + studentObject.name + '.docx'
     try:
         generateAudit(studentObject, destination)
-    except:
+    except Exception as e:
+        print(e)
         raise Exception("Error: Error at audit generation. Please try again later.")
     return destination
 
@@ -211,7 +212,7 @@ def getGPA(completed_courses):
     
     try:
         return gpa / courseCount
-    except:
+    except Exception as e:
         # DIVIDE BY 0 ERROR?
         return 0
 
