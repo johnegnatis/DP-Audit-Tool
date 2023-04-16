@@ -16,6 +16,9 @@
     cursor: pointer;
     width: clamp($navbar-height, $navbar-height, $navbar-height);
     height: clamp($navbar-height, $navbar-height, $navbar-height);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
     &.plus-icon:not(.selected-id) {
       background: $white;
@@ -65,7 +68,7 @@
         border-radius: 5px;
         &:hover {
           background-color: $grey;
-          color: black;
+          color: $black;
         }
       }
       &.selected-id {

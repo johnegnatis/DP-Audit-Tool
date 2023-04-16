@@ -1,20 +1,14 @@
-import {
-  getNumberForm,
-  getForm,
-  getRadio,
-} from "./inputComponents";
+import { getNumberForm, getForm, getRadio } from "./inputComponents";
 import { formatGrid, formatHalfGrid, getSpan } from "./gridLayout";
 import { Button } from "antd";
-import {
-  defaultSearchOptions,
-  tableTypes,
-  tracks,
-} from "../../../utils/constants";
+import { getNumberToString, tableNames, tableTypes } from "../../../utils/constants";
 import ClassTable from "./Table";
 import SelectTrack from "../TrackForm";
 import { useState, useMemo } from "react";
 
 const Form = ({
+  handleReturnToHome,
+  classOptions,
   allDisabled,
   props,
   setAddClassDrawerOpen,
@@ -27,6 +21,7 @@ const Form = ({
   handleMoveToTopClick,
   handleSelectTrack,
   handleLevelingChange,
+  trackOptions,
 }) => {
   const {
     track,
@@ -45,12 +40,36 @@ const Form = ({
     setThesis,
     core,
     following,
-    elective,
+    elective: electives,
+    additional,
     prerequisites,
-    pdfName,
-    setPdfName,
   } = props;
-  const disableSubmitButton = !(track && name && studentId && admittedDate && graduationDate)
+  const { coreOptions, followingOptions, prerequisiteOptions, nOfTheFollowing, tableCounts } = classOptions;
+  const {
+    core: coreTableSize,
+    following: followingTableSize,
+    electives: electiveTableSize,
+    additional: additionalTableSize,
+    prerequisites: prerequisiteTableSize,
+  } = tableCounts;
+  const tableTooBigWarning = useMemo(
+    () =>
+      coreTableSize - core.length < 0 ||
+      electiveTableSize - electives.length < 0 ||
+      followingTableSize - following.length < 0 ||
+      prerequisiteTableSize - prerequisites.length < 0,
+    [
+      core.length,
+      coreTableSize,
+      following.length,
+      followingTableSize,
+      electives.length,
+      electiveTableSize,
+      prerequisites.length,
+      prerequisiteTableSize,
+    ]
+  );
+  const disableSubmitButton = !(track && name && studentId && admittedDate && graduationDate) && false;
   const [trackFormOpen, setTrackFormOpen] = useState(!track);
   const fullLayout = [
     {
@@ -88,7 +107,6 @@ const Form = ({
   const sharedTableDependencies = [
     tableTypes,
     allDisabled,
-    defaultSearchOptions,
     selectedRow,
     setAddClassDrawerOpen,
     setClassForEdit,
@@ -102,75 +120,91 @@ const Form = ({
     () => (
       <ClassTable
         type={tableTypes.core}
-        title="Core Courses"
+        title={tableNames.core}
         allDisabled={allDisabled}
         classes={core}
-        openAddClassDrawer={() =>
-          setAddClassDrawerOpen(tableTypes.core, defaultSearchOptions)
-        }
+        openAddClassDrawer={() => setAddClassDrawerOpen(tableTypes.core, coreOptions)}
         setClassForEdit={setClassForEdit}
         setClassForMove={setClassForMove}
         handleMoveClick={handleMoveClick}
         handleMoveToTopClick={handleMoveToTopClick}
         deleteClass={deleteClass}
         selectedRow={selectedRow}
+        size={coreTableSize}
       />
     ),
-    [core, ...sharedTableDependencies]
+    [core, coreOptions, coreTableSize, ...sharedTableDependencies]
   );
   const followingTable = useMemo(
-    () => (
-      <ClassTable
-        type={tableTypes.following}
-        title="One of the Following Courses"
-        subtitle=""
-        allDisabled={allDisabled}
-        classes={following}
-        openAddClassDrawer={() =>
-          setAddClassDrawerOpen(tableTypes.following, defaultSearchOptions)
-        }
-        setClassForEdit={setClassForEdit}
-        setClassForMove={setClassForMove}
-        handleMoveClick={handleMoveClick}
-        handleMoveToTopClick={handleMoveToTopClick}
-        deleteClass={deleteClass}
-        selectedRow={selectedRow}
-      />
-    ),
-    [following, ...sharedTableDependencies]
+    () =>
+      nOfTheFollowing > 0 && (
+        <ClassTable
+          type={tableTypes.following}
+          title={`${getNumberToString(nOfTheFollowing)} of the Following Courses`}
+          subtitle=""
+          allDisabled={allDisabled}
+          classes={following}
+          openAddClassDrawer={() => setAddClassDrawerOpen(tableTypes.following, followingOptions)}
+          setClassForEdit={setClassForEdit}
+          setClassForMove={setClassForMove}
+          handleMoveClick={handleMoveClick}
+          handleMoveToTopClick={handleMoveToTopClick}
+          deleteClass={deleteClass}
+          selectedRow={selectedRow}
+          size={followingTableSize}
+        />
+      ),
+    [following, followingOptions, followingTableSize, nOfTheFollowing, ...sharedTableDependencies]
   );
-  const electiveTable = useMemo(
+  const electivesTable = useMemo(
     () => (
       <ClassTable
         type={tableTypes.electives}
-        title="Approved 6000 Level Courses"
+        title={tableNames.electives}
         subtitle=""
         allDisabled={allDisabled}
-        classes={elective}
-        openAddClassDrawer={() =>
-          setAddClassDrawerOpen(tableTypes.electives, [])
-        }
+        classes={electives}
+        openAddClassDrawer={() => setAddClassDrawerOpen(tableTypes.electives, [])}
         setClassForEdit={setClassForEdit}
         setClassForMove={setClassForMove}
         handleMoveClick={handleMoveClick}
         handleMoveToTopClick={handleMoveToTopClick}
         selectedRow={selectedRow}
         deleteClass={deleteClass}
+        size={electiveTableSize}
       />
     ),
-    [elective, ...sharedTableDependencies]
+    [electives, electiveTableSize, ...sharedTableDependencies]
+  );
+  const additionalTable = useMemo(
+    () => (
+      <ClassTable
+        type={tableTypes.additional}
+        title={tableNames.additional}
+        subtitle=""
+        allDisabled={allDisabled}
+        classes={additional}
+        openAddClassDrawer={() => setAddClassDrawerOpen(tableTypes.additional, [])}
+        setClassForEdit={setClassForEdit}
+        setClassForMove={setClassForMove}
+        handleMoveClick={handleMoveClick}
+        handleMoveToTopClick={handleMoveToTopClick}
+        selectedRow={selectedRow}
+        deleteClass={deleteClass}
+        size={additionalTableSize}
+      />
+    ),
+    [additional, additionalTableSize, ...sharedTableDependencies]
   );
   const prerequisiteTable = useMemo(
     () => (
       <ClassTable
         type={tableTypes.prerequisites}
-        title="Prerequisites"
+        title={tableNames.prerequisites}
         subtitle=""
         allDisabled={allDisabled}
         classes={prerequisites}
-        openAddClassDrawer={() =>
-          setAddClassDrawerOpen(tableTypes.prerequisites, defaultSearchOptions)
-        }
+        openAddClassDrawer={() => setAddClassDrawerOpen(tableTypes.prerequisites, prerequisiteOptions)}
         setClassForEdit={setClassForEdit}
         setClassForMove={setClassForMove}
         handleMoveClick={handleMoveClick}
@@ -178,9 +212,10 @@ const Form = ({
         deleteClass={deleteClass}
         selectedRow={selectedRow}
         onLevelingChange={handleLevelingChange}
+        size={prerequisiteTableSize}
       />
     ),
-    [prerequisites, ...sharedTableDependencies]
+    [prerequisites, prerequisiteTableSize, prerequisiteOptions, ...sharedTableDependencies]
   );
 
   return (
@@ -190,7 +225,8 @@ const Form = ({
         setTrack={setTrack}
         handleConfirmTrack={handleConfirmTrack}
         open={trackFormOpen}
-        options={tracks}
+        options={trackOptions}
+        handleReturnToHome={handleReturnToHome}
       />
       <h1 className="title">Degree Plan</h1>
       <div className="general-info">
@@ -199,21 +235,13 @@ const Form = ({
         {formatHalfGrid(halfLayout, 5, 5, 9, 5)}
         {coreTable}
         {followingTable}
-        {electiveTable}
+        {electivesTable}
+        {additionalTable}
         {prerequisiteTable}
       </div>
       <div>
-        {/* <div className="signature">
-          <span>Academic Advisor Signature : </span>
-          {getForm(signature, setSignature, allDisabled)}
-        </div> */}
         <div className="generate-button">
-          <Button
-            onClick={generatePDF}
-            className="button orange-bg"
-            size="large"
-            disabled={allDisabled || disableSubmitButton}
-          >
+          <Button onClick={generatePDF} className="button orange-bg" size="large" disabled={allDisabled || disableSubmitButton}>
             Preview Degree Plan
           </Button>
         </div>

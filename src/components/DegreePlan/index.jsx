@@ -1,36 +1,23 @@
 import React, { useCallback, useMemo, useState } from "react";
-import { useStudentObject } from "./hook";
+import LevelingDrawer from "./LevelingDrawer";
+import { useStudentObject } from "../Hooks/degreePlanHooks";
 import AddClass from "./AddClass";
 import Form from "./Form";
 import { Button, Drawer, message } from "antd";
-import { useGlobalState, changePage, setGlobalState } from "../GlobalState";
-import EditClass from "./Form/EditClass";
+import { useGlobalState, changePage, returnToHome } from "../GlobalState";
+import EditClass from "./EditClass";
 import { eel } from "../../utils/eel";
 import { pages, tableNames } from "../../utils/constants";
-import {
-  sendError,
-  sendSuccess,
-  sendWaiting,
-  sendWarning,
-} from "../../utils/methods";
+import { handleError, sendError, sendSuccess, sendWaiting, sendWarning } from "../../utils/methods";
 import NavigationBar from "../NavigationBar";
+import { useTrackOptions } from "../Hooks/databaseHooks";
 
-const DegreePlan = ({ student }) => {
-
-  // TODO: required must be filled before continue
-  // TODO: on click leveling, open up menu to select options 'completed, required:... see objects.py
-
+const DegreePlan = ({ student, databaseProps }) => {
   // STUDENT OBJ LOGIC
   const [students] = useGlobalState("students");
   const formProps = useStudentObject(student);
-  const {
-    searchInput,
-    setSearchInput,
-    getClassSetter,
-    studentObjectJSON,
-    track,
-    setClasses,
-  } = formProps;
+  const { searchInput, setSearchInput, getClassSetter, studentObjectJSON, track, setClasses } = formProps;
+  const classOptionProps = useTrackOptions(track);
 
   const handleSelectTrack = () => {
     const newStudent = student;
@@ -41,7 +28,7 @@ const DegreePlan = ({ student }) => {
         const newStudent = JSON.parse(result);
         setClasses(newStudent.classes);
       })
-      .catch((e) => console.log(e, "error at track selection"));
+      .catch((e) => handleError(e));
   };
 
   const navigatePage = (page, pdfName = null) => {
@@ -57,7 +44,7 @@ const DegreePlan = ({ student }) => {
       .then((pdfName) => {
         navigatePage(pages.pdfPreview, pdfName);
       })
-      .catch((e) => console.log(e, "error at PDF creation"));
+      .catch((e) => handleError(e));
 
     // handle this async
   };
@@ -65,15 +52,21 @@ const DegreePlan = ({ student }) => {
     navigatePage(pages.degreePlan);
   };
 
+  // Database
+  const { trackOptions } = databaseProps;
+
   // ADD LOGIC
   const [addClassTable, setAddClassTable] = useState("");
   const [isSearch, setIsSearch] = useState(false);
   const [classOptions, setClassOptions] = useState([]);
-  const handleAddClassDrawerOpen = useCallback((type, options) => {
-    setAddClassTable(type);
-    setIsSearch(options && options.length > 0); // if there are options, start with searching options
-    setClassOptions(options);
-  }, []);
+  const handleAddClassDrawerOpen = useCallback(
+    (type, options) => {
+      setAddClassTable(type);
+      setIsSearch(options && options.length > 0); // if there are options, start with searching options
+      setClassOptions(options);
+    },
+    [classOptionProps]
+  );
   const handleSubmitAddClass = useCallback(
     (obj) => {
       obj.type = addClassTable;
@@ -89,6 +82,9 @@ const DegreePlan = ({ student }) => {
     },
     [addClassTable]
   );
+  const handleAddClassDrawerClose = useCallback(() => {
+    setAddClassTable("");
+  }, [classOptionProps]);
 
   // EDIT LOGIC
   const [selectedClassForEdit, setSelectedClassForEdit] = useState(null);
@@ -119,9 +115,7 @@ const DegreePlan = ({ student }) => {
     sendWaiting(
       <div style={{ minWidth: "25%", minHeight: "10%" }}>
         <p>Move the following course to the desired location:</p>
-        {obj && obj.class && (
-          <p style={{ fontWeight: "700" }}>{obj.class.name}</p>
-        )}
+        {obj && obj.class && <p style={{ fontWeight: "700" }}>{obj.class.name}</p>}
         <Button
           className="orange-bg button"
           onClick={() => {
@@ -157,10 +151,7 @@ const DegreePlan = ({ student }) => {
         moveOccurInSameTable = false;
       }
 
-      if (
-        moveOccurInSameTable &&
-        (moveOne.index === moveTwo.index || moveOne.index === moveTwo.index + 1)
-      ) {
+      if (moveOccurInSameTable && (moveOne.index === moveTwo.index || moveOne.index === moveTwo.index + 1)) {
         sendWarning("You tried to move to the same location", moveKey);
         setSelectedClassForMove("");
         return;
@@ -260,22 +251,37 @@ const DegreePlan = ({ student }) => {
   }, []);
 
   // LEVELING LOGIC
+  const [selectedClassForLeveling, setSelectedClassForLeveling] = useState(null);
   const handleLevelingChange = useCallback((obj) => {
     const { checked, table, key } = obj;
-    const setter = getClassSetter(table);
-    if (!setter) return;
-    setter((prev) => {
-      const newTable = [...prev];
-      newTable[key].leveling = checked;
-      return newTable;
-    });
-  });
-
-  // disable all forms when moving a class
-  const allDisabled = useMemo(
-    () => !!selectedClassForMove,
-    [selectedClassForMove]
+    if (checked) {
+      setSelectedClassForLeveling(obj);
+    } else {
+      const setter = getClassSetter(table);
+      if (!setter) return;
+      setter((prev) => {
+        const newTable = [...prev];
+        newTable[key].leveling = "";
+        return newTable;
+      });
+    }
+  }, []);
+  const handleLevelingEntered = useCallback(
+    (userInput) => {
+      const { table, key } = selectedClassForLeveling;
+      const setter = getClassSetter(table);
+      if (!setter) return;
+      setter((prev) => {
+        const newTable = [...prev];
+        newTable[key].leveling = userInput;
+        return newTable;
+      });
+      setSelectedClassForLeveling("");
+    },
+    [selectedClassForLeveling]
   );
+  // disable all forms when moving a class
+  const allDisabled = useMemo(() => !!selectedClassForMove, [selectedClassForMove]);
   // when editing or moving class, highlight that row
   const selectedRow = useMemo(() => {
     const row = selectedClassForEdit || selectedClassForMove;
@@ -288,6 +294,9 @@ const DegreePlan = ({ student }) => {
       <NavigationBar saveStudentObject={saveStudentObject} />
       <div className={`degree-plan-root ${allDisabled ? "moving" : ""}`}>
         <Form
+          handleReturnToHome={returnToHome}
+          classOptions={classOptionProps}
+          trackOptions={trackOptions}
           allDisabled={allDisabled}
           props={formProps}
           setAddClassDrawerOpen={handleAddClassDrawerOpen}
@@ -304,14 +313,14 @@ const DegreePlan = ({ student }) => {
         <Drawer
           title={`Add ${tableNames[addClassTable] || "Course"}`}
           open={!!addClassTable}
-          onClose={() => setAddClassTable("")}
+          onClose={() => handleAddClassDrawerClose()}
         >
           <AddClass
             searchInput={searchInput}
             setSearchInput={setSearchInput}
             isSearch={isSearch}
             setIsSearch={setIsSearch}
-            classes={classOptions}
+            searchOptions={classOptions}
             handleSubmitAddClass={handleSubmitAddClass}
           />
         </Drawer>
@@ -321,10 +330,15 @@ const DegreePlan = ({ student }) => {
           onClose={() => setSelectedClassForEdit("")}
           className="class-form-root"
         >
-          <EditClass
-            classObj={selectedClassForEdit}
-            handleSubmit={handleSubmitEdits}
-          />
+          <EditClass classObj={selectedClassForEdit} handleSubmit={handleSubmitEdits} />
+        </Drawer>
+        <Drawer
+          title="Leveling Options"
+          open={!!selectedClassForLeveling}
+          onClose={() => setSelectedClassForLeveling("")}
+          className="class-form-root"
+        >
+          <LevelingDrawer handleSubmit={handleLevelingEntered} classObj={selectedClassForLeveling} />
         </Drawer>
       </div>
     </>

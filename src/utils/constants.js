@@ -12,8 +12,15 @@ export const iconNames = {
   threeDots: "ph:dots-three-vertical",
   close: "material-symbols:close",
   question: "radix-icons:question-mark-circled",
+  warning: "mdi:warning-circle",
+  settings: "material-symbols:settings",
+  openFile: "fluent-emoji-high-contrast:open-file-folder",
 };
-
+export const settingsKeys = {
+  defaultPathForDegreePlan: "default-path-for-degree-plan",
+  defaultPathForAudit: "default-path-for-audit",
+  defaultPathForTranscript: "default-path-for-transcript",
+};
 export const pages = {
   homePage: "home-page",
   degreePlan: "degree-plan",
@@ -21,64 +28,76 @@ export const pages = {
   notFound: "not-found",
 };
 
-export const defaultSearchOptions = [
-  { number: "CS6314", name: "WEB PROGRAMMING LANGUAGES" },
-  { number: "CS6363", name: "DESIGN & ANALYS-COMP ALGORITHM" },
-  { number: "CS6375", name: "MACHINE LEARNING" },
-  { number: "CS6320", name: "NATURAL LANGUAGE PROCESSING" },
-  { number: "CS6322", name: "INFORMATION RETRIEVAL" },
-  { number: "CS6360", name: "DATABASE DESIGN" },
-  { number: "CS6364", name: "ARTIFICIAL INTELLIGENCE" },
-];
+const numberToStringDict = {
+  0: "Zero",
+  1: "One",
+  2: "Two",
+  3: "Three",
+  4: "Four",
+  5: "Five",
+  6: "Six",
+  7: "Seven",
+  8: "Eight",
+  9: "Nine",
+  10: "Ten",
+};
+export const getNumberToString = (number, lowerCase = false) => {
+  let numberStr = "Zero";
 
-export const tableTypes = {
-  core: 'core',
-  following: 'following',
-  electives: 'electives',
-  prerequisites: 'prerequisites',
-}
-export const tableList = [ tableTypes.core, tableTypes.following, tableTypes.electives, tableTypes.prerequisites]
-export const tableNames = {
-  core: 'Core Courses',
-  following: 'One of the Following Courses',
-  electives: 'Approved 6000 Level Courses',
-  prerequisites: 'Prerequisites',
-}
+  if (number > 10) return number.toString();
+  else if (number >= 0) numberStr = numberToStringDict[number];
 
-export const tracks = [
+  if (lowerCase) return numberStr.toLowerCase();
+  return numberStr;
+};
+
+export const levelingOptions = [
   {
-    label: "Data Science",
-    key: "1",
-  },
-  {
-    label: "Intelligent Systems",
+    label: "Completed",
     key: "2",
   },
   {
-    label: "Interactive Computing",
+    label: "Waived",
     key: "3",
   },
   {
-    label: "Networks and Telecommunication",
+    label: "Not required by plan or electives",
     key: "4",
   },
   {
-    label: "Software Engineering",
+    label: "Other",
     key: "5",
   },
-  {
-    label: "Systems",
-    key: "6",
-  },
-  {
-    label: "Traditional",
-    key: "7",
-  },
-  {
-    label: "Cyber Security",
-    key: "8",
-  },
 ];
+export const levelingMap = {
+  none: "None",
+  completed: "Completed",
+  waived: "Waived",
+  notRequired: "Not required by plan or electives",
+  other: "Other",
+};
+
+export const tableTypes = {
+  core: "core",
+  following: "following",
+  electives: "electives",
+  additional: "additional",
+  prerequisites: "prerequisites",
+};
+export const tableList = [
+  tableTypes.core,
+  tableTypes.following,
+  tableTypes.electives,
+  tableTypes.prerequisites,
+  tableTypes.additional,
+];
+export const tableNames = {
+  core: "Core Courses",
+  following: "One of the Following Courses",
+  electives: "Approved 6000 Level Courses",
+  additional: "Additional Electives",
+  prerequisites: "Prerequisites",
+};
 
 export const genericStudent = {
   name: "Generic Student",
@@ -100,7 +119,7 @@ export const genericStudent = {
       grade: "A",
       attempted_credits: "",
       type: "core",
-      leveling: false,
+      leveling: "",
     },
     {
       name: "Big Data Management and Analytics",
@@ -110,7 +129,7 @@ export const genericStudent = {
       grade: "B+",
       attempted_credits: "",
       type: "core",
-      leveling: false,
+      leveling: "",
     },
     {
       name: "Design and Analysis of Computer Algorithms",
@@ -120,7 +139,7 @@ export const genericStudent = {
       grade: "A-",
       attempted_credits: "",
       type: "core",
-      leveling: false,
+      leveling: "",
     },
     {
       name: "Machine Learning",
@@ -130,7 +149,7 @@ export const genericStudent = {
       grade: "A",
       attempted_credits: "",
       type: "core",
-      leveling: false,
+      leveling: "",
     },
     {
       name: "Social Network Analytics",
@@ -140,7 +159,7 @@ export const genericStudent = {
       grade: "",
       attempted_credits: "",
       type: "following",
-      leveling: false,
+      leveling: "",
     },
     {
       name: "Natural Language Processing",
@@ -150,7 +169,7 @@ export const genericStudent = {
       grade: "",
       attempted_credits: "",
       type: "following",
-      leveling: false,
+      leveling: "",
     },
     {
       name: "Video Analytics",
@@ -160,7 +179,7 @@ export const genericStudent = {
       grade: "",
       attempted_credits: "",
       type: "following",
-      leveling: false,
+      leveling: "",
     },
     {
       name: "Statistics for Machine Learning",
@@ -170,7 +189,7 @@ export const genericStudent = {
       grade: "",
       attempted_credits: "",
       type: "following",
-      leveling: false,
+      leveling: "",
     },
     {
       name: "Database Design",
@@ -180,7 +199,7 @@ export const genericStudent = {
       grade: "A-",
       attempted_credits: "",
       type: "following",
-      leveling: false,
+      leveling: "",
     },
     {
       name: "Virtual Reality",
@@ -190,7 +209,7 @@ export const genericStudent = {
       grade: "B",
       attempted_credits: "",
       type: "electives",
-      leveling: false,
+      leveling: "",
     },
     {
       name: "Theory of Computation",
@@ -200,7 +219,7 @@ export const genericStudent = {
       grade: "A",
       attempted_credits: "",
       type: "electives",
-      leveling: false,
+      leveling: "",
     },
     {
       name: "Natural Language Processing",
@@ -210,7 +229,7 @@ export const genericStudent = {
       grade: "A",
       attempted_credits: "",
       type: "electives",
-      leveling: false,
+      leveling: "",
     },
     {
       name: "Network Security",
@@ -220,7 +239,7 @@ export const genericStudent = {
       grade: "",
       attempted_credits: "",
       type: "electives",
-      leveling: false,
+      leveling: "",
     },
     {
       name: "Sftwr Test/Validatn/Verificatn",
@@ -230,7 +249,7 @@ export const genericStudent = {
       grade: "",
       attempted_credits: "",
       type: "electives",
-      leveling: false,
+      leveling: "",
     },
     {
       name: "Software Maint Evolut & Re-Eng",
@@ -239,8 +258,8 @@ export const genericStudent = {
       transfer: "",
       grade: "",
       attempted_credits: "",
-      type: "electives",
-      leveling: false,
+      type: "additional",
+      leveling: "",
     },
     {
       name: "Computer Science I",
@@ -249,8 +268,8 @@ export const genericStudent = {
       transfer: "",
       grade: "",
       attempted_credits: "",
-      type: "electives",
-      leveling: false,
+      type: "additional",
+      leveling: "",
     },
     {
       name: "Computer Science II",
@@ -260,7 +279,7 @@ export const genericStudent = {
       grade: "",
       attempted_credits: "",
       type: "prerequisites",
-      leveling: true,
+      leveling: levelingMap.notRequired,
     },
     {
       name: "Discrete Structures",
@@ -270,7 +289,7 @@ export const genericStudent = {
       grade: "",
       attempted_credits: "",
       type: "prerequisites",
-      leveling: false,
+      leveling: "",
     },
     {
       name: "Algorithm Analysis & Data Structures",
@@ -280,7 +299,7 @@ export const genericStudent = {
       grade: "",
       attempted_credits: "",
       type: "prerequisites",
-      leveling: true,
+      leveling: levelingMap.waived,
     },
     {
       name: "Operating System Concepts",
@@ -290,17 +309,17 @@ export const genericStudent = {
       grade: "",
       attempted_credits: "",
       type: "prerequisites",
-      leveling: true,
+      leveling: levelingMap.completed,
     },
     {
-      name: "Probability & Statistics in CS<<",
-      number: "CS 3341<<",
+      name: "Probability & Statistics in CS",
+      number: "CS 3341",
       semester: "",
       transfer: "",
-      grade: "*** A- ***",
+      grade: "A-",
       attempted_credits: "",
       type: "prerequisites",
-      leveling: false,
+      leveling: "",
     },
   ],
   track: "Data Science",

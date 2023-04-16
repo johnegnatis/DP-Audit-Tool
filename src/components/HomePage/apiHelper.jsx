@@ -1,5 +1,6 @@
 import { eel } from "../../utils/eel";
 import { pages } from "../../utils/constants";
+import { handleError } from "../../utils/methods";
 
 export const getEelResponse = (filePath, index) => {
   return eel
@@ -13,10 +14,8 @@ export const getEelResponse = (filePath, index) => {
       studentObj.student.studentId = studentObj.student.studentId || index;
       return studentObj;
     })
-    .catch((error) => {
-      console.log(error);
-      // TODO: add error handling to method
-      // setError(error.errorText && extractErrorMessage(error.errorText));
+    .catch((e) => {
+      // handleError(e); TODO: put this back in maybe, depending if we divy up the remaining
       return undefined;
     });
 };

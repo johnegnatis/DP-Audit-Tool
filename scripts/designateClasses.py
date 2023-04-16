@@ -1,12 +1,24 @@
 try:
     from scripts.objects import Class, Student, mockStudent, json_to_student
     from scripts.helpers import tree_printer
+    from scripts.database import open_database
 except:
     from objects import Class, Student, mockStudent, json_to_student
     from helpers import tree_printer
+    from database import open_database
 import json
 import pandas as pd
 import numpy as np
+
+import json
+import pandas as pd
+import numpy as np
+
+coreKey = 'core'
+followingKey = 'following'
+prerequisiteKey = 'prerequisites'
+electiveKey = 'electives'
+unsureKey = 'unsure'
 
 def test_strings(database_string, transcript_string):
     if (database_string == ''): return False
@@ -21,134 +33,103 @@ def grade_key(obj):
         return grades.index('')
 
 def type_key(obj):
-    types = ['core', 'following', 'electives', 'prerequisites', 'unsure', '']  
+    types = [coreKey, followingKey, electiveKey, prerequisiteKey, unsureKey, '']  
     try:
         return types.index(obj.type)
     except ValueError:
         return types.index('')
 
-def open_database():
-    base_prod = './build/database.json'
-    base_dev = './public/database.json'
-    test_dev = '../public/database.json'
-
-    try:
-        f = open(base_prod)
-    except:
-        try:
-            f = open(base_dev)
-        except:
-            f = open(test_dev)
-    return json.load(f)
+# FINDS CLASS IN ONE OF THE TYPELISTS, CHANGES NAME
+def assign_name(class_name, typeList):
+    for i in range(0, len(typeList)):
+        if (test_strings(class_name.number, typeList[i]['id'])): # exists in typeList, replace studentObj's name w/ typeList[name] and go back
+            class_name.name = typeList[i]['name']
+            break
 
 
-# TODO: test on class ID, not on name
 def find_add_classes(newClasses, classList, typeList, typeKey):
     found = False
     for j in range(0, len(typeList)):
         for i in range(0, len(classList)):
             found = False
-            if (test_strings(classList[i].name, typeList[j]['name'])):
+            if (test_strings(classList[i].number, typeList[j]['id'])): # finds class w/i database, assigns type
                 classList[i].type = typeKey
+                classList[i].name = typeList[j]['name'] # assign name from DB here
                 found = True
                 break
-        if not found:
+        if not found: # student hasn't take the class yet, store as a new class to add to classes[] list later
             newClasses.append(Class(typeList[j]['name'], typeList[j]['id'],'', '', '', '', typeKey))
 
-# studentObject has a list of classes that are all type: 'unsure'
-# This function needs to designate each class to the table it belongs, which
-# will depend on the track parameter.
-
-# Steps:
-# 1. Read the database for the core, following, and prerequisites defaults
-# 2. Fill in the core, following, and prerequisites appropriately, even if the student has yet to take them
-# 3. For each class in the student object, decide which table it belongs to (core, following, elective, or prerequisites)
-#       - set the 'type' property appropriately
-#       - what constitutes an elective?
-# 4. Sort by GPA (highest to lowest) and by table order (core -> following -> elective -> prerequisites)
-# 5. Return studentObject
 
 def designateClassesMethod(studentObject):
-    if (studentObject == 'mock'):
-        studentObject = mockStudent(unsure=True)
-    else:
-        studentObject = json_to_student(studentObject)
+    try:
+        if (studentObject == 'mock'):
+            studentObject = mockStudent(unsure=True)
+        else:
+            studentObject = json_to_student(studentObject)
 
-    data = open_database()
-    classes = []
-    track_name = ''
-    cores = []
-    coreKey = 'core'
-    following = []
-    followingKey = 'following'
-    prerequisites = []
-    prerequisiteKey = 'prerequisites'
-    electiveKey = 'electives'
-    trackList = data['tracks']
+        data = open_database()
+        classes = []
+        track_name = ''
+        cores = []
+        following = []
+        prerequisites = []
+        trackList = data['tracks']
+        num_of_following = 0 
 
-    # EXTRACTING CORRECT TRACK FROM DB
-    for track in range(len(trackList)):
-        if (trackList[track]['name'] == studentObject.track):
-            track_name = trackList[track]['name']
-            cores = trackList[track][coreKey] 
-            following = trackList[track][followingKey]
-            prerequisites = trackList[track][prerequisiteKey]
+        # EXTRACTING CORRECT TRACK FROM DB
+        for track in range(len(trackList)):
+            if (trackList[track]['name'] == studentObject.track):
+                track_name = trackList[track]['name']
+                cores = trackList[track][coreKey] 
+                num_of_following = trackList[track]["N-of-the-following"]
+                following = trackList[track][followingKey]
+                prerequisites = trackList[track][prerequisiteKey]
 
-    # UPDATING STUDENT'S CLASS TYPES, ADD IF NOT TAKEN
-    newClasses = []
-    find_add_classes(newClasses, studentObject.classes, cores, coreKey)
-    find_add_classes(newClasses, studentObject.classes, following, followingKey)
-    find_add_classes(newClasses, studentObject.classes, prerequisites, prerequisiteKey)
+        # UPDATING STUDENT'S CLASS TYPES, ADD IF NOT TAKEN
+        newClasses = []
+        find_add_classes(newClasses, studentObject.classes, cores, coreKey)
+        find_add_classes(newClasses, studentObject.classes, following, followingKey)
+        find_add_classes(newClasses, studentObject.classes, prerequisites, prerequisiteKey)
 
-    for i in range(0, len(studentObject.classes)):
-        if (test_strings(studentObject.classes[i].type, 'unsure')):
-            studentObject.classes[i].type = 'electives'    
+        for i in range(0, len(studentObject.classes)): # update all untyped to 'electives'
+            if (test_strings(studentObject.classes[i].type, unsureKey)):
+                studentObject.classes[i].type = electiveKey    
 
-    # Combine the classes
-    studentObject.classes = studentObject.classes + newClasses
+        # Combine the classes
+        studentObject.classes = studentObject.classes + newClasses
 
-    # Sorting classes
-    studentObject.classes = sorted(studentObject.classes, key=grade_key)
-    studentObject.classes = sorted(studentObject.classes, key=type_key)
+        # CHANGING THE CAPITALS - electives won't be in DB
+        for i in range(0, len(studentObject.classes)):
+            if studentObject.classes[i].type == electiveKey: # current class type == elective, make it title case; non-electives are handled above
+                studentObject.classes[i].name = (studentObject.classes[i].name).title()
 
-    # for i in range(0, len(studentObject.classes)):
-        # print(f"{studentObject.classes[i].type.ljust(15)} {studentObject.classes[i].name}")
-    # print(studentObject.packStudentObject())
-    return studentObject.packStudentObject()
+        # Sorting by grade
+        studentObject.classes = sorted(studentObject.classes, key=grade_key)
+        
+        # IF the student has completed 2 of the following courses but the track only calls for 1,  
+        # then the higher grade one should stay and the lower grade one goes into electives.
+        count = 0
+        for classObj in studentObject.classes:
+            # only for following classes that have grades
+            if classObj.type != followingKey or not classObj.grade:
+                continue
+            
+            if count >= num_of_following: # if we have surpassed the limit of following classes, this following class becomes an elective
+                classObj.type = electiveKey
+            elif classObj.grade:
+                count = count + 1
+
+        # Here is where to divide by additional and electives
+        
+        # Sorting by type
+        studentObject.classes = sorted(studentObject.classes, key=type_key)
+
+        # for i in range(0, len(studentObject.classes)):
+            # print(f"{studentObject.classes[i].type.ljust(15)} {studentObject.classes[i].name}")
+        return studentObject.packStudentObject()
+    except:
+        raise Exception("Error: Error At Track Selection.")
 
 if __name__ == '__main__':
     designateClassesMethod('mock')
-
-# SORTING CLASSES[] : core, following, elective, prereq..... highest gpa to lowest
-    # numpy arrays created to initialize dataframe for sorting
-    # arr1, arr2, arr3, arr4, arr5, arr6, arr7 = [], [], [], [], [], [], []
-    # for i in range(len(studentObject.classes)):
-    #     arr1.append(studentObject.classes[i].name)
-    #     arr2.append(studentObject.classes[i].number)
-    #     arr3.append(studentObject.classes[i].semester)
-    #     arr4.append(studentObject.classes[i].transfer)
-    #     arr5.append(studentObject.classes[i].grade)
-    #     arr6.append(studentObject.classes[i].attempted_credits)
-    #     arr7.append(studentObject.classes[i].type)
-    # array1, array2, array3, array4 = np.array(arr1), np.array(arr2), np.array(arr3), np.array(arr4)
-    # array5, array6, array7 = np.array(arr5), np.array(arr6), np.array(arr7)
-
-    # df = pd.DataFrame()
-    # df.insert(0, "name", array1)
-    # df.insert(1, "number", array2)
-    # df.insert(2, "semester", array3)
-    # df.insert(3, "transfer", array4)
-    # df.insert(4, "grade", array5)
-    # df.insert(5, "attempted_credits", array6)
-    # df.insert(6, "type", array7)
-
-    # # NOTE: classes without a grade are listed at top of lists
-    # df = df.sort_values(["grade", "type"], na_position='last') 
-    # print(df)
-
-    # UPDATING CLASSES[] + RETURNING OBJECT
-    # df = df.values.tolist()
-    # for i in range(len(df)):
-    #     myClass = Class(df[i][0], df[i][1], df[i][2], df[i][3], df[i][4], df[i][5], df[i][6]) 
-    #     classes.append(myClass)
-    # studentObject.classes = classes

@@ -1,5 +1,4 @@
-import { Input, InputNumber, DatePicker, Radio, Dropdown, Button } from "antd";
-import { useState } from "react";
+import { Input, DatePicker, Radio, Dropdown, Button } from "antd";
 
 const getForm = (value, setValue, disabled = false) => {
   const handleFormInput = (e) => {
@@ -63,7 +62,7 @@ const getRadio = (value, setValue, disabled = false) => {
   );
 };
 
-const getDropdown = (value, setValue, options) => {
+const getDropdown = (value, setValue, options, defaultText='Select Track') => {
   // @Zia: should we make the dropdown only on click or is on hover nice?
   const handleMenuClick = (e) => {
     setValue(options.find((obj) => obj.key === e.key).label);
@@ -80,7 +79,7 @@ const getDropdown = (value, setValue, options) => {
     >
       <Button style={{ width, marginBottom: "20px" }}>
         {" "}
-        {value || "Select Track"}
+        {value || defaultText }
       </Button>
     </Dropdown>
   );

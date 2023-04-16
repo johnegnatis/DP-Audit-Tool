@@ -31,12 +31,12 @@ typeOptions = {
      'core': 'core',
      'following': 'following',
      'electives': 'electives',
-     'additional_electives': 'additional_electives',
+     'additional': 'additional',
      'prerequisites': 'prerequisites',
     }
 
 class Class:
-    def __init__(self, name, number, semester, transfer, grade, attempted_credits, type = 'unsure', leveling=False):
+    def __init__(self, name, number, semester, transfer, grade, attempted_credits, type = 'unsure', leveling=''):
         self.name = name
         self.number = number
         self.semester = semester
@@ -89,7 +89,7 @@ def mockStudent(unsure = False):
             Class('Network Security', 'CS 6349',  '22f', '', '', '', 'electives'),
             Class('Sftwr Test/Validatn/Verificatn', 'CS 6367','22f', '', '', '', 'electives'),
             Class('Software Maint Evolut & Re-Eng', 'SE 6356','23s', '', '', '', 'electives'),
-            Class('Computer Science I', 'CS 5303','23s', '', '', '', 'additional_electives'),
+            Class('Computer Science I', 'CS 5303','23s', '', '', '', 'additional'),
             Class('Computer Science II', 'CS 5330',   '23s', '', '', '', 'prerequisites'),
             Class('Discrete Structures', 'CS 5333',   '', '', '', '', 'prerequisites'),
             Class('Algorithm Analysis & Data Structures', 'CS 5343',  '', '', '', '', 'prerequisites'),
@@ -105,7 +105,7 @@ def get_key(json_obj, key):
     try:
         return json_obj[key]
     except:
-        print(f"Key '{key}' not found in JSON object")
+        print(f"Key '{key}' not found in JSON object (non-issue unless key is important)")
         return ''
 
 def json_to_student(json_obj):
@@ -143,6 +143,3 @@ def json_to_student(json_obj):
         print('Classes not found')
 
     return Student(name, student_id, fastTrack, thesis, admitted_date, expected_graduation, classes, track)
-
-if __name__ == '__main__':
-    print(getMockStudent())

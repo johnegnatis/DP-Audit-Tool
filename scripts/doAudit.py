@@ -1,14 +1,15 @@
 try:
     from scripts.objects import Class, Student, StudentEncoder, mockStudent, json_to_student
     from scripts.fileSystemInteraction import getDirectory
+    from scripts.settings import get_setting 
 except:
     from objects import Class, Student, StudentEncoder, mockStudent, json_to_student
     from fileSystemInteraction import getDirectory
+    from settings import get_setting  
 import re
 from docx import Document
 from docx.shared import Pt
 from docx.enum.section import WD_SECTION
-
 
 def doAuditMethod(studentObject):
 
@@ -17,17 +18,19 @@ def doAuditMethod(studentObject):
     else:
         studentObject = json_to_student(studentObject)
 
-    file_path = getDirectory('Save Audit Report')
+    default_path = get_setting("default-path-for-audit")
+    file_path = getDirectory('Save Audit Report', default_path)
     if not file_path:
         return
 
     destination = file_path + '/' + studentObject.name + '.docx'
-    generateAudit(studentObject, destination)
+    try:
+        generateAudit(studentObject, destination)
+    except:
+        raise Exception("Error: Error at audit generation. Please try again later.")
     return destination
 
 def generateAudit(studentObject, destination):
-    print('Starting audit generation...')
-
     # Class tracking for GPA
     core_complete = [course for course in studentObject.classes if course.grade and (course.type == 'core' or course.type == 'following')]
     core_incomplete = [course for course in studentObject.classes if not course.grade and course.type == 'core']
@@ -154,7 +157,10 @@ def generateAudit(studentObject, destination):
     
     para.add_run('\n' + overall_status + ", ".join(course.number for course in total_incomplete))
 
-    doc.save(destination)
+    try:
+        doc.save(destination)
+    except PermissionError:
+        raise Exception("Error: You do not have permissions to save here. Perhaps you have an older version open. Close out other applications and try again.")
 
 def calculateRequiredGPA(required_GPA, GPA, completed_courses, remaining_courses):
     target = (required_GPA * (getTotalCredits(completed_courses) + getTotalCredits(remaining_courses)) - (GPA * getTotalCredits(completed_courses))) / getTotalCredits(remaining_courses)
