@@ -38,6 +38,13 @@ def generateAudit(studentObject, destination):
     total_complete = [course for course in studentObject.classes if course.grade and (course.type == 'core' or course.type == 'electives' or course.type == 'following')]
     total_incomplete = [course for course in studentObject.classes if not course.grade and (course.type == 'core' or course.type == 'electives')]
 
+    core_complete.sort(key=lambda x: x.number)
+    core_incomplete.sort(key=lambda x: x.number)
+    elective_complete.sort(key=lambda x: x.number)
+    elective_incomplete.sort(key=lambda x: x.number)
+    total_complete.sort(key=lambda x: x.number)
+    total_incomplete.sort(key=lambda x: x.number)
+
 
     doc = Document()
     style = doc.styles['Normal']
@@ -87,8 +94,16 @@ def generateAudit(studentObject, destination):
     # courses
     para = doc.add_paragraph()
     para.add_run('\nCore Courses: ').bold = True
+
+    cores = core_complete + core_incomplete
+    cores.sort(key=lambda x: x.number)
     para.add_run(", ".join([course.number for course in (core_complete + core_incomplete)]))
+
+
     para.add_run('\nElective Courses: ').bold = True
+
+    electives = elective_complete + elective_incomplete
+    electives.sort(key=lambda x: x.number)
     para.add_run(", ".join([course.number for course in (elective_complete + elective_incomplete)]))
 
     # leveling courses (incomplete) NEED LIST OF LEVELING COURSES HERE
@@ -97,7 +112,8 @@ def generateAudit(studentObject, destination):
     
     for course in studentObject.classes:
         if course.type == 'prerequisites' and course.grade:
-             para.add_run("\n" + course.number + ": Completed" + course.semester)
+             c = "".join(re.findall("[a-zA-Z]* [0-9]*", course.number))
+             para.add_run("\n" + c + ": Completed" + course.semester)
 
     # requirements (incomplete)
     core_status = ""
@@ -141,7 +157,7 @@ def generateAudit(studentObject, destination):
     doc.save(destination)
 
 def calculateRequiredGPA(required_GPA, GPA, completed_courses, remaining_courses):
-    target = (required_GPA * (len(completed_courses) + len(remaining_courses)) - (GPA * len(completed_courses))) / len(remaining_courses)
+    target = (required_GPA * (getTotalCredits(completed_courses) + getTotalCredits(remaining_courses)) - (GPA * getTotalCredits(completed_courses))) / getTotalCredits(remaining_courses)
     if target < 2:
         return "\tThe student must pass: "
     
@@ -168,7 +184,7 @@ def calculateRequiredGPA(required_GPA, GPA, completed_courses, remaining_courses
     return "\tThe student needs a GPA of at least %.3f in: " % target
 
 def letterToGPA(letter):
-    letter = " ".join(re.findall("[a-zA-Z][\+\-]?", letter))
+    letter = "".join(re.findall("[a-zA-Z][\+\-]?", letter))
     letter = letter.upper() # incase DP enters lowercase letter
 
     if letter == 'A' or letter == 'A+':
@@ -199,15 +215,24 @@ def getGPA(completed_courses):
         grade = letterToGPA(course.grade)
         if (grade == 'Ignore'):
             continue
+
+        credits = int(course.number[4])
         
-        courseCount = courseCount + 1
-        gpa += grade
+        courseCount = courseCount + credits
+        gpa += grade*credits
     
     try:
         return gpa / courseCount
     except:
         # DIVIDE BY 0 ERROR?
         return 0
+
+def getTotalCredits(courses):
+    sum = 0
+    for course in courses:
+        sum += int(course.number[4])
+
+    return sum
 
 if __name__ == '__main__':
     doAuditMethod('mock')
