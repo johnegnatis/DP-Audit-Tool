@@ -53,3 +53,7 @@ eel.expose(settingAPI);
 async function settingAPI(action, payload) {
   return await eel.settingAPI(action, payload)();
 }
+eel.expose(classListAPI);
+async function classListAPI(request, payload) {
+  return await eel.classListAPI(request, payload)();
+}

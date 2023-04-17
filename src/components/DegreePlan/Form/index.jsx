@@ -45,7 +45,15 @@ const Form = ({
     additional,
     prerequisites,
   } = props;
-  const { coreOptions, followingOptions, prerequisiteOptions, nOfTheFollowing, tableCounts } = classOptions;
+  const {
+    coreOptions,
+    followingOptions,
+    prerequisiteOptions,
+    classes: electiveOptions,
+    nOfTheFollowing,
+    tableCounts,
+    refetchClassList,
+  } = classOptions;
   const {
     core: coreTableSize,
     following: followingTableSize,
@@ -116,6 +124,7 @@ const Form = ({
     handleMoveToTopClick,
     deleteClass,
     handleLevelingChange,
+    refetchClassList,
   ];
   const coreTable = useMemo(
     () => (
@@ -165,7 +174,7 @@ const Form = ({
         subtitle=""
         allDisabled={allDisabled}
         classes={electives}
-        openAddClassDrawer={() => setAddClassDrawerOpen(tableTypes.electives, [])}
+        // openAddClassDrawer={() => setAddClassDrawerOpen(tableTypes.electives, electiveOptions, true)}
         setClassForEdit={setClassForEdit}
         setClassForMove={setClassForMove}
         handleMoveClick={handleMoveClick}
@@ -175,7 +184,7 @@ const Form = ({
         size={electiveTableSize}
       />
     ),
-    [electives, electiveTableSize, ...sharedTableDependencies]
+    [electives, electiveOptions, electiveTableSize, ...sharedTableDependencies]
   );
   const additionalTable = useMemo(
     () => (
@@ -185,7 +194,7 @@ const Form = ({
         subtitle=""
         allDisabled={allDisabled}
         classes={additional}
-        openAddClassDrawer={() => setAddClassDrawerOpen(tableTypes.additional, [])}
+        // openAddClassDrawer={() => setAddClassDrawerOpen(tableTypes.additional, electiveOptions, true)}
         setClassForEdit={setClassForEdit}
         setClassForMove={setClassForMove}
         handleMoveClick={handleMoveClick}
@@ -195,7 +204,7 @@ const Form = ({
         size={additionalTableSize}
       />
     ),
-    [additional, additionalTableSize, ...sharedTableDependencies]
+    [additional, electiveOptions, additionalTableSize, ...sharedTableDependencies]
   );
   const prerequisiteTable = useMemo(
     () => (
@@ -205,7 +214,7 @@ const Form = ({
         subtitle=""
         allDisabled={allDisabled}
         classes={prerequisites}
-        openAddClassDrawer={() => setAddClassDrawerOpen(tableTypes.prerequisites, prerequisiteOptions)}
+        // openAddClassDrawer={() => setAddClassDrawerOpen(tableTypes.prerequisites, prerequisiteOptions)}
         setClassForEdit={setClassForEdit}
         setClassForMove={setClassForMove}
         handleMoveClick={handleMoveClick}
@@ -227,15 +236,22 @@ const Form = ({
       case tableTypes.following:
         options = followingOptions;
         break;
+      case tableTypes.electives:
+        options = electiveOptions;
+        break;
+      case tableTypes.additional:
+        options = electiveOptions;
+        break;
       case tableTypes.prerequisites:
         options = prerequisiteOptions;
+        break;
     }
     return (
       <Icon
         icon={iconNames.plus}
         className="orange small icon"
         onClick={(e) => {
-          setAddClassDrawerOpen(type, options);
+          setAddClassDrawerOpen(type, options, type == tableTypes.electives || type == tableTypes.additional);
           e.stopPropagation();
         }}
       />
@@ -262,16 +278,32 @@ const Form = ({
           <Panel header={`${tableNames.core} (${core.length} courses)`} key="1" extra={getAddClassButton(tableTypes.core)}>
             {coreTable}
           </Panel>
-          <Panel header={`${getNumberToString(nOfTheFollowing)} of the Following Courses (${following.length} courses)`} key="2" extra={getAddClassButton(tableTypes.following)}>
+          <Panel
+            header={`${getNumberToString(nOfTheFollowing)} of the Following Courses (${following.length} courses)`}
+            key="2"
+            extra={getAddClassButton(tableTypes.following)}
+          >
             {followingTable}
           </Panel>
-          <Panel header={`${tableNames.electives} (${electives.length} courses)`} key="3" extra={getAddClassButton(tableTypes.electives)}>
+          <Panel
+            header={`${tableNames.electives} (${electives.length} courses)`}
+            key="3"
+            extra={getAddClassButton(tableTypes.electives)}
+          >
             {electivesTable}
           </Panel>
-          <Panel header={`${tableNames.additional} (${additional.length} courses)`} key="4" extra={getAddClassButton(tableTypes.additional)}>
+          <Panel
+            header={`${tableNames.additional} (${additional.length} courses)`}
+            key="4"
+            extra={getAddClassButton(tableTypes.additional)}
+          >
             {additionalTable}
           </Panel>
-          <Panel header={`${tableNames.prerequisites} (${prerequisites.length} courses)`} key="5" extra={getAddClassButton(tableTypes.prerequisites)}>
+          <Panel
+            header={`${tableNames.prerequisites} (${prerequisites.length} courses)`}
+            key="5"
+            extra={getAddClassButton(tableTypes.prerequisites)}
+          >
             {prerequisiteTable}
           </Panel>
         </Collapse>

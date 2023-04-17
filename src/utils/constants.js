@@ -77,6 +77,13 @@ export const levelingMap = {
   other: "Other",
 };
 
+export const classesDBRequestMap = {
+  get: 'get', 
+  insert: 'insert',
+  delete: 'delete',
+  update: 'update',
+}
+
 export const tableTypes = {
   core: "core",
   following: "following",

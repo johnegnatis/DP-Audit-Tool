@@ -11,14 +11,19 @@ import { pages, tableNames } from "../../utils/constants";
 import { handleError, sendError, sendSuccess, sendWaiting, sendWarning } from "../../utils/methods";
 import NavigationBar from "../NavigationBar";
 import { useTrackOptions } from "../Hooks/databaseHooks";
+import { useClassList } from "../Hooks/classListHooks";
 
 const DegreePlan = ({ student, databaseProps }) => {
   // STUDENT OBJ LOGIC
   const [students] = useGlobalState("students");
   const formProps = useStudentObject(student);
   const { searchInput, setSearchInput, getClassSetter, studentObjectJSON, track, setClasses } = formProps;
-  const classOptionProps = useTrackOptions(track);
 
+  const [refetchClassList, setRefetchClassList] = useState(true);
+  const classListProps = useClassList(refetchClassList);
+  const { insertClass, updateClass, deleteClass } = classListProps;
+  const trackOptionProps = useTrackOptions(track);
+  const classOptionProps = { ...trackOptionProps, ...classListProps, refetchClassList };
   const handleSelectTrack = () => {
     const newStudent = student;
     newStudent.track = track;
@@ -55,15 +60,24 @@ const DegreePlan = ({ student, databaseProps }) => {
   // Database
   const { trackOptions } = databaseProps;
 
+  // CLASS LIST LOGIC
+  const handleDeleteFromClassList = useCallback((number) => {
+    deleteClass(number);
+    setRefetchClassList((prev) => !prev);
+  }, []);
+
   // ADD LOGIC
   const [addClassTable, setAddClassTable] = useState("");
   const [isSearch, setIsSearch] = useState(false);
   const [classOptions, setClassOptions] = useState([]);
+  const [isEditable, setIsEditable] = useState(false);
   const handleAddClassDrawerOpen = useCallback(
-    (type, options) => {
+    (type, options, canEdit = false) => {
+      console.log(canEdit);
       setAddClassTable(type);
       setIsSearch(options && options.length > 0); // if there are options, start with searching options
       setClassOptions(options);
+      setIsEditable(canEdit);
     },
     [classOptionProps]
   );
@@ -79,6 +93,8 @@ const DegreePlan = ({ student, databaseProps }) => {
       setClassOptions([]);
       setIsSearch(false);
       sendSuccess("Course Was Added Successfully!");
+      insertClass({ name: obj.name, number: obj.number });
+      setRefetchClassList((prev) => !prev);
     },
     [addClassTable]
   );
@@ -319,9 +335,11 @@ const DegreePlan = ({ student, databaseProps }) => {
             searchInput={searchInput}
             setSearchInput={setSearchInput}
             isSearch={isSearch}
+            isEditable={isEditable}
             setIsSearch={setIsSearch}
             searchOptions={classOptions}
             handleSubmitAddClass={handleSubmitAddClass}
+            onDelete={handleDeleteFromClassList}
           />
         </Drawer>
         <Drawer

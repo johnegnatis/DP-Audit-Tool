@@ -15,7 +15,7 @@ const defaultStartingState = {
   selectedId: "",
 };
 
-const { setGlobalState, useGlobalState } = createGlobalState(defaultStartingState);
+const { setGlobalState, useGlobalState } = createGlobalState(genericStudentState);
 
 const getSelectedStudent = (students, selectedId) => {
   return students && students.find((studentObj) => studentObj.student.studentId === selectedId);
