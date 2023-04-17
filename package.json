@@ -17,30 +17,28 @@
   },
   "scripts": {
     "eel-install": "pip install -e ./Eel",
-    
+    "dist": "start ./dist/Senior-Project/Senior-Project.exe",
     "start": "npm-run-all -p start:js start:eel",
     "start:js": "react-scripts start",
     "start:eel": "python index.py --develop",
     "start:dist": "start dist/Senior-Project.exe",
-    
-    "build": "npm-run-all kill-ports build:js build:eel-noconsole",
-    "build-dev": "npm-run-all kill-ports build:js build:eel",
+    "build": "npm-run-all kill-ports build:js build:eel-noconsole build:server",
+    "build-dev": "npm-run-all kill-ports build:js build:eel build:server",
     "build:js": "react-scripts build",
     "build:eel": "python -m eel index.py build --onedir --uac-admin --icon=\"./build/logo.ico\" --name Senior-Project",
     "build:eel-noconsole": "python -m eel index.py build --noconsole --uac-admin --icon=\"./build/logo.ico\" --onedir --name Senior-Project",
-    
+    "build:server": "make-dir dist/Senior-Project/build/server",
     "clean": "npm-run-all -p clean:*",
     "clean:build": "rimraf build",
     "clean:dist": "rimraf dist",
-    "clean:server": "rimraf server",
     "clean:settings": "rimraf ./public/databases/settings.json",
-    
     "kill-ports": "npm-run-all -p kill-8888 kill-8000",
     "kill-8888": "npx kill-port 8888",
     "kill-8000": "npx kill-port 8000"
   },
   "devDependencies": {
     "@iconify/react": "^4.1.0",
+    "make-dir-cli": "^3.0.0",
     "npm-run-all": "^4.1.5",
     "rimraf": "^5.0.0"
   },

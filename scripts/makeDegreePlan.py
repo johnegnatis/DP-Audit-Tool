@@ -483,8 +483,11 @@ def fillPDFForms(studentObject, path):
     try:
         fillpdfs.write_fillable_pdf(base_dev + pdf_name, path, data_dict)
     except Exception as e:
-        print(e)
-        fillpdfs.write_fillable_pdf(base_prod + pdf_name, path, data_dict)
+        print('dev', e)
+        try:
+            fillpdfs.write_fillable_pdf(base_prod + pdf_name, path, data_dict)
+        except Exception as e:
+            print('prod', e)
 
 def getStudentFile(name):
     return name.replace(" ", "") + '_DP' + '.pdf'

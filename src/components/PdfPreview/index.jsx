@@ -17,7 +17,7 @@ export default function PdfPreview({ serverPort }) {
   const pdfName = studentObj.student.pdfName;
   const getStudentFile = () => {
     return {
-      url: `http://localhost:${serverPort}/` + pdfName,
+      url: `http://localhost:${serverPort}/server/` + pdfName,
     };
   };
   const [askSignatureOpen, setAskSignatureOpen] = useState(false);

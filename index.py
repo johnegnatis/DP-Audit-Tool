@@ -48,7 +48,11 @@ EEL_PORT = 8888
 def getEelPort():
     return EEL_PORT
 
-WEB_SERVER_PORT = 8000
+if DEVELOPMENT:
+    WEB_SERVER_PORT = 8000
+else:
+    WEB_SERVER_PORT = EEL_PORT
+
 @eel.expose
 def getServerPort():
     return WEB_SERVER_PORT
@@ -74,7 +78,8 @@ def run_eel():
 
 if __name__ == '__main__':
     freeze_support()  # for pyinstaller on Windows
-    server = Process(target = server.host_server, args=[WEB_SERVER_PORT])
-    server.start()
+    if DEVELOPMENT:
+        server = Process(target = server.host_server, args=[WEB_SERVER_PORT])
+        server.start()        
     run_eel()
 
