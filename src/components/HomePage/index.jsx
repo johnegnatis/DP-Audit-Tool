@@ -9,12 +9,14 @@ import { useGlobalState, setGlobalState } from "../GlobalState";
 import { getEelResponse } from "./apiHelper";
 import NavigationBar from "../NavigationBar";
 import SettingsForm from "./SettingsForm";
+import SupportPage from "./SupportPage";
 
 const HomePage = () => {
   const [globalStudents] = useGlobalState("students");
   const [fileStudentList, setFileStudentList] = useState([]);
   const [loading, setLoading] = useState(false);
   const [negativeIndex, setNegativeIndex] = useState(-1);
+  const [isSupportPage, setIsSupportPage] = useState(true);
 
   const handleUploadClick = useCallback(() => {
     const key = "popup-upload";
@@ -144,14 +146,12 @@ const HomePage = () => {
   };
 
   const [settingsOpen, setSettingsOpen] = useState(false);
-  const topRightIcon = (
-    <Icon icon={iconNames.settings} onClick={() => setSettingsOpen(true)} className="icon grey xs pointer" />
-  );
+  const topRightIcon = <Icon icon={iconNames.settings} onClick={() => setSettingsOpen(true)} className="icon grey xs pointer" />;
   const handleCloseSettings = () => {
     setSettingsOpen(false);
   };
 
-  return (
+  return !isSupportPage ? (
     <>
       <NavigationBar topRightIcon={topRightIcon} />
       <div className="home-page-root">
@@ -166,7 +166,7 @@ const HomePage = () => {
       <footer>
         <div className="support">
           <Icon icon={iconNames.question} className="icon orange xs" />
-          <span>Support</span>
+          <span onClick={() => setIsSupportPage(true)}>Support</span>
         </div>
         <div className="create-button">
           <Button
@@ -180,6 +180,11 @@ const HomePage = () => {
         </div>
       </footer>
       <SettingsForm open={settingsOpen} onClose={() => handleCloseSettings()} />
+    </>
+  ) : (
+    <>
+      <NavigationBar topRightIcon={topRightIcon} />
+      <SupportPage onClose={() => setIsSupportPage(false)} />
     </>
   );
 };
