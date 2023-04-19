@@ -30,7 +30,6 @@ const errorTypeMap = {
   Warning: sendWarning,
 };
 export const handleError = (error, key) => {
-  console.error(error);
   try {
     const msg = error.errorText.replace("Exception('", "").replace("')", "").split(":");
     const sendErrorFunction = errorTypeMap[msg[0]];

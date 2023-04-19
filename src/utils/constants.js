@@ -15,6 +15,7 @@ export const iconNames = {
   warning: "mdi:warning-circle",
   settings: "material-symbols:settings",
   openFile: "fluent-emoji-high-contrast:open-file-folder",
+  openDir: "material-symbols:folder-copy-outline",
 };
 export const settingsKeys = {
   defaultPathForDegreePlan: "default-path-for-degree-plan",

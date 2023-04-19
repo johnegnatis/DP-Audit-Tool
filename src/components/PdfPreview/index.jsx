@@ -92,7 +92,9 @@ export default function PdfPreview({ serverPort }) {
       <div className="pdf-preview-root">
         <div className="pdf-preview">
           <h1 className="title">DOCUMENT PREVIEW</h1>
-          <h5 className="warning">***Edits to this page will not be saved***</h5>
+          <h5 className="warning" style={{ paddingBottom: "10px" }}>
+            *Edits to this page will not be saved*
+          </h5>
           <div className="viewer" style={{ pointerEvents: "none" }}>
             <Document
               file={path}
@@ -114,11 +116,12 @@ export default function PdfPreview({ serverPort }) {
             <Icon icon={iconNames.zoomIn} onClick={() => zoomIn()} className="icon xs pointer grey" />
           </div>
           <div className="save-continue">
-            <Button onClick={() => onSavePDF()} className="button grey-border white-bg" size="large">
+            <Button onClick={() => onSavePDF()} className="button white-bg" size="large">
               <Icon icon={iconNames.import} className="icon xxs grey" />
-              <span>Download PDF</span>
+              <span>Download Degree Plan</span>
             </Button>
             <Button onClick={() => handleDownloadAuditReport()} className="button orange-bg" size="large">
+              <Icon icon={iconNames.import} className="icon xxs white" />
               Download Audit Report
             </Button>
           </div>

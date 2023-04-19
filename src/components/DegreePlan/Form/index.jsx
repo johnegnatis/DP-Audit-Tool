@@ -261,6 +261,7 @@ const Form = ({
   return (
     <div className="degree-plan">
       <SelectTrack
+        studentName={name}
         track={track}
         setTrack={setTrack}
         handleConfirmTrack={handleConfirmTrack}
@@ -268,7 +269,7 @@ const Form = ({
         options={trackOptions}
         handleReturnToHome={handleReturnToHome}
       />
-      <h1 className="title">Degree Plan</h1>
+      <h1 className="title">Edit Student Information</h1>
       <div className="general-info">
         <Collapse defaultActiveKey={["0", "1", "2", "3", "4", "5"]}>
           <Panel header="General Information" key="0">

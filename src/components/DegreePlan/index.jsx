@@ -129,9 +129,9 @@ const DegreePlan = ({ student, databaseProps }) => {
       icon: null,
     });
     sendWaiting(
-      <div style={{ minWidth: "25%", minHeight: "10%" }}>
+      <div style={{ minWidth: "25%", minHeight: "10%", padding: '10px' }}>
         <p>Move the following course to the desired location:</p>
-        {obj && obj.class && <p style={{ fontWeight: "700" }}>{obj.class.name}</p>}
+        {obj && obj.class && <p style={{ fontWeight: "700", paddingBottom: '10px' }}>{obj.class.name}</p>}
         <Button
           className="orange-bg button"
           onClick={() => {

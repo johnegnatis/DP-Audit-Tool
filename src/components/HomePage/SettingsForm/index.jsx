@@ -42,7 +42,7 @@ const SettingsForm = ({ open, onClose }) => {
         )}
         <div className="buttons">
           <Button className="button red-bg" onClick={() => onClose()}>
-            Close
+            Cancel
           </Button>
           <Button
             className="button orange-bg"
@@ -50,7 +50,7 @@ const SettingsForm = ({ open, onClose }) => {
               saveToSetting(onClose);
             }}
           >
-            Save And Close
+            Save
           </Button>
         </div>
       </div>
@@ -65,11 +65,12 @@ function getDirectoryForm(value, span, onClickFunction, onDelete) {
       <div className="row-upper">
         {span}
         <div>
+          // TODO: Icon inside the text 
           <Tooltip placement="top" title="Clear">
-            <Icon onClick={() => onDelete()} icon={iconNames.close} className="icon red small pointer" />
+            <Icon onClick={() => onDelete()} icon={iconNames.close} className="icon grey xs pointer" />
           </Tooltip>
           <Tooltip placement="top" title="Select Directory Path">
-            <Icon onClick={() => onClickFunction()} icon={iconNames.openFile} className="icon orange small pointer" />
+            <Icon onClick={() => onClickFunction()} icon={iconNames.openDir} className="icon grey xs pointer" />
           </Tooltip>
         </div>
       </div>

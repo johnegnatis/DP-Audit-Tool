@@ -1,5 +1,5 @@
 import Logo from "../../assets/images/logo.png";
-import { Button } from "antd";
+import { Button, Tooltip } from "antd";
 import { Icon } from "@iconify/react";
 import { iconNames, pages } from "../../utils/constants";
 import React, { useCallback, useState } from "react";
@@ -127,7 +127,9 @@ const HomePage = () => {
               <span className="file-element border" key={index}>
                 {status}
                 <span>{fileName}</span>
-                <Icon icon={iconNames.trash} className="icon orange small pointer" onClick={() => removeElement(fileObj.file)} />
+                <Tooltip placement="right" title="Remove Student">
+                  <Icon icon={iconNames.close} className="icon grey xs pointer" onClick={() => removeElement(fileObj.file)} />
+                </Tooltip>
               </span>
             );
           })}
@@ -143,7 +145,7 @@ const HomePage = () => {
 
   const [settingsOpen, setSettingsOpen] = useState(false);
   const topRightIcon = (
-    <Icon icon={iconNames.settings} onClick={() => setSettingsOpen(true)} className="icon grey small pointer" />
+    <Icon icon={iconNames.settings} onClick={() => setSettingsOpen(true)} className="icon grey xs pointer" />
   );
   const handleCloseSettings = () => {
     setSettingsOpen(false);

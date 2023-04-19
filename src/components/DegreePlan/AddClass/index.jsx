@@ -67,11 +67,11 @@ const AddClass = ({
           return (
             <div
               onClick={!!classID.onClickMe ? classID.onClickMe : () => setSearchClassForAdd(classID)}
-              className="row"
+              className={`row ${classID.onClickMe ? 'bold-orange' : ''}`}
               key={index}
             >
               <p>{classID.name}</p>
-              <p>{classID.number}</p>
+              <p style={{width: '30%', textAlign: 'right'}}>{classID.number}</p>
             </div>
           );
         })}

@@ -65,6 +65,10 @@ def getDirectory():
 def settingAPI(action, payload):
     return scripts.settings(action, payload)
 
+@eel.expose
+def classListAPI(action, payload):
+    return scripts.handle_class_request(action, payload)
+
 def run_eel():
     if (DEVELOPMENT):
         try:

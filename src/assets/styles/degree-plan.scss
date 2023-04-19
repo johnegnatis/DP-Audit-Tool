@@ -108,9 +108,12 @@ $input-height: 40px;
 
       .warning-table-full {
         td {
-          background-color: gold;
+          // TODO: Warning icon right of table name
+          // background-color: gold;
+          border-top: $red 1px solid;
+          // border-bottom: $red 1px solid;
           &.ant-table-cell-row-hover {
-            background-color: goldenrod;
+            // background-color: goldenrod;
           }
         }
       }
@@ -172,6 +175,14 @@ $input-height: 40px;
     display: flex;
     flex-direction: column;
 
+    .bold-orange {
+      font-weight: 700;
+      color: $orange;
+    }
+    // TOOD: MAKE + LARGER
+    p:first-child & .bold-orange{
+      font-size: 500px;
+    }
     .row {
       display: flex;
       flex-direction: row;
