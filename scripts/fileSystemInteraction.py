@@ -6,7 +6,7 @@ from shutil import copy2
 try:
     from scripts.helpers import get_server_path
     from scripts.settings import get_setting
-except:
+except Exception as e:
     from helpers import get_server_path
     from settings import get_setting 
 
@@ -40,7 +40,8 @@ def savePDFMethod(file_name, signature, flatten):
             copy2(file_path, dir_to_save, follow_symlinks=True)
 
         return dir_to_save
-    except:
+    except Exception as e:
+        print(e)
         raise Exception("Error: Error while saving PDF.")
 
 def getDirectory(message="Select directory", default_path = None):

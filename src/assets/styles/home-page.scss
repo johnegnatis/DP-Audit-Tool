@@ -10,6 +10,10 @@ $footer-height: 70px;
   overflow-y: auto;
   
   .home-page {
+
+    img {
+      width: 30%;
+    }
     justify-content: center;
     margin: auto;
     width: 600px;
@@ -140,6 +144,15 @@ footer {
       display: flex;
       justify-content: space-between;
       align-items: center;
+    }
+    .row-lower{
+      display: flex;
+      border: 1px solid $grey;
+      border-radius: 10px;
+      .button-div {
+        display: flex;
+        padding-right: 3px;
+      }
     }
   }
 }

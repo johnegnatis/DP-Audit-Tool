@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "antd";
 import { levelingOptions, levelingMap } from "../../../utils/constants";
-import { getForm, getDropdown } from "../Form/inputComponents";
+import { getForm, getDropdown, getTextArea } from "../Form/inputComponents";
 import { getSpan } from "../Form/gridLayout";
 
 const LevelingDrawer = ({ handleSubmit, classObj }) => {
@@ -26,14 +26,18 @@ const LevelingDrawer = ({ handleSubmit, classObj }) => {
 
   return (
     <div className="class-form-root">
-      <div className="row">{getDropdown(levelingChoice, setLevelingChoice, levelingOptions, "Select")}</div>
+      <br />
+      <div className="">{getDropdown(levelingChoice, setLevelingChoice, levelingOptions, "Select")}</div>
       <div className="row">
-        {getSpan("Enter Note For Leveling", !otherDisabled, true)}
-        {getForm(other, setOther, otherDisabled)}
+        {getSpan("If Other, provide note", !otherDisabled, true)}
+        {getTextArea(other, setOther, otherDisabled)}
       </div>
-      <Button className="button orange-bg" onClick={() => onSubmitClick()} disabled={submitDisabled}>
-        Submit
-      </Button>
+      <br />
+      <div style={{ display: "flex", justifyContent: "right" }}>
+        <Button className="button orange-bg" onClick={() => onSubmitClick()} disabled={submitDisabled}>
+          Save
+        </Button>
+      </div>
     </div>
   );
 };

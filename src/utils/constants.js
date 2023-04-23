@@ -15,6 +15,7 @@ export const iconNames = {
   warning: "mdi:warning-circle",
   settings: "material-symbols:settings",
   openFile: "fluent-emoji-high-contrast:open-file-folder",
+  openDir: "material-symbols:folder-copy-outline",
 };
 export const settingsKeys = {
   defaultPathForDegreePlan: "default-path-for-degree-plan",
@@ -50,7 +51,11 @@ export const getNumberToString = (number, lowerCase = false) => {
   if (lowerCase) return numberStr.toLowerCase();
   return numberStr;
 };
-
+export const disableType = {
+  move: 'move',
+  copy: 'copy',
+  none: '',
+}
 export const levelingOptions = [
   {
     label: "Completed",
@@ -76,6 +81,13 @@ export const levelingMap = {
   notRequired: "Not required by plan or electives",
   other: "Other",
 };
+
+export const classesDBRequestMap = {
+  get: 'get', 
+  insert: 'insert',
+  delete: 'delete',
+  update: 'update',
+}
 
 export const tableTypes = {
   core: "core",

@@ -3,8 +3,9 @@ const ConfirmCloseStudent = ({ open, message, handleConfirmBoxResponse }) => {
   return (
     <Modal
       title={message}
-      okText="Delete"
+      okText="Close"
       okType="danger"
+      cancelText="Cancel"
       style={{
         top: 20,
       }}

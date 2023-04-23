@@ -3,7 +3,9 @@ import sys
 import http.server
 import socketserver
 import shutil
-from scripts import get_server_path, get_server_name
+from scripts import get_server_path
+
+# ONLY USED IN DEVELOPMENT ENVIRONMENT
 
 class HTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
     def end_headers(self):
@@ -20,10 +22,10 @@ def server(port):
 def host_server(port):
     httpd = server(port)
     try:
-        server_name = get_server_name()
+        server_name = 'build/server'
         if not os.path.exists(server_name):
             os.makedirs(server_name)
-        os.chdir(server_name)
+        os.chdir('build')
         print("\nserving from build/server/ at localhost:" + str(port))
         httpd.serve_forever()
     except KeyboardInterrupt:

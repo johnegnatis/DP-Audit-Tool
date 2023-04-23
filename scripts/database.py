@@ -7,13 +7,14 @@ def open_database():
     try:
         try:
             f = open(base_prod)
-        except:
+        except Exception as e:
             try:
                 f = open(base_dev)
-            except:
+            except Exception as e:
                 f = open(test_dev)
         return json.load(f)
-    except:
+    except Exception as e:
+        print(e)
         raise Exception("Error: Open Database was unsuccessful. Check that databases/database.json exists and try again.")
 
 def get_options_for_frontend():

@@ -1,11 +1,13 @@
 try:
     from scripts.objects import Class, Student, StudentEncoder, mockStudent, json_to_student
     from scripts.fileSystemInteraction import getDirectory
-    from scripts.settings import get_setting 
-except:
+    from scripts.settings import get_setting
+    from scripts.helpers import get_naming_convention
+except Exception as e:
     from objects import Class, Student, StudentEncoder, mockStudent, json_to_student
     from fileSystemInteraction import getDirectory
     from settings import get_setting  
+    from helpers import get_naming_convention
 import re
 from docx import Document
 from docx.shared import Pt
@@ -23,10 +25,11 @@ def doAuditMethod(studentObject):
     if not file_path:
         return
 
-    destination = file_path + '/' + studentObject.name + '.docx'
+    destination = file_path + '/' + get_naming_convention(studentObject.name) + '_Audit.docx'
     try:
         generateAudit(studentObject, destination)
-    except:
+    except Exception as e:
+        print(e)
         raise Exception("Error: Error at audit generation. Please try again later.")
     return destination
 
@@ -229,7 +232,7 @@ def getGPA(completed_courses):
     
     try:
         return gpa / courseCount
-    except:
+    except Exception as e:
         # DIVIDE BY 0 ERROR?
         return 0
 
