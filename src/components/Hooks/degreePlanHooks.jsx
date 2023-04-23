@@ -91,6 +91,7 @@ export function useStudentObject(student) {
     core,
     following,
     elective,
+    additional,
     prerequisites,
   ]);
   console.log(studentObjectJSON);

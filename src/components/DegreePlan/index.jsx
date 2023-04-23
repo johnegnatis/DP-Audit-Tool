@@ -371,10 +371,11 @@ const DegreePlan = ({ student, databaseProps }) => {
     const setter = getClassSetter(obj.class.type);
     if (!setter) return;
     setter((prev) => {
+      console.log(prev.filter((_, index) => index !== obj.index));
       return prev.filter((_, index) => index !== obj.index);
     });
   }, []);
-
+  console.log(formProps.additional);
   // LEVELING LOGIC
   const [selectedClassForLeveling, setSelectedClassForLeveling] = useState(null);
   const handleLevelingChange = useCallback((obj) => {
