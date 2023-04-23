@@ -1,5 +1,7 @@
 import { Icon } from "@iconify/react";
-import { Button } from "antd";
+import { Button, FloatButton } from "antd";
+import { ZoomOutOutlined, ZoomInOutlined } from "@ant-design/icons";
+
 import React, { useState, useEffect } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
 import { iconNames, pages } from "../../utils/constants";
@@ -73,8 +75,8 @@ export default function PdfPreview({ serverPort }) {
       clearTimeout(timeout);
     };
   }, [resetSignal]);
-  const [zoom, setZoom] = useState(1);
-  const maxZoom = 2;
+  const [zoom, setZoom] = useState(1.5);
+  const maxZoom = 4;
   const minZoom = 0.5;
   const interval = 0.1;
   const zoomIn = () => {
@@ -83,6 +85,8 @@ export default function PdfPreview({ serverPort }) {
   const zoomOut = () => {
     setZoom((prev) => (prev - interval < minZoom ? minZoom : prev - interval));
   };
+  console.log(zoom);
+
 
   pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
@@ -110,11 +114,6 @@ export default function PdfPreview({ serverPort }) {
           <div className="return">
             <span onClick={() => changePage(studentList, studentObj, pages.degreePlan)}>{"< Return to edit"}</span>
           </div>
-          <div className="zoom">
-            <Icon icon={iconNames.zoomOut} onClick={() => zoomOut()} className="icon xs pointer grey" />
-            <span className="percent">{Math.round(zoom * 100) + "%"}</span>
-            <Icon icon={iconNames.zoomIn} onClick={() => zoomIn()} className="icon xs pointer grey" />
-          </div>
           <div className="save-continue">
             <Button onClick={() => onSavePDF()} className="button white-bg" size="large">
               <Icon icon={iconNames.import} className="icon xxs grey" />
@@ -134,6 +133,15 @@ export default function PdfPreview({ serverPort }) {
         setSignature={setSignature}
         onClose={onClose}
       />
+      <div className="zoom">
+        {/* <Icon icon={iconNames.zoomOut} onClick={() => zoomOut()} className="icon xs pointer grey" />
+        <span className="percent">{Math.round(zoom * 100) + "%"}</span>
+        <Icon icon={iconNames.zoomIn} onClick={() => zoomIn()} className="icon xs pointer grey" /> */}
+        <FloatButton.Group shape="circle" style={{ right: "3%", bottom: 100 }}>
+          <FloatButton icon={<ZoomOutOutlined style={{ color: "white" }} />} onClick={() => zoomOut()} />
+          <FloatButton icon={<ZoomInOutlined style={{ color: "white" }} />} onClick={() => zoomIn()} />
+        </FloatButton.Group>
+      </div>
     </>
   );
 }

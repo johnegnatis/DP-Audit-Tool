@@ -64,8 +64,10 @@ function getDirectoryForm(value, span, onClickFunction, onDelete) {
     <div className="row">
       <div className="row-upper">
         {span}
-        <div>
-          // TODO: Icon inside the text 
+      </div>
+      <div className="row-lower">
+        <Input value={value} disabled />
+        <div className="button-div">
           <Tooltip placement="top" title="Clear">
             <Icon onClick={() => onDelete()} icon={iconNames.close} className="icon grey xs pointer" />
           </Tooltip>
@@ -73,9 +75,6 @@ function getDirectoryForm(value, span, onClickFunction, onDelete) {
             <Icon onClick={() => onClickFunction()} icon={iconNames.openDir} className="icon grey xs pointer" />
           </Tooltip>
         </div>
-      </div>
-      <div className="row-lower">
-        <Input value={value} disabled />
       </div>
     </div>
   );

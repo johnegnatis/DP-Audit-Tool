@@ -145,5 +145,14 @@ footer {
       justify-content: space-between;
       align-items: center;
     }
+    .row-lower{
+      display: flex;
+      border: 1px solid $grey;
+      border-radius: 10px;
+      .button-div {
+        display: flex;
+        padding-right: 3px;
+      }
+    }
   }
 }

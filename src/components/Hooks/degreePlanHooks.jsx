@@ -38,7 +38,6 @@ export function useStudentObject(student) {
       return null;
     }
   };
-
   useEffect(() => {
     setTrack(student.track || "");
     setName(student.name || "");
@@ -54,7 +53,7 @@ export function useStudentObject(student) {
     setAdditional(filterClass(tableTypes.additional, student.classes));
     setPrerequisites(filterClass(tableTypes.prerequisites, student.classes));
   }, [student]);
-
+  
   const setClasses = useCallback((newClasses) => {
     setCore(filterClass(tableTypes.core, newClasses));
     setFollowing(filterClass(tableTypes.following, newClasses));
@@ -62,7 +61,7 @@ export function useStudentObject(student) {
     setAdditional(filterClass(tableTypes.additional, newClasses));
     setPrerequisites(filterClass(tableTypes.prerequisites, newClasses));
   }, []);
-
+  
   const studentObjectJSON = useMemo(() => {
     const classList = [...core, ...following, ...elective, ...additional, ...prerequisites];
     return {
@@ -94,7 +93,8 @@ export function useStudentObject(student) {
     elective,
     prerequisites,
   ]);
-
+  console.log(studentObjectJSON);
+  
   return {
     track,
     setTrack,

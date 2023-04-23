@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useCallback } from "react";
 import { iconNames, pages } from "../../utils/constants";
 import { useGlobalState, setGlobalState, getSelectedStudent } from "../GlobalState";
 import ConfirmCloseStudent from "./confirmCloseStudent";
@@ -9,9 +9,12 @@ const NavigationBar = ({ saveStudentObject, topRightIcon }) => {
   const [selectedId] = useGlobalState("selectedId");
   const selectedStudent = useMemo(() => getSelectedStudent(students, selectedId), [students, selectedId]);
   const [studentForDelete, setStudentForDelete] = useState(false);
+  const onRequestDeleteStudent = useCallback((e, obj) => {
+    e.stopPropagation()
+    setStudentForDelete(obj);
+  }, [])
 
-  const handlePageSwap = (e, id, name) => {
-    // TODO: IF click on X kill stident
+  const handlePageSwap = (id) => {
     if (!selectedStudent) {
       setGlobalState("selectedId", id);
       return;
@@ -57,10 +60,10 @@ const NavigationBar = ({ saveStudentObject, topRightIcon }) => {
               <div
                 className={`${selectedId === studentId && "selected-id"}`}
                 key={index}
-                onClick={(e) => handlePageSwap(e, studentId, name)}
+                onClick={(e) => handlePageSwap(studentId)}
               >
                 <span>{name}</span>
-                <Icon icon={iconNames.close} onClick={() => setStudentForDelete({ name, studentId })} />
+                <Icon icon={iconNames.close} className="close-icon" onClick={(e) => onRequestDeleteStudent(e, { name, studentId })} />
               </div>
             );
           })}

@@ -2,7 +2,9 @@ import pdfplumber
 import json
 try:
     from scripts.objects import Class, Student, StudentEncoder
+    from scripts.makeDegreePlan import readStudentObject
 except Exception:
+    from makeDegreePlan import readStudentObject
     from objects import Class, Student, StudentEncoder
 import re
 import pandas as pd
@@ -10,6 +12,13 @@ from collections import namedtuple
 
 
 def getDataFromTranscriptMethod(file_path):
+
+    try:
+        studentObject = readStudentObject(file_path)
+        return studentObject
+    except Exception as e:
+        print(e)
+        pass
 
     line_items = []
     blacklist = []
@@ -156,4 +165,5 @@ def getDataFromTranscriptMethod(file_path):
     if not student_name or not student_id:
         raise Exception("Error: Could not get Student's name or ID from this PDF. This document is likely not a transcript.")
 
+    print(studentObj.packStudentObject())
     return studentObj.packStudentObject()

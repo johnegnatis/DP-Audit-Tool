@@ -1,10 +1,10 @@
 try:
     from scripts.objects import Class, Student, mockStudent, json_to_student
-    from scripts.helpers import get_server_path
+    from scripts.helpers import get_server_path, get_naming_convention
     from scripts.database import open_database
 except Exception as e:
     from objects import Class, Student, mockStudent
-    from helpers import get_server_path
+    from helpers import get_server_path, get_naming_convention
     from database import open_database
 
 import fillpdf
@@ -490,8 +490,8 @@ def fillPDFForms(studentObject, path):
             print('prod', e)
 
 def getStudentFile(name):
-    return name.replace(" ", "") + '_DP' + '.pdf'
-             
+    name = get_naming_convention(name)
+    return name + '_DP.pdf'           
 
 def makeDegreePlanMethod(studentObject):
     if (studentObject == 'mock'):
@@ -504,6 +504,11 @@ def makeDegreePlanMethod(studentObject):
     
     fillPDFForms(studentObject, file_path)
     return file_name
+
+def readStudentObject(file_path):
+    form_fields = fillpdfs.get_form_fields(file_path)
+    studentObject = form_fields["object"]
+    return studentObject
 
 
 if __name__ == '__main__':

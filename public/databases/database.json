@@ -78,10 +78,6 @@
       ],
       "prerequisites": [
         {
-          "id": "CS 3341",
-          "name": "Probability & Statistics in CS and SE"
-        },
-        {
           "id": "CS 5303",
           "name": "Computer Science I"
         },
@@ -100,14 +96,6 @@
         {
           "id": "CS 5348",
           "name": "Operating System Concepts"
-        },
-        {
-          "id": "CS 5349",
-          "name": "Automata Theory"
-        },
-        {
-          "id": "CS 5354",
-          "name": "Software Engineering"
         },
         {
           "id": "CS 5390",
@@ -185,18 +173,6 @@
         {
           "id": "CS 5348",
           "name": "Operating System Concepts"
-        },
-        {
-          "id": "CS 5349",
-          "name": "Automata Theory"
-        },
-        {
-          "id": "CS 5354",
-          "name": "Software Engineering"
-        },
-        {
-          "id": "CS 5390",
-          "name": "Computer Networks"
         }
       ]
     },
@@ -236,10 +212,6 @@
       ],
       "prerequisites": [
         {
-          "id": "CS 3341",
-          "name": "Probability & Statistics in CS and SE"
-        },
-        {
           "id": "CS 5303",
           "name": "Computer Science I"
         },
@@ -258,18 +230,6 @@
         {
           "id": "CS 5348",
           "name": "Operating System Concepts"
-        },
-        {
-          "id": "CS 5349",
-          "name": "Automata Theory"
-        },
-        {
-          "id": "CS 5354",
-          "name": "Software Engineering"
-        },
-        {
-          "id": "CS 5390",
-          "name": "Computer Networks"
         }
       ]
     },
@@ -317,10 +277,6 @@
       ],
       "prerequisites": [
         {
-          "id": "CS 3341",
-          "name": "Probability & Statistics in CS and SE"
-        },
-        {
           "id": "CS 5303",
           "name": "Computer Science I"
         },
@@ -339,18 +295,6 @@
         {
           "id": "CS 5348",
           "name": "Operating System Concepts"
-        },
-        {
-          "id": "CS 5349",
-          "name": "Automata Theory"
-        },
-        {
-          "id": "CS 5354",
-          "name": "Software Engineering"
-        },
-        {
-          "id": "CS 5390",
-          "name": "Computer Networks"
         }
       ]
     },
@@ -409,14 +353,6 @@
           "name": "Operating System Concepts"
         },
         {
-          "id": "CS 5349",
-          "name": "Automata Theory"
-        },
-        {
-          "id": "CS 5354",
-          "name": "Software Engineering"
-        },
-        {
           "id": "CS 5390",
           "name": "Computer Networks"
         }
@@ -466,10 +402,6 @@
       ],
       "prerequisites": [
         {
-          "id": "CS 3341",
-          "name": "Probability & Statistics in CS and SE"
-        },
-        {
           "id": "CS 5303",
           "name": "Computer Science I"
         },
@@ -488,14 +420,6 @@
         {
           "id": "CS 5348",
           "name": "Operating System Concepts"
-        },
-        {
-          "id": "CS 5349",
-          "name": "Automata Theory"
-        },
-        {
-          "id": "CS 5354",
-          "name": "Software Engineering"
         },
         {
           "id": "CS 5390",
@@ -539,10 +463,6 @@
       ],
       "prerequisites": [
         {
-          "id": "CS 3341",
-          "name": "Probability & Statistics in CS and SE"
-        },
-        {
           "id": "CS 5303",
           "name": "Computer Science I"
         },
@@ -565,10 +485,6 @@
         {
           "id": "CS 5349",
           "name": "Automata Theory"
-        },
-        {
-          "id": "CS 5354",
-          "name": "Software Engineering"
         },
         {
           "id": "CS 5390",
@@ -607,10 +523,6 @@
       "following": [],
       "prerequisites": [
         {
-          "id": "CS 3341",
-          "name": "Probability & Statistics in CS and SE"
-        },
-        {
           "id": "CS 5303",
           "name": "Computer Science I"
         },
@@ -631,16 +543,8 @@
           "name": "Operating System Concepts"
         },
         {
-          "id": "CS 5349",
-          "name": "Automata Theory"
-        },
-        {
           "id": "CS 5354",
           "name": "Software Engineering"
-        },
-        {
-          "id": "CS 5390",
-          "name": "Computer Networks"
         }
       ]
     }

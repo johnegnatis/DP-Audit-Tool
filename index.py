@@ -44,14 +44,15 @@ def getFrontendOptions():
     return scripts.get_options_for_frontend()
 
 EEL_PORT = 8888
-@eel.expose
-def getEelPort():
-    return EEL_PORT
 
 if DEVELOPMENT:
     WEB_SERVER_PORT = 8000
 else:
     WEB_SERVER_PORT = EEL_PORT
+
+@eel.expose
+def getEelPort():
+    return EEL_PORT
 
 @eel.expose
 def getServerPort():
@@ -77,8 +78,11 @@ def run_eel():
         except Exception as e:
             print(e)
     else:
-        eel.init('build')
-        eel.start('index.html', host="localhost", port=EEL_PORT)
+        try:
+            eel.init('build')
+            eel.start('index.html', host="localhost", port=EEL_PORT)
+        except Exception as e:
+            print(e)
 
 if __name__ == '__main__':
     freeze_support()  # for pyinstaller on Windows

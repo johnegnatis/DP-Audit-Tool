@@ -1,19 +1,13 @@
 import { Icon } from "@iconify/react";
 import { iconNames } from "../../../../utils/constants";
 import { Popover, Tooltip, Menu, Checkbox } from "antd";
-import { useState } from "react";
 
-export const getColumn = ({
-  onEdit,
-  onMove,
-  onDelete,
-  disabled,
-  onLevelingChange,
-}) => {
+export const getColumn = ({ onEdit, onMove, onCopy, onDelete, disabled, onLevelingChange }) => {
   const keyToFunctionMapping = {
     1: onEdit,
     2: onMove,
-    3: onDelete,
+    3: onCopy,
+    4: onDelete,
   };
 
   const getMenu = (record) => {
@@ -33,7 +27,8 @@ export const getColumn = ({
         items={[
           { label: "Edit", key: 1 },
           { label: "Move", key: 2 },
-          { label: "Delete", key: 3, className: "red-text" },
+          { label: "Copy", key: 3 },
+          { label: "Delete", key: 4, className: "red-text" },
         ]}
       />
     );
@@ -45,34 +40,33 @@ export const getColumn = ({
       width: "5%",
       align: "center",
       render: (record) => {
-        if (disabled)
-          return (
-            <Icon
-              icon={iconNames.threeDots}
-              className="xxs icon grey pointer"
-            />
-          );
+        if (disabled) return <Icon icon={iconNames.threeDots} className="xxs icon grey pointer" />;
         return (
-          <Popover
-            content={getMenu(record)}
-            placement="bottom"
-            trigger="hover"
-            destroyTooltipOnHide
-          >
-            <Icon
-              icon={iconNames.threeDots}
-              className="xxs icon grey pointer"
-            />
+          <Popover content={getMenu(record)} placement="bottom" trigger="hover" destroyTooltipOnHide>
+            <Icon icon={iconNames.threeDots} className="xxs icon grey pointer" />
           </Popover>
         );
       },
     },
     {
       title: "Course Title",
-      dataIndex: "name",
       key: "name",
       width: "45%",
       align: "left",
+      render: (record) => {
+        return (
+          <div className="flex center y">
+            <span>{record.name}</span>
+            <Tooltip
+              placement="right"
+              title="Too many classes in this section. This class will not appear on the degree plan."
+              className="tooltip-warning"
+            >
+              <Icon icon={iconNames.warning} className="icon yellow xs" style={{marginLeft: '5px'}} />
+            </Tooltip>
+          </div>
+        );
+      },
     },
     {
       title: "Course Num",
@@ -107,7 +101,7 @@ export const getColumn = ({
       align: "center",
       render: (record) => {
         return (
-          <Tooltip placement="right" title={record.leveling || 'Click to make leveling course'}>
+          <Tooltip placement="right" title={record.leveling || "Click to make leveling course"}>
             <Checkbox
               checked={!!record.leveling}
               onChange={(e) =>

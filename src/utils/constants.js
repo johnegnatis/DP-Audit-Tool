@@ -51,7 +51,11 @@ export const getNumberToString = (number, lowerCase = false) => {
   if (lowerCase) return numberStr.toLowerCase();
   return numberStr;
 };
-
+export const disableType = {
+  move: 'move',
+  copy: 'copy',
+  none: '',
+}
 export const levelingOptions = [
   {
     label: "Completed",

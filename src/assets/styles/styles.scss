@@ -51,7 +51,7 @@ body {
     }
     &.ant-btn-default:disabled {
       background-color: rgba(0, 0, 0, 0.25);
-      border:none;
+      border: none;
     }
   }
 
@@ -70,7 +70,7 @@ body {
   &.dropdown {
     background-color: $white;
     color: $black;
-    // border-color: 
+    // border-color:
     &:hover {
       color: $orange;
       border-color: $orange;
@@ -87,7 +87,6 @@ body {
     &:hover {
       border: none;
     }
-    
   }
   &.red-bg {
     background-color: $red;
@@ -107,18 +106,29 @@ body {
   align-items: center;
 }
 
+.ant-float-btn-body {
+  background-color: $orange !important;
+  // :hover {
+  // background-color: $dark-orange !important;
+  // }
+}
+
 .icon {
   height: auto;
 
   &.orange {
     color: $orange;
   }
+  &.float-button {
+    color: $white;
+    background-color: $orange;
+  }
   &.red {
     color: $red;
   }
   &.yellow {
-    color: $yellow;
     background-color: $black;
+    color: $yellow !important;
     border-radius: 100%;
   }
   &.medium {
@@ -163,5 +173,17 @@ body {
   svg,
   .anticon-info-circle {
     display: none;
+  }
+}
+
+.flex {
+  display: flex;
+  &.center {
+    &.y {
+      align-items: center;
+    }
+    &.x {
+      justify-content: center;
+    }
   }
 }
