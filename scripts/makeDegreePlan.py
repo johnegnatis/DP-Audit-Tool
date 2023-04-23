@@ -492,14 +492,7 @@ def fillPDFForms(studentObject, path):
 def getStudentFile(name):
     name = get_naming_convention(name)
     return name + '_DP.pdf'           
-
-
-def readStudentObject(file_path):
-    form_fields = fillpdfs.get_form_fields(file_path)
-    object  = form_fields["object"]
-    return object
-
-
+    
 def makeDegreePlanMethod(studentObject):
     if (studentObject == 'mock'):
         studentObject = mockStudent()
@@ -516,7 +509,6 @@ def readStudentObject(file_path):
     form_fields = fillpdfs.get_form_fields(file_path)
     studentObject = form_fields["object"]
     return studentObject
-
 
 if __name__ == '__main__':
     makeDegreePlanMethod('mock')
