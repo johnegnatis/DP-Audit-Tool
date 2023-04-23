@@ -1,17 +1,20 @@
 import { Input, DatePicker, Radio, Dropdown, Button } from "antd";
+import TextArea from "antd/es/input/TextArea";
 
 const getForm = (value, setValue, disabled = false) => {
   const handleFormInput = (e) => {
     setValue(e.target.value);
   };
 
-  return (
-    <Input
-      value={value}
-      onChange={(e) => handleFormInput(e)}
-      disabled={disabled}
-    />
-  );
+  return <Input value={value} onChange={(e) => handleFormInput(e)} disabled={disabled} />;
+};
+
+const getTextArea = (value, setValue, disabled = false) => {
+  const handleFormInput = (e) => {
+    setValue(e.target.value);
+  };
+
+  return <TextArea value={value} onChange={(e) => handleFormInput(e)} disabled={disabled} />;
 };
 
 const getNumberForm = (value, setValue, disabled = false, semester = false) => {
@@ -24,13 +27,7 @@ const getNumberForm = (value, setValue, disabled = false, semester = false) => {
     }
   };
 
-  return (
-    <Input
-      value={value}
-      onChange={(e) => handleFormInput(e)}
-      disabled={disabled}
-    />
-  );
+  return <Input value={value} onChange={(e) => handleFormInput(e)} disabled={disabled} />;
 };
 
 const getDatePicker = (value, setValue, disabled = false) => {
@@ -39,14 +36,7 @@ const getDatePicker = (value, setValue, disabled = false) => {
     else setValue(e);
   };
 
-  return (
-    <DatePicker
-      picker="month"
-      onChange={(e) => handleDateChange(e)}
-      value={value}
-      disabled={disabled}
-    />
-  );
+  return <DatePicker picker="month" onChange={(e) => handleDateChange(e)} value={value} disabled={disabled} />;
 };
 
 const getRadio = (value, setValue, disabled = false) => {
@@ -62,7 +52,7 @@ const getRadio = (value, setValue, disabled = false) => {
   );
 };
 
-const getDropdown = (value, setValue, options, defaultText='Select Track') => {
+const getDropdown = (value, setValue, options, defaultText = "Select Track") => {
   // @Zia: should we make the dropdown only on click or is on hover nice?
   const handleMenuClick = (e) => {
     setValue(options.find((obj) => obj.key === e.key).label);
@@ -73,16 +63,10 @@ const getDropdown = (value, setValue, options, defaultText='Select Track') => {
   };
   const width = "80%";
   return (
-    <Dropdown
-      menu={menuProps}
-      width={width}
-    >
-      <Button style={{ width, marginBottom: "20px" }}>
-        {" "}
-        {value || defaultText }
-      </Button>
+    <Dropdown className="button dropdown" menu={menuProps} width={width}>
+      <Button style={{ width, marginBottom: "20px" }}> {value || defaultText}</Button>
     </Dropdown>
   );
 };
 
-export { getDropdown, getRadio, getDatePicker, getForm, getNumberForm };
+export { getDropdown, getRadio, getDatePicker, getForm, getNumberForm, getTextArea };

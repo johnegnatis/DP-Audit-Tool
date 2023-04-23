@@ -51,10 +51,14 @@ def mockStudent(unsure = False):
         classes = [
             Class('Statistical Methods for Data Science', 'CS 6313', '22S', '', 'A', '', 'unsure'),
             Class('Big Data Management and Analytics', 'CS 6350', '22s', '', 'B+', '', 'unsure'),
+            Class('Big Data Management and Analytics', 'CS 6350', '22f', '', 'F', '', 'unsure'),
+            Class('Big Data Management and Analytics', 'CS 6350', '21s', '', 'C', '', 'unsure'),
             Class('Design and Analysis of Computer Algorithms', 'CS 6363','22s', '', 'A-', '', 'unsure'),
             Class('Machine Learning', 'CS 6375',  '21f', '', 'A', '', 'unsure'),
+            Class('Machine Learning', 'CS 6375',  '21S', '', 'F', '', 'unsure'),
             Class('Social Network Analytics', 'CS 6301',  '22f', '', '', '', 'unsure'),
             Class('Natural Language Processing', 'CS 6320',   '21f', '', '', '', 'unsure'),
+            Class('SPECIAL TOPICS', 'CS 6301',   '21f', '', 'A', '', 'unsure'),
             Class('Video Analytics', 'CS 6327',   '', '', '', '', 'unsure'),
             Class('Statistics for Machine Learning', 'CS 6347',   '', '', '', '', 'unsure'),
             Class('Database Design', 'CS 6360',   '', '', 'A-', '', 'unsure'),
@@ -67,9 +71,9 @@ def mockStudent(unsure = False):
             Class('Computer Science I', 'CS 5303','23s', '', '', '', 'unsure'),
             Class('Computer Science II', 'CS 5330',   '23s', '', '', '', 'unsure'),
             Class('Discrete Structures', 'CS 5333',   '', '', '', '', 'unsure'),
-            Class('Algorithm Analysis & Data Structures', 'CS 5343',  '', '', '', '', 'unsure'),
+            Class('Algorithm Analysis & Data Structures', 'CS 5343',  '', '', 'A-', '', 'unsure'),
             Class('Operating System Concepts', 'CS 5348', '', '', '', '', 'unsure'),
-            Class('Probability & Statistics in CS and SE', 'CS 3341<<','', '', '****A-', '', 'unsure'),
+            Class('Probability & Statistics in CS and SE', 'CS 3341','', '', 'A-', '', 'unsure'),
         ]
         return Student('Lasso, Ted', 2021504218, False, False, '21F', '', classes, 'Data Science')
     else:
@@ -104,7 +108,8 @@ def getMockStudent():
 def get_key(json_obj, key):
     try:
         return json_obj[key]
-    except:
+    except Exception as e:
+        print(e)
         print(f"Key '{key}' not found in JSON object (non-issue unless key is important)")
         return ''
 

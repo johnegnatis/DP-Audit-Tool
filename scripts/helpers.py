@@ -1,10 +1,8 @@
 import os
 
-def get_server_name():
-    return 'server';
-
 def get_server_path():
-    return os.getcwd() + '/' + get_server_name()
+    server_name = '/build/server'
+    return os.getcwd() + server_name
 
 def tree_printer():
     root = '.'
@@ -13,3 +11,9 @@ def tree_printer():
             print(os.path.join(root, d))    
         for f in files:
             print(os.path.join(root, f))
+
+def get_naming_convention(name):
+    # lastname, firstname
+    name_list = name.split()
+    new_name = name_list[-1] + ", " + " ".join(name_list[:-1])
+    return new_name

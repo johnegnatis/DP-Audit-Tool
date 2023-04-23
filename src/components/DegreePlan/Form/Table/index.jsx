@@ -7,7 +7,6 @@ import { Tooltip } from "antd";
 
 const ClassTable = ({
   type,
-  title,
   subtitle,
   classes,
   openAddClassDrawer,
@@ -16,6 +15,9 @@ const ClassTable = ({
   setClassForMove,
   handleMoveClick,
   handleMoveToTopClick,
+  setClassForCopy,
+  handleCopyClick,
+  handleCopyToTopClick,
   deleteClass,
   allDisabled,
   selectedRow: rowSelectedForEditOrMove,
@@ -23,8 +25,7 @@ const ClassTable = ({
   size,
 }) => {
   const [headerHover, setHeaderHover] = useState(false);
-  const numberOfExtraClasses = classes.length - size;
-  const isTableOverflown = numberOfExtraClasses > 0;
+  const isTableOverflown = classes.length - size > 0;
   const classList =
     classes &&
     classes.map((classes, index) => {
@@ -37,46 +38,36 @@ const ClassTable = ({
       }`,
     [rowSelectedForEditOrMove, headerHover]
   );
-  const onMoveClick = (record, rowIndex) => {
-    if (!allDisabled) return; // if all disabled, we are moving
-    handleMoveClick({
-      class: record,
-      index: rowIndex,
-    });
+  const onTableClick = (record, rowIndex) => {
+    if (allDisabled === "move") {
+      handleMoveClick({
+        class: record,
+        index: rowIndex,
+      });
+    } else if (allDisabled === 'copy') {
+      handleCopyClick({
+        class: record,
+        index: rowIndex,
+      });
+    }
   };
-  const onMoveTopClick = (type) => {
-    if (!allDisabled) return;
-    handleMoveToTopClick(type);
+  const onHeaderClick = (type) => {
+    if (allDisabled === "move") {
+      handleMoveToTopClick(type);
+    } else if (allDisabled === 'copy') {
+      handleCopyToTopClick(type);
+    }
   };
   return (
     <>
       <div className="title-span">
-        <div>
-          <div>
-            <h2 className="subtitle">
-              {title}
-              {isTableOverflown && (
-                <Tooltip
-                  placement="right"
-                  title={`There are ${getNumberToString(
-                    numberOfExtraClasses,
-                    true
-                  )} too many classes, the Degree Plan will not reflect the extra classes.`}
-                >
-                  <Icon icon={iconNames.warning} className="icon yellow xs pointer" />
-                </Tooltip>
-              )}
-            </h2>
-            {subtitle && <h3 className="course-info">{subtitle}</h3>}
-          </div>
-        </div>
+        <div>{subtitle && <h3 className="course-info">{subtitle}</h3>}</div>
         <div className="add-class-button">
           <Button className="button orange-bg" disabled={allDisabled} onClick={() => openAddClassDrawer()}>
             Add Course
           </Button>
         </div>
       </div>
-      {notes && notes.map((note) => <span>{note}</span>)}
       <Table
         className={TableCSS}
         rowClassName={(_, index) => (index >= size ? "warning-table-full" : "")}
@@ -85,18 +76,19 @@ const ClassTable = ({
           onEdit: setClassForEdit,
           onDelete: deleteClass,
           onMove: setClassForMove,
+          onCopy: setClassForCopy,
           disabled: allDisabled,
           onLevelingChange,
         })}
         pagination={false}
         onRow={(record, rowIndex) => {
           return {
-            onClick: () => onMoveClick(record, rowIndex),
+            onClick: () => onTableClick(record, rowIndex),
           };
         }}
         onHeaderRow={(column, index) => {
           return {
-            onClick: () => onMoveTopClick(type),
+            onClick: () => onHeaderClick(type),
             onMouseEnter: () => setHeaderHover(true),
             onMouseLeave: () => setHeaderHover(false),
           };

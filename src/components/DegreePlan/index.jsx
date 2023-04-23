@@ -7,18 +7,23 @@ import { Button, Drawer, message } from "antd";
 import { useGlobalState, changePage, returnToHome } from "../GlobalState";
 import EditClass from "./EditClass";
 import { eel } from "../../utils/eel";
-import { pages, tableNames } from "../../utils/constants";
+import { disableType, pages, tableNames } from "../../utils/constants";
 import { handleError, sendError, sendSuccess, sendWaiting, sendWarning } from "../../utils/methods";
 import NavigationBar from "../NavigationBar";
 import { useTrackOptions } from "../Hooks/databaseHooks";
+import { useClassList } from "../Hooks/classListHooks";
 
 const DegreePlan = ({ student, databaseProps }) => {
   // STUDENT OBJ LOGIC
   const [students] = useGlobalState("students");
   const formProps = useStudentObject(student);
   const { searchInput, setSearchInput, getClassSetter, studentObjectJSON, track, setClasses } = formProps;
-  const classOptionProps = useTrackOptions(track);
 
+  const [refetchClassList, setRefetchClassList] = useState(true);
+  const classListProps = useClassList(refetchClassList);
+  const { insertClass, updateClass, deleteClass } = classListProps;
+  const trackOptionProps = useTrackOptions(track);
+  const classOptionProps = { ...trackOptionProps, ...classListProps, refetchClassList };
   const handleSelectTrack = () => {
     const newStudent = student;
     newStudent.track = track;
@@ -45,25 +50,35 @@ const DegreePlan = ({ student, databaseProps }) => {
         navigatePage(pages.pdfPreview, pdfName);
       })
       .catch((e) => handleError(e));
-
-    // handle this async
   };
   const saveStudentObject = () => {
     navigatePage(pages.degreePlan);
+  };
+  const returnHome = () => {
+    saveStudentObject();
+    returnToHome();
   };
 
   // Database
   const { trackOptions } = databaseProps;
 
+  // CLASS LIST LOGIC
+  const handleDeleteFromClassList = useCallback((number) => {
+    deleteClass(number);
+    setRefetchClassList((prev) => !prev);
+  }, []);
+
   // ADD LOGIC
   const [addClassTable, setAddClassTable] = useState("");
   const [isSearch, setIsSearch] = useState(false);
   const [classOptions, setClassOptions] = useState([]);
+  const [isEditable, setIsEditable] = useState(false);
   const handleAddClassDrawerOpen = useCallback(
-    (type, options) => {
+    (type, options, canEdit = false) => {
       setAddClassTable(type);
       setIsSearch(options && options.length > 0); // if there are options, start with searching options
       setClassOptions(options);
+      setIsEditable(canEdit);
     },
     [classOptionProps]
   );
@@ -79,6 +94,8 @@ const DegreePlan = ({ student, databaseProps }) => {
       setClassOptions([]);
       setIsSearch(false);
       sendSuccess("Course Was Added Successfully!");
+      insertClass({ name: obj.name, number: obj.number });
+      setRefetchClassList((prev) => !prev);
     },
     [addClassTable]
   );
@@ -113,9 +130,9 @@ const DegreePlan = ({ student, databaseProps }) => {
       icon: null,
     });
     sendWaiting(
-      <div style={{ minWidth: "25%", minHeight: "10%" }}>
+      <div style={{ minWidth: "25%", minHeight: "10%", padding: "10px" }}>
         <p>Move the following course to the desired location:</p>
-        {obj && obj.class && <p style={{ fontWeight: "700" }}>{obj.class.name}</p>}
+        {obj && obj.class && <p style={{ fontWeight: "700", paddingBottom: "10px" }}>{obj.class.name}</p>}
         <Button
           className="orange-bg button"
           onClick={() => {
@@ -241,15 +258,124 @@ const DegreePlan = ({ student, databaseProps }) => {
     [selectedClassForMove]
   );
 
+  // COPY LOGIC
+  const [selectedClassForCopy, setSelectedClassForCopy] = useState(null);
+  const copyKey = "copy-message";
+  // When the first class has been selected for moving
+  const handleCopyingStart = useCallback((obj) => {
+    message.config({
+      icon: null,
+    });
+    sendWaiting(
+      <div style={{ minWidth: "25%", minHeight: "10%", padding: "10px" }}>
+        <p>Copy the following course to the desired location:</p>
+        {obj && obj.class && <p style={{ fontWeight: "700", paddingBottom: "10px" }}>{obj.class.name}</p>}
+        <Button
+          className="orange-bg button"
+          onClick={() => {
+            setSelectedClassForCopy("");
+            message.destroy(copyKey);
+          }}
+        >
+          Cancel
+        </Button>
+      </div>,
+      copyKey
+    );
+    setSelectedClassForCopy(obj);
+  }, []);
+  // When the second class has been selected for moving
+  const handleCopyClick = useCallback(
+    (obj) => {
+      const copyOne = selectedClassForCopy;
+      const copyTwo = obj;
+
+      const copyOneSetter = getClassSetter(copyOne.class.type);
+      const copyTwoSetter = getClassSetter(copyTwo.class.type);
+      if (!copyOneSetter || !copyTwoSetter) {
+        sendError("Copy Unsuccessful", copyKey);
+        setSelectedClassForCopy("");
+        return;
+      }
+
+      // give copyOne the targets type
+      let copyOccurInSameTable = true;
+      if (copyOne.class.type !== copyTwo.class.type) {
+        copyOne.class.type = copyTwo.class.type;
+        copyOccurInSameTable = false;
+      }
+
+      // insert copy1 right below copy2
+      if (!copyOccurInSameTable) {
+        copyTwoSetter((prev) => {
+          let i;
+          const newArray = [];
+          for (i = 0; i < prev.length; i++) {
+            newArray.push(prev[i]);
+            if (i === copyTwo.index) {
+              newArray.push(copyOne.class);
+            }
+          }
+          return newArray;
+        });
+      } else {
+        copyOneSetter((prev) => {
+          let i;
+          const newArray = [];
+          for (i = 0; i < prev.length; i++) {
+            newArray.push(prev[i]);
+            if (i === copyTwo.index) {
+              newArray.push(copyOne.class);
+            }
+          }
+          return newArray;
+        });
+      }
+      setSelectedClassForCopy("");
+      sendSuccess("Copy Successful!", copyKey);
+    },
+    [selectedClassForCopy]
+  );
+  // If you click on header, move to top of row
+  const handleCopyToTopClick = useCallback(
+    (type) => {
+      const copyOne = selectedClassForCopy;
+      const copyTwoType = type;
+
+      const copyOneSetter = getClassSetter(copyOne.class.type);
+      const copyTwoSetter = getClassSetter(copyTwoType);
+      if (!copyOneSetter || !copyTwoSetter) {
+        sendError("Copy Unsuccessful", copyKey);
+        setSelectedClassForCopy("");
+        return;
+      }
+
+      // give copyOne the targets type
+      let copyOccurInSameTable = true;
+      if (copyOne.class.type !== copyTwoType) {
+        copyOne.class.type = type;
+        copyOccurInSameTable = false;
+      }
+
+      copyTwoSetter((prev) => {
+        return [copyOne.class, ...prev];
+      });
+      setSelectedClassForCopy("");
+      sendSuccess("Copy Successful!", copyKey);
+    },
+    [selectedClassForCopy]
+  );
+
   // DELETE LOGIC
   const handleDeleteClass = useCallback((obj) => {
     const setter = getClassSetter(obj.class.type);
     if (!setter) return;
     setter((prev) => {
+      console.log(prev.filter((_, index) => index !== obj.index));
       return prev.filter((_, index) => index !== obj.index);
     });
   }, []);
-
+  console.log(formProps.additional);
   // LEVELING LOGIC
   const [selectedClassForLeveling, setSelectedClassForLeveling] = useState(null);
   const handleLevelingChange = useCallback((obj) => {
@@ -281,20 +407,24 @@ const DegreePlan = ({ student, databaseProps }) => {
     [selectedClassForLeveling]
   );
   // disable all forms when moving a class
-  const allDisabled = useMemo(() => !!selectedClassForMove, [selectedClassForMove]);
+  const allDisabled = useMemo(() => {
+    let disabled = disableType.none;
+    if (selectedClassForMove) disabled = disableType.move;
+    if (selectedClassForCopy) disabled = disableType.copy;
+    return disabled;
+  }, [selectedClassForMove, selectedClassForCopy]);
   // when editing or moving class, highlight that row
   const selectedRow = useMemo(() => {
-    const row = selectedClassForEdit || selectedClassForMove;
-    if (!row) return null;
-
-    return { index: row.index, table: row.class.type };
-  });
+    const row = selectedClassForEdit || selectedClassForMove || selectedClassForCopy;
+    if (row) return { index: row.index, table: row.class.type };
+    else if (selectedClassForLeveling) return { index: selectedClassForLeveling.key, table: selectedClassForLeveling.table };
+  }, [selectedClassForCopy, selectedClassForEdit, selectedClassForMove, selectedClassForLeveling]);
   return (
     <>
       <NavigationBar saveStudentObject={saveStudentObject} />
       <div className={`degree-plan-root ${allDisabled ? "moving" : ""}`}>
         <Form
-          handleReturnToHome={returnToHome}
+          handleReturnToHome={returnHome}
           classOptions={classOptionProps}
           trackOptions={trackOptions}
           allDisabled={allDisabled}
@@ -305,6 +435,9 @@ const DegreePlan = ({ student, databaseProps }) => {
           setClassForMove={handleMovingStart}
           handleMoveClick={handleMoveClick}
           handleMoveToTopClick={handleMoveToTopClick}
+          setClassForCopy={handleCopyingStart}
+          handleCopyClick={handleCopyClick}
+          handleCopyToTopClick={handleCopyToTopClick}
           deleteClass={handleDeleteClass}
           selectedRow={selectedRow}
           handleSelectTrack={handleSelectTrack}
@@ -319,9 +452,11 @@ const DegreePlan = ({ student, databaseProps }) => {
             searchInput={searchInput}
             setSearchInput={setSearchInput}
             isSearch={isSearch}
+            isEditable={isEditable}
             setIsSearch={setIsSearch}
             searchOptions={classOptions}
             handleSubmitAddClass={handleSubmitAddClass}
+            onDelete={handleDeleteFromClassList}
           />
         </Drawer>
         <Drawer
@@ -340,6 +475,16 @@ const DegreePlan = ({ student, databaseProps }) => {
         >
           <LevelingDrawer handleSubmit={handleLevelingEntered} classObj={selectedClassForLeveling} />
         </Drawer>
+        <footer>
+          <div className="return">
+            <span onClick={() => returnHome()}>{"< Return to home"}</span>
+          </div>
+          <div className="generate-button">
+            <Button onClick={generatePDF} className="button orange-bg" size="large" disabled={allDisabled}>
+              Preview Degree Plan
+            </Button>
+          </div>
+        </footer>
       </div>
     </>
   );

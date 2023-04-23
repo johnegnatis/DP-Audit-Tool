@@ -1,10 +1,10 @@
 try:
     from scripts.objects import Class, Student, mockStudent, json_to_student
-    from scripts.helpers import get_server_path
+    from scripts.helpers import get_server_path, get_naming_convention
     from scripts.database import open_database
-except:
+except Exception as e:
     from objects import Class, Student, mockStudent
-    from helpers import get_server_path
+    from helpers import get_server_path, get_naming_convention
     from database import open_database
 
 import fillpdf
@@ -482,13 +482,17 @@ def fillPDFForms(studentObject, path):
     base_prod = './build/degreePlans/'
     try:
         fillpdfs.write_fillable_pdf(base_dev + pdf_name, path, data_dict)
-    except:
-        fillpdfs.write_fillable_pdf(base_prod + pdf_name, path, data_dict)
+    except Exception as e:
+        print('dev', e)
+        try:
+            fillpdfs.write_fillable_pdf(base_prod + pdf_name, path, data_dict)
+        except Exception as e:
+            print('prod', e)
 
 def getStudentFile(name):
-    return name.replace(" ", "") + '_DP' + '.pdf'
-             
-
+    name = get_naming_convention(name)
+    return name + '_DP.pdf'           
+    
 def makeDegreePlanMethod(studentObject):
     if (studentObject == 'mock'):
         studentObject = mockStudent()
@@ -501,6 +505,10 @@ def makeDegreePlanMethod(studentObject):
     fillPDFForms(studentObject, file_path)
     return file_name
 
+def readStudentObject(file_path):
+    form_fields = fillpdfs.get_form_fields(file_path)
+    studentObject = form_fields["object"]
+    return studentObject
 
 if __name__ == '__main__':
     makeDegreePlanMethod('mock')

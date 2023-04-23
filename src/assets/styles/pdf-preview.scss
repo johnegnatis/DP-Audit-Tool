@@ -8,6 +8,11 @@ $footer-height: 70px;
     min-width: 100%;
     height: calc(100% - $navbar-height);
     .pdf-preview {
+
+        input {
+            font-size: 1rem !important;
+        }
+
         min-height: calc(100% - $footer-height);
         display: flex;
         justify-content: center;

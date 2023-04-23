@@ -1,9 +1,9 @@
 import { Button, Modal } from "antd";
 import { getDropdown } from "../Form/inputComponents";
-const SelectTrack = ({ open, track, setTrack, handleConfirmTrack, handleReturnToHome, options }) => {
+const SelectTrack = ({ open, track, setTrack, handleConfirmTrack, handleReturnToHome, options, studentName }) => {
   return (
     <Modal
-      title="Select Track"
+      title={`Select Track for ${studentName}`}
       okText="Confirm Selection"
       style={{
         top: 20,
@@ -14,24 +14,16 @@ const SelectTrack = ({ open, track, setTrack, handleConfirmTrack, handleReturnTo
       closable={false}
     >
       {getDropdown(track, setTrack, options)}
-      <br/>
-      <div style={{ display: 'flex', justifyContent: 'space-evenly'}}>
-          <Button
-            className="button orange-bg"
-            disabled={!track}
-            onClick={() => handleConfirmTrack()}
-          >
+      <br />
+      <div style={{ display: 'flex', flexDirection: 'row-reverse', justifyContent: 'space-between', width: '100%', alignItems: 'center'}}>
+        <div style={{ display: "flex", justifyContent: "space-evenly" }}>
+          <Button className="button orange-bg" disabled={!track} onClick={() => handleConfirmTrack()}>
             Confirm Selection
           </Button>
-      </div>
-      <span>- OR -</span>
-      <div style={{ display: 'flex', justifyContent: 'space-evenly'}}>
-        <Button
-              className="button orange-bg"
-              onClick={() => handleReturnToHome()}
-            >
-              Back
-            </Button>
+        </div>
+        <div style={{ display: "flex", justifyContent: "space-evenly" }}>
+          <span style={{ color:'orange', cursor: 'pointer' ,fontWeight: '700' }} onClick={() => handleReturnToHome()}>{'< Back'}</span>
+        </div>
       </div>
     </Modal>
   );
