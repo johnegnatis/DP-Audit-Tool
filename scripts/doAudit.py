@@ -38,11 +38,13 @@ def generateAudit(studentObject, destination):
     core_complete = [course for course in studentObject.classes if course.grade and (course.type == 'core' or course.type == 'following')]
     core_incomplete = [course for course in studentObject.classes if not course.grade and course.type == 'core']
 
-    elective_complete = [course for course in studentObject.classes if course.grade and course.type == 'electives']
+    elective_complete = [course for course in studentObject.classes if course.grade and (course.type == 'electives' or course.type == 'additional')]
     elective_incomplete = [course for course in studentObject.classes if not course.grade and course.type == 'electives']
 
     total_complete = [course for course in studentObject.classes if course.grade and (course.type == 'core' or course.type == 'electives' or course.type == 'following')]
     total_incomplete = [course for course in studentObject.classes if not course.grade and (course.type == 'core' or course.type == 'electives')]
+
+    leveling_courses = [course for course in studentObject.classes if course.grade and course.leveling]
 
     core_complete.sort(key=lambda x: x.number)
     core_incomplete.sort(key=lambda x: x.number)
@@ -81,10 +83,17 @@ def generateAudit(studentObject, destination):
         para.add_run('Software Engineering')
     else:
         para.add_run('Computer Science')
-    para.add_run('\nTrack: ').bold = True
+    para.add_run('\n\tTrack: ').bold = True
     para.add_run(studentObject.track)
 
     #GPA
+    core_complete.sort(key=lambda x: x.grade)
+    elective_complete.sort(key=lambda x: x.grade)
+    total_complete.sort(key=lambda x: x.grade)
+
+    core_complete = core_complete[:5]
+    elective_complete = elective_complete[:7]
+
     core_gpa = getGPA(core_complete)
     elective_gpa = getGPA(elective_complete)
     combined_gpa = getGPA(total_complete)
@@ -103,23 +112,25 @@ def generateAudit(studentObject, destination):
 
     cores = core_complete + core_incomplete
     cores.sort(key=lambda x: x.number)
-    para.add_run(", ".join([course.number for course in (core_complete + core_incomplete)]))
+    para.add_run(", ".join([course.number for course in cores]))
 
 
     para.add_run('\nElective Courses: ').bold = True
 
     electives = elective_complete + elective_incomplete
     electives.sort(key=lambda x: x.number)
-    para.add_run(", ".join([course.number for course in (elective_complete + elective_incomplete)]))
+    para.add_run(", ".join([course.number for course in electives]))
 
     # leveling courses (incomplete) NEED LIST OF LEVELING COURSES HERE
     para = doc.add_paragraph()
     para.add_run('\nLeveling Courses and Pre-requisites from Admission Letter:').bold = True
     
-    for course in studentObject.classes:
-        if course.type == 'prerequisites' and course.grade:
-             c = "".join(re.findall("[a-zA-Z]* [0-9]*", course.number))
-             para.add_run("\n" + c + ": Completed" + course.semester)
+    for course in leveling_courses:
+        c = "".join(re.findall("[a-zA-Z]* [0-9]*", course.number))
+        para.add_run("\n" + c + ": " + course.leveling) # Needs actual message
+    
+    if (not leveling_courses):
+        para.add_run("\nNone")
 
     # requirements (incomplete)
     core_status = ""
@@ -132,30 +143,38 @@ def generateAudit(studentObject, destination):
     
     # Taking extra course?
     extra_course = False
+    if (len(elective_complete) >= 7 and core_gpa < 3.19):
+        extra_course = True
 
-    if(len(core_incomplete) == 0):
+    if((len(core_incomplete) == 0 and core_gpa >= 3.19) or (len(core_incomplete) == 0 and core_gpa >= 3.0 and extra_course)):
         core_status = "Core complete."
+    elif(len(core_incomplete) == 0):
+        core_status = "Core currently failing."
     elif(extra_course):
-        core_status = calculateRequiredGPA(3.0, core_gpa, core_complete, core_incomplete)
+        core_status = printRequiredGPA(3.0, core_gpa, core_complete, core_incomplete)
         para.add_run('\nTo maintain a 3.0 core GPA:')
     else:
-        ore_status = calculateRequiredGPA(3.19, core_gpa, core_complete, core_incomplete)
+        core_status = printRequiredGPA(3.19, core_gpa, core_complete, core_incomplete)
         para.add_run('\nTo maintain a 3.19 core GPA:')
         
     para.add_run('\n' + core_status + ", ".join(course.number for course in core_incomplete))
     
-    if(len(elective_incomplete) == 0):
+    if(len(elective_incomplete) == 0 and elective_complete >= 3.0):
         elective_status = "Elective complete."
+    elif(len(elective_incomplete) == 0 and elective_complete < 3.0):
+        elective_status = "Elective currently failing."
     else:
-        elective_status = calculateRequiredGPA(3.0, elective_gpa, elective_complete, elective_incomplete)
+        elective_status = printRequiredGPA(3.0, elective_gpa, elective_complete, elective_incomplete)
         para.add_run('\nTo maintain a 3.0 elective GPA:')
     
     para.add_run('\n' + elective_status + ", ".join(course.number for course in elective_incomplete))
 
-    if(len(total_incomplete) == 0):
+    if(len(total_incomplete) == 0 and combined_gpa >= 3.0):
         overall_status = "Overall complete."
+    elif(len(total_incomplete) == 0 and combined_gpa < 3.0):
+        overall_status = "Overall currently failing."
     else:
-        overall_status = calculateRequiredGPA(3.0, combined_gpa, total_complete, total_incomplete)
+        overall_status = printRequiredGPA(3.0, combined_gpa, total_complete, total_incomplete)
         para.add_run('\nTo maintain a 3.0 overall GPA:')
     
     para.add_run('\n' + overall_status + ", ".join(course.number for course in total_incomplete))
@@ -165,8 +184,9 @@ def generateAudit(studentObject, destination):
     except PermissionError:
         raise Exception("Error: You do not have permissions to save here. Perhaps you have an older version open. Close out other applications and try again.")
 
-def calculateRequiredGPA(required_GPA, GPA, completed_courses, remaining_courses):
-    target = (required_GPA * (getTotalCredits(completed_courses) + getTotalCredits(remaining_courses)) - (GPA * getTotalCredits(completed_courses))) / getTotalCredits(remaining_courses)
+def printRequiredGPA(required_GPA, GPA, completed_courses, remaining_courses):
+    target = calculateRequiredGPA(required_GPA, GPA, completed_courses, remaining_courses)
+
     if target < 2:
         return "\tThe student must pass: "
     
@@ -174,7 +194,7 @@ def calculateRequiredGPA(required_GPA, GPA, completed_courses, remaining_courses
         grade = 'Error'
 
         if target > 4.0:
-            grade = 'Impossible'
+            return 'Impossible'
         elif target > 3.670:
             grade = 'A'
         elif target > 3.330:
@@ -191,6 +211,10 @@ def calculateRequiredGPA(required_GPA, GPA, completed_courses, remaining_courses
         return "\tThe student needs a grade >=", grade, "in: "
     
     return "\tThe student needs a GPA of at least %.3f in: " % target
+
+def calculateRequiredGPA(required_GPA, GPA, completed_courses, remaining_courses):
+    target = (required_GPA * (getTotalCredits(completed_courses) + getTotalCredits(remaining_courses)) - (GPA * getTotalCredits(completed_courses))) / getTotalCredits(remaining_courses)
+    return target
 
 def letterToGPA(letter):
     letter = "".join(re.findall("[a-zA-Z][\+\-]?", letter))
@@ -221,7 +245,7 @@ def getGPA(completed_courses):
     courseCount = 0
 
     for course in completed_courses:
-        grade = letterToGPA(course.grade)
+        grade = letterToGPA(course.grade.split('/')[-1].strip() )
         if (grade == 'Ignore'):
             continue
 
