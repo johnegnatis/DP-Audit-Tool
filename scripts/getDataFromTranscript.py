@@ -95,11 +95,17 @@ def getDataFromTranscriptMethod(file_path):
                 transferOption = ""
 
             elif re.compile(r'^\d{4}\s').match(line): # SEMESTER + SEMESTER ADMITTED
+                semester = line[2:4]
+                term = line[5:]
+                if term == "Spring":
+                    semester += "S"
+                elif term == "Fall":
+                    semester += "F"
+                else: # "Summer"
+                    semester += "U" 
                 if foundSemAdmitted == 1:
-                    semester_admitted = line
-                    semester_admitted = semester_admitted[2:4] + "" + semester_admitted[5]
+                    semester_admitted = semester
                     foundSemAdmitted = 0
-                semester = line[2:4] + line[5]
         
             elif re.compile(r'^Combined Cum GPA').match(line): # TOTAL COMBINED COMULATIVE GPA
                 x = line.split(" ")
