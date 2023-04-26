@@ -41,7 +41,7 @@ def generateAudit(studentObject, destination):
     elective_complete = [course for course in studentObject.classes if course.grade and (course.type == 'electives' or course.type == 'additional')]
     elective_incomplete = [course for course in studentObject.classes if not course.grade and course.type == 'electives']
 
-    total_complete = [course for course in studentObject.classes if course.grade and (course.type == 'core' or course.type == 'electives' or course.type == 'following')]
+    total_complete = [course for course in studentObject.classes if course.grade and (course.type == 'core' or course.type == 'electives' or course.type == 'following' or course.type == 'additional')]
     total_incomplete = [course for course in studentObject.classes if not course.grade and (course.type == 'core' or course.type == 'electives')]
 
     leveling_courses = [course for course in studentObject.classes if course.grade and course.leveling]
@@ -190,7 +190,7 @@ def printRequiredGPA(required_GPA, GPA, completed_courses, remaining_courses):
     if target < 2:
         return "\tThe student must pass: "
     
-    if remaining_courses == 1:
+    if len(remaining_courses) == 1:
         grade = 'Error'
 
         if target > 4.0:
@@ -208,7 +208,7 @@ def printRequiredGPA(required_GPA, GPA, completed_courses, remaining_courses):
         elif target > 2:
             grade = 'C+'
             
-        return "\tThe student needs a grade >=", grade, "in: "
+        return "\tThe student needs a grade >= " + grade + " in: "
     
     return "\tThe student needs a GPA of at least %.3f in: " % target
 
