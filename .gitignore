@@ -15,6 +15,7 @@ __server
 server
 
 # misc
+TODO.md
 .vscode
 .DS_Store
 .env.local
