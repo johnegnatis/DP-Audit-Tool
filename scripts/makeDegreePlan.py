@@ -1,19 +1,12 @@
 try:
-    from scripts.objects import Class, Student, mockStudent, json_to_student
+    from scripts.objects import mockStudent, json_to_student
     from scripts.helpers import get_server_path, get_naming_convention
     from scripts.database import open_database
 except Exception as e:
-    from objects import Class, Student, mockStudent
+    from objects import mockStudent, json_to_student
     from helpers import get_server_path, get_naming_convention
     from database import open_database
-
-import fillpdf
 from fillpdf import fillpdfs 
-
-import json
-from tkinter import filedialog
-from tkinter import *
-import os
 
 def get_pdf_type_from_database(database, student_track):
     track_obj = None

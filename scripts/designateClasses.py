@@ -1,18 +1,9 @@
 try:
-    from scripts.objects import Class, Student, mockStudent, json_to_student
-    from scripts.helpers import tree_printer
+    from scripts.objects import Class, mockStudent, json_to_student
     from scripts.database import open_database
 except Exception as e:
-    from objects import Class, Student, mockStudent, json_to_student
-    from helpers import tree_printer
+    from objects import Class, mockStudent, json_to_student
     from database import open_database
-import json
-import pandas as pd
-import numpy as np
-
-import json
-import pandas as pd
-import numpy as np
 
 core_key = 'core'
 following_key = 'following'

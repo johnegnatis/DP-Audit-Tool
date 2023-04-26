@@ -1,7 +1,7 @@
 from tkinter import filedialog
 from fillpdf import fillpdfs
 from datetime import date
-from tkinter import *
+from tkinter import Tk, filedialog
 from shutil import copy2
 try:
     from scripts.helpers import get_server_path

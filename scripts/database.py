@@ -1,4 +1,4 @@
-import json
+from json import load, dumps
 def open_database():
     base_prod = './build/databases/database.json'
     base_dev = './public/databases/database.json'
@@ -12,11 +12,11 @@ def open_database():
                 f = open(base_dev)
             except Exception as e:
                 f = open(test_dev)
-        return json.load(f)
+        return load(f)
     except Exception as e:
         print(e)
         raise Exception("Error: Open Database was unsuccessful. Check that databases/database.json exists and try again.")
 
 def get_options_for_frontend():
     database = open_database()
-    return json.dumps(database)
+    return dumps(database)

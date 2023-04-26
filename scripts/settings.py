@@ -1,5 +1,4 @@
 from tinydb import TinyDB, Query
-import json
 
 def open_settings():
     try:
