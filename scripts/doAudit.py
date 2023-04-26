@@ -46,8 +46,8 @@ def generateAudit(studentObject, destination):
 
     leveling_courses = [course for course in studentObject.classes if course.grade and course.leveling]
 
-    core_complete.sort(key=lambda x: x.number)
-    core_incomplete.sort(key=lambda x: x.number)
+    #core_complete.sort(key=lambda x: x.number)
+    #core_incomplete.sort(key=lambda x: x.number)
     elective_complete.sort(key=lambda x: x.number)
     elective_incomplete.sort(key=lambda x: x.number)
     total_complete.sort(key=lambda x: x.number)
