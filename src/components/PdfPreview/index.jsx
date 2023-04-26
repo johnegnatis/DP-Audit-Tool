@@ -85,7 +85,6 @@ export default function PdfPreview({ serverPort }) {
   const zoomOut = () => {
     setZoom((prev) => (prev - interval < minZoom ? minZoom : prev - interval));
   };
-  console.log(zoom);
 
 
   pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;

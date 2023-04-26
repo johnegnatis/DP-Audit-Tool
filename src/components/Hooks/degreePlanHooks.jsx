@@ -94,7 +94,6 @@ export function useStudentObject(student) {
     additional,
     prerequisites,
   ]);
-  console.log(studentObjectJSON);
   
   return {
     track,

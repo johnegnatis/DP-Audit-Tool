@@ -99,15 +99,15 @@ const Form = ({
   ];
   const halfLayout = [
     {
-      cell_one: getSpan("Semester Admitted"),
+      cell_one: getSpan("Semester Admitted",false),
       cell_two: getForm(admittedDate, setAdmittedDate, allDisabled),
-      cell_three: getSpan("Anticipated Graduation"),
+      cell_three: getSpan("Anticipated Graduation", false),
       cell_four: getForm(graduationDate, setGraduationDate, allDisabled),
     },
     {
-      cell_one: getSpan("Fast Track"),
+      cell_one: getSpan("Fast Track", false),
       cell_two: getRadio(fastTrack, setFastTrack, allDisabled),
-      cell_three: getSpan("Thesis"),
+      cell_three: getSpan("Thesis", false),
       cell_four: getRadio(thesis, setThesis, allDisabled),
     },
   ];

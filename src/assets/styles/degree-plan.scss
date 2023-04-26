@@ -262,8 +262,12 @@ $footer-height: 70px;
     border-bottom: 3px solid $orange !important;
   }
   .header-hovered {
-    tr[data-row-key="0"] td {
-      border-top: 3px solid $orange !important;
+    thead {
+      tr {
+        th {
+          border-bottom: 3px solid $orange !important;
+        }
+      }
     }
   }
 }
