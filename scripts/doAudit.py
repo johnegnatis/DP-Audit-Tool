@@ -46,10 +46,7 @@ def generateAudit(studentObject, destination):
 
     leveling_courses = [course for course in studentObject.classes if course.grade and course.leveling]
 
-    #core_complete.sort(key=lambda x: x.number)
-    #core_incomplete.sort(key=lambda x: x.number)
-    elective_complete.sort(key=lambda x: x.number)
-    elective_incomplete.sort(key=lambda x: x.number)
+    # Sort all courses by course number
     total_complete.sort(key=lambda x: x.number)
     total_incomplete.sort(key=lambda x: x.number)
 
@@ -86,6 +83,7 @@ def generateAudit(studentObject, destination):
     para.add_run('\n\tTrack: ').bold = True
     para.add_run(studentObject.track)
 
+
     #GPA
     core_complete.sort(key=lambda x: x.grade)
     elective_complete.sort(key=lambda x: x.grade)
@@ -110,8 +108,8 @@ def generateAudit(studentObject, destination):
     para = doc.add_paragraph()
     para.add_run('\nCore Courses: ').bold = True
 
-    cores = core_complete + core_incomplete
-    cores.sort(key=lambda x: x.number)
+    cores = [course for course in studentObject.classes if course.type == 'core']
+    cores = cores + [course for course in studentObject.classes if course.grade and course.type == 'following']
     para.add_run(", ".join([course.number for course in cores]))
 
 
