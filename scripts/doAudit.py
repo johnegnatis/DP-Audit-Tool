@@ -1,10 +1,10 @@
 try:
-    from scripts.objects import Class, Student, StudentEncoder, mockStudent, json_to_student
+    from scripts.objects import mockStudent, json_to_student
     from scripts.fileSystemInteraction import getDirectory
     from scripts.settings import get_setting
     from scripts.helpers import get_naming_convention
 except Exception as e:
-    from objects import Class, Student, StudentEncoder, mockStudent, json_to_student
+    from objects import mockStudent, json_to_student
     from fileSystemInteraction import getDirectory
     from settings import get_setting  
     from helpers import get_naming_convention
