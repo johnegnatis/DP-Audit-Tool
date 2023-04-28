@@ -141,7 +141,7 @@ def generateAudit(studentObject, destination):
     
     # Taking extra course?
     extra_course = False
-    if (len(elective_complete) >= 7 and core_gpa < 3.19):
+    if (len(electives) >= 7):
         extra_course = True
 
     if((len(core_incomplete) == 0 and core_gpa >= 3.19) or (len(core_incomplete) == 0 and core_gpa >= 3.0 and extra_course)):
@@ -246,8 +246,12 @@ def getGPA(completed_courses):
         grade = letterToGPA(course.grade.split('/')[-1].strip() )
         if (grade == 'Ignore'):
             continue
-
-        credits = int(course.number[4])
+        
+        credits
+        try:
+            credits =int(course.number.split(" ")[-1][1])
+        except:
+            credits = 3
         
         courseCount = courseCount + credits
         gpa += grade*credits
