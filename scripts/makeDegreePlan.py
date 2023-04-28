@@ -47,7 +47,7 @@ def fillPDFForms(studentObject, path):
     pdf_table_sizes = database["pdf-types"][pdf_type]["pdf-table-size"]
     core_max_size = int(pdf_table_sizes["core"])
     following_max_size = int(pdf_table_sizes["following"])
-    electives_max_size = int(pdf_table_sizes["electives"])
+    electives_max_size = int(pdf_table_sizes["elective"])
     additional_max_size = int(pdf_table_sizes["additional"])
     prerequisites_max_size = int(pdf_table_sizes["prerequisites"])
     padding = 10

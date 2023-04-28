@@ -67,11 +67,11 @@ const AddClass = ({
           return (
             <div
               onClick={!!classID.onClickMe ? classID.onClickMe : () => setSearchClassForAdd(classID)}
-              className={`row ${classID.onClickMe ? 'bold-orange' : ''}`}
+              className={`row ${classID.onClickMe ? "bold-orange" : ""}`}
               key={index}
             >
               <p>{classID.name}</p>
-              <p style={{width: '30%', textAlign: 'right'}}>{classID.number}</p>
+              <p style={{ width: "30%", textAlign: "right" }}>{classID.number}</p>
             </div>
           );
         })}
@@ -86,43 +86,40 @@ const AddClass = ({
       )}
       <br />
       <br />
-      <div className="row">
-        {getSpan("Course Title", false, false)}
-        {getForm(name, setName)}
-      </div>
-      <div className="row">
-        {getSpan("Course Number", false, false)}
-        {getForm(number, setNumber)}
-      </div>
-      {/* {isEditable && (
-        <Icon
-          className="icon xs red pointer"
-          icon={iconNames.trash}
-          onClick={(e) => {
-            e.preventDefault();
-            onDelete(classID.number);
-          }}
-        />
-      )} */}
-      <div className="row">
-        {getSpan("UTD Semester", false, false)}
-        {getNumberForm(semester, setSemester, false, true)}
-      </div>
-      <div className="split5050 row">
-        <div>
-          {getSpan("Transfer", false, false)}
-          {getForm(transfer, setTransfer, false, false)}
+      <div className="class-form">
+        <div className="row">
+          {getSpan("Course Title", false, false)}
+          {getForm(name, setName, false, onSubmitNewClass)}
         </div>
-        <div>
-          {getSpan("Grade", false, false)}
-          {getForm(grade, setGrade)}
+        <div className="row">
+          {getSpan("Course Number", false, false)}
+          {getForm(number, setNumber, false, onSubmitNewClass)}
+        </div>
+        <div className="row">
+          {getSpan("UTD Semester", false, false)}
+          {getNumberForm(semester, setSemester, false, true, onSubmitNewClass)}
+        </div>
+        <div className="split5050 row">
+          <div>
+            {getSpan("Transfer", false, false)}
+            {getForm(transfer, setTransfer, false, onSubmitNewClass)}
+          </div>
+          <div>
+            {getSpan("Grade", false, false)}
+            {getForm(grade, setGrade, false, onSubmitNewClass)}
+          </div>
+        </div>
+        <div className="button-float-right">
+          <Button className="button orange-bg" onClick={onSubmitNewClass}>
+            Save
+          </Button>
         </div>
       </div>
-      <div className="button-float-right">
-        <Button className="button orange-bg" onClick={onSubmitNewClass}>
-          Submit
-        </Button>
-      </div>
+      {isEditable && (
+        <div onClick={() => onDelete(number)} className="delete">
+          <div>Delete Course From Database</div>
+        </div>
+      )}
     </div>
   );
 };

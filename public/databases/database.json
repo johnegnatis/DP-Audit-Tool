@@ -4,7 +4,7 @@
       "pdf-table-size": {
         "core": 0,
         "following": 0,
-        "electives": 0,
+        "elective": 0,
         "additional": 0,
         "prerequisites": 0
       }
@@ -13,7 +13,7 @@
       "pdf-table-size": {
         "core": 5,
         "following": 6,
-        "electives": 5,
+        "elective": 5,
         "additional": 3,
         "prerequisites": 8
       }
@@ -22,7 +22,7 @@
       "pdf-table-size": {
         "core": 6,
         "following": 0,
-        "electives": 5,
+        "elective": 5,
         "additional": 3,
         "prerequisites": 9
       }
@@ -31,7 +31,7 @@
       "pdf-table-size": {
         "core": 5,
         "following": 6,
-        "electives": 4,
+        "elective": 4,
         "additional": 2,
         "prerequisites": 8
       }
@@ -101,7 +101,14 @@
           "id": "CS 5390",
           "name": "Computer Networks"
         }
-      ]
+      ],
+      "notes": {
+        "core": ["15 Credit Hours", "3.19 Grade Point Average Required"],
+        "elective": ["12 Credit Hours", "3.0 Grade Point Average"],
+        "additional": ["6 Credit Hours", "3.0 Grade Point Average"],
+        "prerequisites": [],
+        "overall": ["No 5xxx course can be applied to this degree plan."]
+      }
     },
     {
       "major": "Computer Science",
@@ -174,7 +181,14 @@
           "id": "CS 5348",
           "name": "Operating System Concepts"
         }
-      ]
+      ],
+      "notes": {
+        "core": ["15 Credit Hours", "3.19 Grade Point Average Required"],
+        "elective": ["15 Credit Hours", "3.0 Grade Point Average"],
+        "additional": ["3 Credit Hours"],
+        "prerequisites": [],
+        "overall": ["May include any 6000 or 7000 level CS course without prior permission."]
+      }
     },
     {
       "major": "Intelligent Systems",
@@ -231,7 +245,14 @@
           "id": "CS 5348",
           "name": "Operating System Concepts"
         }
-      ]
+      ],
+      "notes": {
+        "core": ["15 Credit Hours", "3.19 Grade Point Average Required"],
+        "elective": ["15 Credit Hours", "3.0 Grade Point Average"],
+        "additional": ["3 Credit Hours"],
+        "prerequisites": [],
+        "overall": ["May include any 6000 or 7000 level CS course without prior permission."]
+      }
     },
     {
       "major": "Computer Science",
@@ -296,7 +317,13 @@
           "id": "CS 5348",
           "name": "Operating System Concepts"
         }
-      ]
+      ],"notes": {
+        "core": ["15 Credit Hours", "3.19 Grade Point Average Required"],
+        "elective": ["15 Credit Hours", "3.0 Grade Point Average"],
+        "additional": ["3 Credit Hours"],
+        "prerequisites": [],
+        "overall": ["May include any 6000 or 7000 level CS course without prior permission."]
+      }
     },
     {
       "major": "Computer Science",
@@ -356,7 +383,13 @@
           "id": "CS 5390",
           "name": "Computer Networks"
         }
-      ]
+      ],"notes": {
+        "core": ["15 Credit Hours", "3.19 Grade Point Average Required"],
+        "elective": ["15 Credit Hours", "3.0 Grade Point Average"],
+        "additional": ["3 Credit Hours"],
+        "prerequisites": [],
+        "overall": ["May include any 6000 or 7000 level CS course without prior permission."]
+      }
     },
     {
       "major": "Computer Science",
@@ -425,7 +458,13 @@
           "id": "CS 5390",
           "name": "Computer Networks"
         }
-      ]
+      ],"notes": {
+        "core": ["15 Credit Hours", "3.19 Grade Point Average Required"],
+        "elective": ["15 Credit Hours", "3.0 Grade Point Average"],
+        "additional": ["3 Credit Hours"],
+        "prerequisites": [],
+        "overall": ["May include any 6000 or 7000 level CS course without prior permission."]
+      }
     },
     {
       "major": "Computer Science",
@@ -490,7 +529,13 @@
           "id": "CS 5390",
           "name": "Computer Networks"
         }
-      ]
+      ],"notes": {
+        "core": ["15 Credit Hours", "3.19 Grade Point Average Required"],
+        "elective": ["15 Credit Hours", "3.0 Grade Point Average"],
+        "additional": ["3 Credit Hours"],
+        "prerequisites": [],
+        "overall": ["May include any 6000 or 7000 level CS course without prior permission."]
+      }
     },
     {
       "major": "Software Engineering",
@@ -546,7 +591,14 @@
           "id": "CS 5354",
           "name": "Software Engineering"
         }
-      ]
+      ],
+      "notes": {
+        "core": ["15 Credit Hours", "3.19 Grade Point Average Required"],
+        "elective": ["15 Credit Hours", "3.0 Grade Point Average"],
+        "additional": ["3 Credit Hours"],
+        "prerequisites": [],
+        "overall": ["May include any 6000 or 7000 level CS course without prior permission.", "CS6369 cannot be used on this degree plan"]
+      }
     }
   ]
 }
