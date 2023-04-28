@@ -16,28 +16,22 @@ const AskSignature = ({ open, signature, setSignature, savePDF, onClose }) => {
       closable={false}
       destroyOnClose
     >
-      {getSpan("Enter Signature", false, true)}
-      {getForm(signature, setSignature)}
-      <br />
-      <div style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
+      <div style={{ display: "flex", flexDirection: "column", width: "100%", alignContent: "start" }}>
+        {getSpan("Enter Signature", false, true)}
+        {getForm(signature, setSignature)}
         <Checkbox ref={checkboxRef}>Save an uneditable version</Checkbox>
-        <Button
-          className="button orange-bg"
-          disabled={!signature}
-          onClick={() => savePDF(true, checkboxRef.current && checkboxRef.current.state.checked)}
-        >
-          Sign Degree Plan And Save
-        </Button>
-        <Button
-          className="button orange-bg"
-          disabled={signature}
-          onClick={() => savePDF(false, checkboxRef.current && checkboxRef.current.state.checked)}
-        >
-          Save Without Signing
-        </Button>
-        <Button className="button red-bg" onClick={() => onClose()}>
-          Cancel
-        </Button>
+        <br />
+        <div style={{ paddingTop: '20px', display: "flex", justifyContent: "space-between", width: "100%" }}>
+          <Button className="button red-bg" onClick={() => onClose()}>
+            Cancel
+          </Button>
+          <Button
+            className="button orange-bg"
+            onClick={() => savePDF(true, checkboxRef.current && checkboxRef.current.state.checked)}
+          >
+            Save
+          </Button>
+        </div>
       </div>
     </Modal>
   );

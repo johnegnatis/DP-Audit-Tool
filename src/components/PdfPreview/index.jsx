@@ -133,9 +133,6 @@ export default function PdfPreview({ serverPort }) {
         onClose={onClose}
       />
       <div className="zoom">
-        {/* <Icon icon={iconNames.zoomOut} onClick={() => zoomOut()} className="icon xs pointer grey" />
-        <span className="percent">{Math.round(zoom * 100) + "%"}</span>
-        <Icon icon={iconNames.zoomIn} onClick={() => zoomIn()} className="icon xs pointer grey" /> */}
         <FloatButton.Group shape="circle" style={{ right: "3%", bottom: 100 }}>
           <FloatButton icon={<ZoomOutOutlined style={{ color: "white" }} />} onClick={() => zoomOut()} />
           <FloatButton icon={<ZoomInOutlined style={{ color: "white" }} />} onClick={() => zoomIn()} />
