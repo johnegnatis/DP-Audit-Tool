@@ -2,7 +2,7 @@ import { eel } from "../../utils/eel";
 import { pages } from "../../utils/constants";
 import { handleError } from "../../utils/methods";
 
-export const getEelResponse = (filePath, index) => {
+export const getEelResponse = (filePath) => {
   return eel
     .getDataFromTranscript(filePath)()
     .then((result) => {
@@ -11,7 +11,7 @@ export const getEelResponse = (filePath, index) => {
         page: pages.degreePlan,
         student: JSON.parse(result),
       };
-      studentObj.student.studentId = studentObj.student.studentId || index;
+      studentObj.student.studentId = studentObj.student.studentId || -1;
       return studentObj;
     })
     .catch((e) => {
