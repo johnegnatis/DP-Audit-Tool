@@ -246,8 +246,12 @@ def getGPA(completed_courses):
         grade = letterToGPA(course.grade.split('/')[-1].strip() )
         if (grade == 'Ignore'):
             continue
-
-        credits = int(course.number[4])
+        
+        credits
+        try:
+            credits = int(course.number[4])
+        except:
+            credits = 3
         
         courseCount = courseCount + credits
         gpa += grade*credits
