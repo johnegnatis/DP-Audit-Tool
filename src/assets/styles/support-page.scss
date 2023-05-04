@@ -1,0 +1,126 @@
+@import "variables.scss";
+@import "colors.scss";
+
+$footer-height: 70px;
+.support-page-root {
+  min-width: 100%;
+  height: calc(100% - $navbar-height);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+  overflow-y: auto;
+
+  .support-page{
+    justify-content: center;
+    margin: auto;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 30px;
+    padding-bottom: calc($footer-height + 20px);
+
+    .section {
+      max-width: 100%;
+      padding: 2rem;
+    }
+  
+    .section-1 {
+      align-items: center;
+      width: 600px;
+  
+      .title {
+        text-align: center;
+        font-size: 36px;
+        font-weight: 700;
+        line-height: 38.7px;
+        color: $orange;
+        font-family: "Modesto Text";
+        letter-spacing: 0.055em;
+      }
+    }
+    
+    .section-2 {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      
+      .left-column {
+        width: 65%;
+      }
+      
+      .left-column img {
+        width: 100%;
+        border-radius: 20px
+      }
+      
+      .right-column {
+        width: 35%;
+        padding-left: 3rem;
+        line-height: 1.2;
+
+        .position {
+          margin-top: 20px;
+        }
+      }
+    }
+  
+    .section-3 {
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+  
+      .box {
+        margin: 5px;
+        padding: 25px;
+        border: 0.5px solid $grey;
+        border-radius: 20px;
+        text-align: center;
+      }
+
+      .header{
+        overflow: auto;
+        color: $orange;
+        font-weight: bold;
+      }
+    }
+  
+    body: {
+      height: 100%;
+      overflow: auto;
+    }
+  }
+
+}
+
+footer {
+  border-top: 0.5px solid $grey;
+  position: fixed;
+  height: $footer-height;
+  width: 100%;
+  top: calc(100% - $footer-height);
+  color: $black;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: $white;
+  div:first-child {
+    padding-left: 20px;
+  }
+  div:nth-child(2) {
+    padding-right: 20px;
+  }
+  .main {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    span {
+      color: $orange;
+      padding-left: 5px;
+      font-weight: 700;
+      font-size: 16px;
+    }
+  }
+}
