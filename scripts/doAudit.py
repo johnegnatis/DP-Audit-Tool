@@ -35,16 +35,16 @@ def doAuditMethod(studentObject):
 
 def generateAudit(studentObject, destination):
     # Class tracking for GPA
-    core_complete = [course for course in studentObject.classes if course.grade and (course.type == 'core' or course.type == 'following')]
-    core_incomplete = [course for course in studentObject.classes if not course.grade and course.type == 'core']
+    core_complete = [course for course in studentObject.classes if course.grade and course.grade[0] != 'W' and (course.type == 'core' or course.type == 'following')]
+    core_incomplete = [course for course in studentObject.classes if (not course.grade or course.grade[0] == 'W') and course.type == 'core']
 
-    elective_complete = [course for course in studentObject.classes if course.grade and (course.type == 'electives' or course.type == 'additional')]
-    elective_incomplete = [course for course in studentObject.classes if not course.grade and course.type == 'electives']
+    elective_complete = [course for course in studentObject.classes if course.grade and course.grade[0] != 'W' and (course.type == 'electives' or course.type == 'additional')]
+    elective_incomplete = [course for course in studentObject.classes if (not course.grade or course.grade[0] == 'W') and course.type == 'electives']
 
-    total_complete = [course for course in studentObject.classes if course.grade and (course.type == 'core' or course.type == 'electives' or course.type == 'following' or course.type == 'additional')]
-    total_incomplete = [course for course in studentObject.classes if not course.grade and (course.type == 'core' or course.type == 'electives')]
+    total_complete = [course for course in studentObject.classes if course.grade and course.grade[0] != 'W' and (course.type == 'core' or course.type == 'electives' or course.type == 'following' or course.type == 'additional')]
+    total_incomplete = [course for course in studentObject.classes if (not course.grade or course.grade[0] == 'W') and (course.type == 'core' or course.type == 'electives')]
 
-    leveling_courses = [course for course in studentObject.classes if course.grade and course.leveling]
+    leveling_courses = [course for course in studentObject.classes if course.leveling]
 
     # Sort all courses by course number
     total_complete.sort(key=lambda x: x.number)
@@ -125,7 +125,10 @@ def generateAudit(studentObject, destination):
     
     for course in leveling_courses:
         c = "".join(findall("[a-zA-Z]* [0-9]*", course.number))
-        para.add_run("\n" + c + ": " + course.leveling) # Needs actual message
+        if course.leveling == 'Completed':
+            para.add_run("\n" + c + " - " + course.leveling + ": " + course.semester + ": " + course.grade)
+        else:
+            para.add_run("\n" + c + " - " + course.leveling)
     
     if (not leveling_courses):
         para.add_run("\nNone")
