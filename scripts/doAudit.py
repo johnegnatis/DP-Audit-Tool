@@ -36,13 +36,13 @@ def doAuditMethod(studentObject):
 def generateAudit(studentObject, destination):
     # Class tracking for GPA
     core_complete = [course for course in studentObject.classes if course.grade and course.grade[0] != 'W' and (course.type == 'core' or course.type == 'following')]
-    core_incomplete = [course for course in studentObject.classes if (not course.grade or course.grade[0] == 'W') and course.type == 'core']
+    core_incomplete = [course for course in studentObject.classes if (not course.grade or course.grade[0] == 'W') and course.semester and (course.type == 'core' or course.type == 'following')]
 
     elective_complete = [course for course in studentObject.classes if course.grade and course.grade[0] != 'W' and (course.type == 'electives' or course.type == 'additional')]
-    elective_incomplete = [course for course in studentObject.classes if (not course.grade or course.grade[0] == 'W') and course.type == 'electives']
+    elective_incomplete = [course for course in studentObject.classes if (not course.grade or course.grade[0] == 'W') and course.type == 'electives' or course.type == 'additional']
 
-    total_complete = [course for course in studentObject.classes if course.grade and course.grade[0] != 'W' and (course.type == 'core' or course.type == 'electives' or course.type == 'following' or course.type == 'additional')]
-    total_incomplete = [course for course in studentObject.classes if (not course.grade or course.grade[0] == 'W') and (course.type == 'core' or course.type == 'electives')]
+    total_complete = [course for course in studentObject.classes if course.grade and course.grade[0] != 'W' and (is5000Level(course))]
+    total_incomplete = [course for course in studentObject.classes if (not course.grade or course.grade[0] == 'W') and (course.type == 'core' or course.type == 'additional' or course.type == 'electives' or (course.type == 'following' and course.semester))]
 
     leveling_courses = [course for course in studentObject.classes if course.leveling]
 
@@ -109,7 +109,7 @@ def generateAudit(studentObject, destination):
     para.add_run('\nCore Courses: ').bold = True
 
     cores = [course for course in studentObject.classes if course.type == 'core']
-    cores = cores + [course for course in studentObject.classes if course.grade and course.type == 'following']
+    cores = cores + [course for course in studentObject.classes if course.semester and course.type == 'following']
     para.add_run(", ".join([course.number.split("(")[0].strip() for course in cores]))
 
 
@@ -124,7 +124,7 @@ def generateAudit(studentObject, destination):
     para.add_run('\nLeveling Courses and Pre-requisites from Admission Letter:').bold = True
     
     for course in leveling_courses:
-        c = "".join(findall("[a-zA-Z]* [0-9]*", course.number))
+        c = "".join(findall("[a-zA-Z]* *[0-9]*", course.number))
         if course.leveling == 'Completed':
             para.add_run("\n" + c + " - " + course.leveling + ": " + course.semester + ": " + course.grade)
         else:
@@ -188,7 +188,7 @@ def generateAudit(studentObject, destination):
 def printRequiredGPA(required_GPA, GPA, completed_courses, remaining_courses):
     target = calculateRequiredGPA(required_GPA, GPA, completed_courses, remaining_courses)
 
-    if target < 2:
+    if target <= 2:
         return "\tThe student must pass: "
     
     if len(remaining_courses) == 1:
@@ -211,7 +211,7 @@ def printRequiredGPA(required_GPA, GPA, completed_courses, remaining_courses):
             
         return "\tThe student needs a grade >= " + grade + " in: "
     
-    return "\tThe student needs a GPA of at least %.3f in: " % target
+    return "\tThe student needs a GPA >= %.3f in: " % target
 
 def calculateRequiredGPA(required_GPA, GPA, completed_courses, remaining_courses):
     target = (required_GPA * (getTotalCredits(completed_courses) + getTotalCredits(remaining_courses)) - (GPA * getTotalCredits(completed_courses))) / getTotalCredits(remaining_courses)
@@ -250,9 +250,9 @@ def getGPA(completed_courses):
         if (grade == 'Ignore'):
             continue
         
-        credits = 3
+        course_number = "".join(findall('\d+', course.number))
         try:
-            credits =int(course.number.split(" ")[-1][1])
+            credits =int(course_number[1])
         except:
             credits = 3
         
@@ -268,9 +268,29 @@ def getGPA(completed_courses):
 def getTotalCredits(courses):
     sum = 0
     for course in courses:
-        sum += int(course.number[4])
+        course_number = "".join(findall('\d+', course.number))
+
+        try:
+            credits =int(course_number[1])
+        except:
+            credits = 3
+
+        
+        sum += credits
 
     return sum
+
+def is5000Level(course):
+    course_number = "".join(findall('\d+', course.number))
+    num = int(course_number[0])
+
+    if course.type == 'following':
+        if course.semester:
+            return True
+        else:
+            return False
+    else:
+        return num >= 5
 
 if __name__ == '__main__':
     doAuditMethod('mock')
