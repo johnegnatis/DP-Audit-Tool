@@ -137,16 +137,7 @@ def getDataFromTranscriptMethod(file_path):
                 # ADDING TO CLASS OBJECT
                 if (course_prefix != "ECSC"): # ignores CS IPP Assignment (+ any other blacklisted classes)
                     
-                    # if fasttrack course
-                    if  (transferOption == "Fast Track"):
-                        myClass = Class(course_name, course_num, semester, 'FT', grade, attempted_credits) 
-                    # if transfer course
-                    elif(transferOption == "Transfer"):
-                        myClass = Class(course_name, course_num, semester, 'transfer', grade, attempted_credits) 
-                    # if neither
-                    else:
-                        myClass = Class(course_name, course_num, semester, '', grade, attempted_credits) 
-
+                    myClass = Class(course_name, course_num, semester, transferOption, grade, attempted_credits) 
                     classes.append(myClass)
                     line_items.append(data(semester, course_prefix, course_code, course_name, attempted_credits, grade, transferOption))
                 

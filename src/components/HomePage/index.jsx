@@ -20,9 +20,7 @@ const HomePage = () => {
   const allLoading = useMemo(() => fileNameLoading || uploadLoading, [fileNameLoading, uploadLoading]);
   const key = "popup-upload";
   const split = "(A+D++_WD*A_>";
-  const [loading, setLoading] = useState(false);
-  const [negativeIndex, setNegativeIndex] = useState(-1);
-  const [isSupportPage, setIsSupportPage] = useState(true);
+  const [isSupportPage, setIsSupportPage] = useState(false);
 
   const handleUploadClick = useCallback(() => {
     if (allLoading) {
@@ -92,7 +90,6 @@ const HomePage = () => {
         return;
       });
   }, [fileNameLoading, eel, setFileNameLoading, globalStudents]);
-
   const handleCreateDocumentClick = () => {
     const tempStudents = fileStudentList
       .filter((obj) => obj.student && obj.student !== null && obj.status !== "error")
@@ -104,11 +101,9 @@ const HomePage = () => {
       sendError("No PDFs were successfully parsed");
     }
   };
-
   const removeElement = (fileName) => {
     setFileStudentList((arr) => arr.filter((obj) => obj.file !== fileName));
   };
-
   const getUploadBox = () => {
     return (
       <div onClick={handleUploadClick} className="upload-box">
@@ -140,6 +135,7 @@ const HomePage = () => {
     );
   };
 
+  // Settings
   const [settingsOpen, setSettingsOpen] = useState(false);
   const topRightIcon = <Icon icon={iconNames.settings} onClick={() => setSettingsOpen(true)} className="icon grey xs pointer" />;
   const handleCloseSettings = () => {
@@ -181,7 +177,7 @@ const HomePage = () => {
     </>
   ) : (
     <>
-      <NavigationBar topRightIcon={topRightIcon} />
+      <NavigationBar />
       <SupportPage onClose={() => setIsSupportPage(false)} />
     </>
   );

@@ -431,6 +431,10 @@
         {
           "name": "Synthesis and Optimization of High-Performance Systems",
           "id": "CS 6397"
+        },
+        {
+          "name": "Parallel Architectures and Systems",
+          "id": "CS 6399"
         }
       ],
       "prerequisites": [
@@ -549,7 +553,8 @@
         },
         {
           "name": "Advanced Requirements Engineering",
-          "id": "SE 6361 (CS 6361)"
+          "id": "SE 6361",
+          "alias": "CS 6361"
         },
         {
           "name": "Advanced Software Architecture and Design",
@@ -557,7 +562,8 @@
         },
         {
           "name": "Software Testing, Validation and Verification",
-          "id": "SE 6367 (CS 6367)"
+          "id": "SE 6367",
+          "alias": "CS 6367"
         },
         {
           "name": "Advanced Software Engineering Project",

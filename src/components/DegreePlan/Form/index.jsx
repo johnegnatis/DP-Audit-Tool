@@ -301,12 +301,14 @@ const Form = ({
             <Panel header={`${tableNames.core} (${core.length} courses)`} key={tableTypes.core}>
               {coreTable}
             </Panel>
-            <Panel
-              header={`${getNumberToString(nOfTheFollowing)} of the Following Courses (${following.length} courses)`}
-              key={tableTypes.following}
-            >
-              {followingTable}
-            </Panel>
+            {nOfTheFollowing > 0 && (
+              <Panel
+                header={`${getNumberToString(nOfTheFollowing)} of the Following Courses (${following.length} courses)`}
+                key={tableTypes.following}
+              >
+                {followingTable}
+              </Panel>
+            )}
             <Panel header={`${tableNames.electives} (${electives.length} courses)`} key={tableTypes.electives}>
               {electivesTable}
             </Panel>

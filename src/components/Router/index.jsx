@@ -21,7 +21,7 @@ const Router = () => {
   const component = useMemo(() => {
     switch (currentPage) {
       case pages.homePage:
-        return <HomePage />;
+        return <HomePage key={studentId} />;
       case pages.degreePlan:
         return <DegreePlan key={studentId} student={selectedStudent.student} databaseProps={databaseProps} />;
       case pages.pdfPreview:

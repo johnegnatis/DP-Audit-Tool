@@ -247,7 +247,7 @@ def getGPA(completed_courses):
         if (grade == 'Ignore'):
             continue
         
-        credits
+        credits = 3
         try:
             credits =int(course.number.split(" ")[-1][1])
         except:

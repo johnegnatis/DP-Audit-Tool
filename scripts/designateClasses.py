@@ -71,6 +71,11 @@ def assign_name(class_name, type_list):
             class_name.name = type_list[i]['name']
             break
 
+def get_alias(database_class):
+    try:
+        return database_class['alias']
+    except KeyError:
+        return ''
 
 def find_add_classes(replacement_classes, class_list, type_list, type_key):
     found = False
@@ -78,7 +83,8 @@ def find_add_classes(replacement_classes, class_list, type_list, type_key):
         for i in range(0, len(class_list)):
             found = False
             # finds class w/i database, assigns type
-            if (test_strings(class_list[i].number, type_list[j]['id'])):
+            alias = get_alias(type_list[j])
+            if (test_strings(class_list[i].number, type_list[j]['id']) or test_strings(class_list[i].number, alias)):
                 class_list[i].type = type_key
                 # assign name from DB here
                 class_list[i].name = type_list[j]['name']

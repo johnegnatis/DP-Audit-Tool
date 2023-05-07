@@ -32,6 +32,7 @@
     "clean:build": "rimraf build",
     "clean:dist": "rimraf dist",
     "clean:settings": "rimraf ./public/databases/settings.json",
+    "clean:classes": "rimraf ./public/databases/classes.json",
     "kill-ports": "npm-run-all -p kill-8888 kill-8000",
     "kill-8888": "npx kill-port 8888",
     "kill-8000": "npx kill-port 8000"
