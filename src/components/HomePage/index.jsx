@@ -10,6 +10,7 @@ import { getEelResponse } from "./apiHelper";
 import NavigationBar from "../NavigationBar";
 import SettingsForm from "./SettingsForm";
 import { status, statusMessage, getStatusIcon } from "./fileStatusHelpers";
+import SupportPage from "./SupportPage";
 
 const HomePage = () => {
   const [globalStudents] = useGlobalState("students");
@@ -19,6 +20,9 @@ const HomePage = () => {
   const allLoading = useMemo(() => fileNameLoading || uploadLoading, [fileNameLoading, uploadLoading]);
   const key = "popup-upload";
   const split = "(A+D++_WD*A_>";
+  const [loading, setLoading] = useState(false);
+  const [negativeIndex, setNegativeIndex] = useState(-1);
+  const [isSupportPage, setIsSupportPage] = useState(true);
 
   const handleUploadClick = useCallback(() => {
     if (allLoading) {
@@ -142,7 +146,7 @@ const HomePage = () => {
     setSettingsOpen(false);
   };
 
-  return (
+  return !isSupportPage ? (
     <>
       <NavigationBar topRightIcon={topRightIcon} />
       <div className="home-page-root">
@@ -160,7 +164,7 @@ const HomePage = () => {
       <footer>
         <div className="support">
           <Icon icon={iconNames.question} className="icon orange xs" />
-          <span>Support</span>
+          <span onClick={() => setIsSupportPage(true)}>Support</span>
         </div>
         <div className="create-button">
           <Button
@@ -174,6 +178,11 @@ const HomePage = () => {
         </div>
       </footer>
       <SettingsForm open={settingsOpen} onClose={() => handleCloseSettings()} />
+    </>
+  ) : (
+    <>
+      <NavigationBar topRightIcon={topRightIcon} />
+      <SupportPage onClose={() => setIsSupportPage(false)} />
     </>
   );
 };
