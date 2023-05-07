@@ -121,7 +121,7 @@ def generateAudit(studentObject, destination):
 
     # leveling courses (incomplete) NEED LIST OF LEVELING COURSES HERE
     para = doc.add_paragraph()
-    para.add_run('\nLeveling Courses and Pre-requisites from Admission Letter:').bold = True
+    para.add_run('\nLeveling Courses and Pre-requisites from Admission Letter:\n').bold = True
     
     for course in leveling_courses:
         c = "".join(findall("[a-zA-Z]* *[0-9]*", course.number))
