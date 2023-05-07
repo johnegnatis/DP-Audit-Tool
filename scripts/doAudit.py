@@ -110,14 +110,14 @@ def generateAudit(studentObject, destination):
 
     cores = [course for course in studentObject.classes if course.type == 'core']
     cores = cores + [course for course in studentObject.classes if course.grade and course.type == 'following']
-    para.add_run(", ".join([course.number for course in cores]))
+    para.add_run(", ".join([course.number.split("(")[0].strip() for course in cores]))
 
 
     para.add_run('\nElective Courses: ').bold = True
 
     electives = elective_complete + elective_incomplete
     electives.sort(key=lambda x: x.number)
-    para.add_run(", ".join([course.number for course in electives]))
+    para.add_run(", ".join([course.number.split("(")[0].strip() for course in electives]))
 
     # leveling courses (incomplete) NEED LIST OF LEVELING COURSES HERE
     para = doc.add_paragraph()
@@ -155,17 +155,17 @@ def generateAudit(studentObject, destination):
         core_status = printRequiredGPA(3.19, core_gpa, core_complete, core_incomplete)
         para.add_run('\nTo maintain a 3.19 core GPA:')
         
-    para.add_run('\n' + core_status + ", ".join(course.number for course in core_incomplete))
+    para.add_run('\n' + core_status + ", ".join(course.number.split("(")[0].strip() for course in core_incomplete))
     
-    if(len(elective_incomplete) == 0 and elective_complete >= 3.0):
+    if(len(elective_incomplete) == 0 and elective_gpa >= 3.0):
         elective_status = "Elective complete."
-    elif(len(elective_incomplete) == 0 and elective_complete < 3.0):
+    elif(len(elective_incomplete) == 0 and elective_gpa < 3.0):
         elective_status = "Elective currently failing."
     else:
         elective_status = printRequiredGPA(3.0, elective_gpa, elective_complete, elective_incomplete)
         para.add_run('\nTo maintain a 3.0 elective GPA:')
     
-    para.add_run('\n' + elective_status + ", ".join(course.number for course in elective_incomplete))
+    para.add_run('\n' + elective_status + ", ".join(course.number.split("(")[0].strip() for course in elective_incomplete))
 
     if(len(total_incomplete) == 0 and combined_gpa >= 3.0):
         overall_status = "Overall complete."
@@ -175,7 +175,7 @@ def generateAudit(studentObject, destination):
         overall_status = printRequiredGPA(3.0, combined_gpa, total_complete, total_incomplete)
         para.add_run('\nTo maintain a 3.0 overall GPA:')
     
-    para.add_run('\n' + overall_status + ", ".join(course.number for course in total_incomplete))
+    para.add_run('\n' + overall_status + ", ".join(course.number.split("(")[0].strip() for course in total_incomplete))
 
     try:
         doc.save(destination)
