@@ -1,14 +1,14 @@
 try:
-    from scripts.objects import Class, Student, StudentEncoder, mockStudent, json_to_student
+    from scripts.objects import mockStudent, json_to_student
     from scripts.fileSystemInteraction import getDirectory
     from scripts.settings import get_setting
     from scripts.helpers import get_naming_convention
 except Exception as e:
-    from objects import Class, Student, StudentEncoder, mockStudent, json_to_student
+    from objects import mockStudent, json_to_student
     from fileSystemInteraction import getDirectory
     from settings import get_setting  
     from helpers import get_naming_convention
-import re
+from re import findall
 from docx import Document
 from docx.shared import Pt
 from docx.enum.section import WD_SECTION
@@ -124,7 +124,7 @@ def generateAudit(studentObject, destination):
     para.add_run('\nLeveling Courses and Pre-requisites from Admission Letter:').bold = True
     
     for course in leveling_courses:
-        c = "".join(re.findall("[a-zA-Z]* [0-9]*", course.number))
+        c = "".join(findall("[a-zA-Z]* [0-9]*", course.number))
         para.add_run("\n" + c + ": " + course.leveling) # Needs actual message
     
     if (not leveling_courses):
@@ -215,7 +215,7 @@ def calculateRequiredGPA(required_GPA, GPA, completed_courses, remaining_courses
     return target
 
 def letterToGPA(letter):
-    letter = "".join(re.findall("[a-zA-Z][\+\-]?", letter))
+    letter = "".join(findall("[a-zA-Z][\+\-]?", letter))
     letter = letter.upper() # incase DP enters lowercase letter
 
     if letter == 'A' or letter == 'A+':

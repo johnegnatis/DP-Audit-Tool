@@ -24,7 +24,7 @@ body {
 ::-webkit-scrollbar-track {
   background-clip: padding-box;
   border-left: 6px solid transparent;
-  border-right: 6px solid transparent;
+  border-right:  6px solid transparent;
 }
 ::-webkit-scrollbar-thumb {
   background-color: $orange;
@@ -37,6 +37,9 @@ body {
 }
 
 .button {
+  &.small {
+    width: 50px;
+  }
   &.orange-border {
     border-color: $orange;
   }
@@ -107,8 +110,8 @@ body {
 }
 
 .ant-float-btn-body {
-  background-color: $orange !important;
-  // :hover {
+background-color: $orange !important;
+// :hover {
   // background-color: $dark-orange !important;
   // }
 }

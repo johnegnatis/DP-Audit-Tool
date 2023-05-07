@@ -7,10 +7,8 @@ import { Tooltip } from "antd";
 
 const ClassTable = ({
   type,
-  subtitle,
   classes,
   openAddClassDrawer,
-  notes,
   setClassForEdit,
   setClassForMove,
   handleMoveClick,
@@ -23,6 +21,7 @@ const ClassTable = ({
   selectedRow: rowSelectedForEditOrMove,
   onLevelingChange,
   size,
+  notes,
 }) => {
   const [headerHover, setHeaderHover] = useState(false);
   const isTableOverflown = classes.length - size > 0;
@@ -44,7 +43,7 @@ const ClassTable = ({
         class: record,
         index: rowIndex,
       });
-    } else if (allDisabled === 'copy') {
+    } else if (allDisabled === "copy") {
       handleCopyClick({
         class: record,
         index: rowIndex,
@@ -54,15 +53,35 @@ const ClassTable = ({
   const onHeaderClick = (type) => {
     if (allDisabled === "move") {
       handleMoveToTopClick(type);
-    } else if (allDisabled === 'copy') {
+    } else if (allDisabled === "copy") {
       handleCopyToTopClick(type);
     }
   };
+  const dotSeparator = "_DoT";
+  const noteList = useMemo(
+    () =>
+      notes &&
+      notes
+        .map((item) => [item, dotSeparator])
+        .flat()
+        .slice(0, -1)
+  );
   return (
     <>
       <div className="title-span">
-        <div>{subtitle && <h3 className="course-info">{subtitle}</h3>}</div>
-        <div className="add-class-button">
+        <div className="notes-and-add-class">
+          <div className="notes">
+            {noteList &&
+              noteList.map((note, index) => {
+                if (note === dotSeparator)
+                  return (
+                    <span style={{ paddingLeft: "3px", paddingRight: "3px" }} key={index}>
+                      {"/"}
+                    </span>
+                  ); //<Icon key={index} icon={iconNames.dot} className="icon black xs" />;
+                else return <span key={index}>{note}</span>;
+              })}
+          </div>
           <Button className="button orange-bg" disabled={allDisabled} onClick={() => openAddClassDrawer()}>
             Add Course
           </Button>

@@ -1,17 +1,20 @@
-import sys, io
-# sys.stdout = io.StringIO() # to fix --no console, must be the first three lines, so we cannot use NO_CONSOLE flag
-# sys.stderr = io.StringIO() # https://github.com/python-eel/Eel/issues/654
+from sys import argv as sys_argv
+from io import StringIO
+# sys.stdout = StringIO() # to fix --no console, must be the first three lines, so we cannot use NO_CONSOLE flag
+# sys.stderr = StringIO() # https://github.com/python-eel/Eel/issues/654
 
 ## Determine which flags we are using and set variables accordingly
 DEVELOPMENT = False
 NO_CONSOLE = False
-for i in sys.argv:
+for i in sys_argv:
     if (i == '--noconsole'):
         NO_CONSOLE = True
     if (i == '--develop'):
         DEVELOPMENT = True    
 
-import eel, os, scripts, server
+if DEVELOPMENT:
+    import server
+import eel, scripts
 from multiprocessing import Process, freeze_support
 
 # Expose all eel functions to Javascript

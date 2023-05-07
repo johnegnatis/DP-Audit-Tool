@@ -56,32 +56,21 @@ const Form = ({
     nOfTheFollowing,
     tableCounts,
     refetchClassList,
+    degreePlanNotes,
   } = classOptions;
   const {
     core: coreTableSize,
     following: followingTableSize,
-    electives: electiveTableSize,
+    elective: electiveTableSize,
     additional: additionalTableSize,
     prerequisites: prerequisiteTableSize,
   } = tableCounts;
-  const tableTooBigWarning = useMemo(
-    () =>
-      coreTableSize - core.length < 0 ||
-      electiveTableSize - electives.length < 0 ||
-      followingTableSize - following.length < 0 ||
-      prerequisiteTableSize - prerequisites.length < 0,
-    [
-      core.length,
-      coreTableSize,
-      following.length,
-      followingTableSize,
-      electives.length,
-      electiveTableSize,
-      prerequisites.length,
-      prerequisiteTableSize,
-    ]
-  );
-  const disableSubmitButton = !(track && name && studentId && admittedDate && graduationDate) && false;
+  const {
+    core: coreNotes,
+    elective: electiveNotes,
+    additional: additionalNotes,
+    prerequisites: prerequisiteNotes,
+  } = degreePlanNotes;
   const [trackFormOpen, setTrackFormOpen] = useState(!track);
   const fullLayout = [
     {
@@ -99,15 +88,15 @@ const Form = ({
   ];
   const halfLayout = [
     {
-      cell_one: getSpan("Semester Admitted"),
+      cell_one: getSpan("Semester Admitted", false),
       cell_two: getForm(admittedDate, setAdmittedDate, allDisabled),
-      cell_three: getSpan("Anticipated Graduation"),
+      cell_three: getSpan("Anticipated Graduation", false),
       cell_four: getForm(graduationDate, setGraduationDate, allDisabled),
     },
     {
-      cell_one: getSpan("Fast Track"),
+      cell_one: getSpan("Fast Track", false),
       cell_two: getRadio(fastTrack, setFastTrack, allDisabled),
-      cell_three: getSpan("Thesis"),
+      cell_three: getSpan("Thesis", false),
       cell_four: getRadio(thesis, setThesis, allDisabled),
     },
   ];
@@ -182,9 +171,10 @@ const Form = ({
         deleteClass={deleteClass}
         selectedRow={selectedRow}
         size={coreTableSize}
+        notes={coreNotes}
       />
     ),
-    [core, coreOptions, coreTableSize, ...sharedTableDependencies]
+    [core, coreOptions, coreTableSize, coreNotes, ...sharedTableDependencies]
   );
   const followingTable = useMemo(
     () =>
@@ -192,7 +182,6 @@ const Form = ({
         <ClassTable
           type={tableTypes.following}
           title={`${getNumberToString(nOfTheFollowing)} of the Following Courses`}
-          subtitle=""
           allDisabled={allDisabled}
           classes={following}
           openAddClassDrawer={() => getAddClassButton(tableTypes.following, true)}
@@ -215,7 +204,6 @@ const Form = ({
       <ClassTable
         type={tableTypes.electives}
         title={tableNames.electives}
-        subtitle=""
         allDisabled={allDisabled}
         classes={electives}
         openAddClassDrawer={() => getAddClassButton(tableTypes.electives, true)}
@@ -229,16 +217,16 @@ const Form = ({
         selectedRow={selectedRow}
         deleteClass={deleteClass}
         size={electiveTableSize}
+        notes={electiveNotes}
       />
     ),
-    [electives, electiveOptions, electiveTableSize, ...sharedTableDependencies]
+    [electives, electiveOptions, electiveTableSize, electiveNotes, ...sharedTableDependencies]
   );
   const additionalTable = useMemo(
     () => (
       <ClassTable
         type={tableTypes.additional}
         title={tableNames.additional}
-        subtitle=""
         allDisabled={allDisabled}
         classes={additional}
         openAddClassDrawer={() => getAddClassButton(tableTypes.additional, true)}
@@ -252,16 +240,16 @@ const Form = ({
         selectedRow={selectedRow}
         deleteClass={deleteClass}
         size={additionalTableSize}
+        notes={additionalNotes}
       />
     ),
-    [additional, electiveOptions, additionalTableSize, ...sharedTableDependencies]
+    [additional, electiveOptions, additionalTableSize, additionalNotes, ...sharedTableDependencies]
   );
   const prerequisiteTable = useMemo(
     () => (
       <ClassTable
         type={tableTypes.prerequisites}
         title={tableNames.prerequisites}
-        subtitle=""
         allDisabled={allDisabled}
         classes={prerequisites}
         openAddClassDrawer={() => getAddClassButton(tableTypes.prerequisites, true)}
@@ -276,9 +264,10 @@ const Form = ({
         selectedRow={selectedRow}
         onLevelingChange={handleLevelingChange}
         size={prerequisiteTableSize}
+        notes={prerequisiteNotes}
       />
     ),
-    [prerequisites, prerequisiteTableSize, prerequisiteOptions, ...sharedTableDependencies]
+    [prerequisites, prerequisiteTableSize, prerequisiteOptions, prerequisiteNotes, ...sharedTableDependencies]
   );
   const { Panel } = Collapse;
   return (
@@ -295,44 +284,36 @@ const Form = ({
         />
         <h1 className="title">Edit Student Information</h1>
         <div className="general-info">
-          <Collapse defaultActiveKey={["0", "1", "2", "3", "4", "5"]}>
-            <Panel header="General Information" key="0">
+          <Collapse
+            defaultActiveKey={[
+              "general-info",
+              tableTypes.core,
+              tableTypes.following,
+              tableTypes.electives,
+              tableTypes.additional,
+              tableTypes.prerequisites,
+            ]}
+          >
+            <Panel header="General Information" key="general-info">
               {formatGrid(fullLayout, 5, 19)}
               {formatHalfGrid(halfLayout, 5, 5, 9, 5)}
             </Panel>
-            <Panel
-              header={`${tableNames.core} (${core.length} courses)`}
-              key="1"
-              // extra={getAddClassButton(tableTypes.core)}
-            >
+            <Panel header={`${tableNames.core} (${core.length} courses)`} key={tableTypes.core}>
               {coreTable}
             </Panel>
             <Panel
               header={`${getNumberToString(nOfTheFollowing)} of the Following Courses (${following.length} courses)`}
-              key="2"
-              // extra={getAddClassButton(tableTypes.following)}
+              key={tableTypes.following}
             >
               {followingTable}
             </Panel>
-            <Panel
-              header={`${tableNames.electives} (${electives.length} courses)`}
-              key="3"
-              // extra={getAddClassButton(tableTypes.electives)}
-            >
+            <Panel header={`${tableNames.electives} (${electives.length} courses)`} key={tableTypes.electives}>
               {electivesTable}
             </Panel>
-            <Panel
-              header={`${tableNames.additional} (${additional.length} courses)`}
-              key="4"
-              // extra={getAddClassButton(tableTypes.additional)}
-            >
+            <Panel header={`${tableNames.additional} (${additional.length} courses)`} key={tableTypes.additional}>
               {additionalTable}
             </Panel>
-            <Panel
-              header={`${tableNames.prerequisites} (${prerequisites.length} courses)`}
-              key="5"
-              // extra={getAddClassButton(tableTypes.prerequisites)}
-            >
+            <Panel header={`${tableNames.prerequisites} (${prerequisites.length} courses)`} key={tableTypes.prerequisites}>
               {prerequisiteTable}
             </Panel>
           </Collapse>

@@ -85,7 +85,6 @@ export default function PdfPreview({ serverPort }) {
   const zoomOut = () => {
     setZoom((prev) => (prev - interval < minZoom ? minZoom : prev - interval));
   };
-  console.log(zoom);
 
 
   pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
@@ -134,9 +133,6 @@ export default function PdfPreview({ serverPort }) {
         onClose={onClose}
       />
       <div className="zoom">
-        {/* <Icon icon={iconNames.zoomOut} onClick={() => zoomOut()} className="icon xs pointer grey" />
-        <span className="percent">{Math.round(zoom * 100) + "%"}</span>
-        <Icon icon={iconNames.zoomIn} onClick={() => zoomIn()} className="icon xs pointer grey" /> */}
         <FloatButton.Group shape="circle" style={{ right: "3%", bottom: 100 }}>
           <FloatButton icon={<ZoomOutOutlined style={{ color: "white" }} />} onClick={() => zoomOut()} />
           <FloatButton icon={<ZoomInOutlined style={{ color: "white" }} />} onClick={() => zoomIn()} />

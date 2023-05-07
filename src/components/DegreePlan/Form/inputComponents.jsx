@@ -1,23 +1,33 @@
 import { Input, DatePicker, Radio, Dropdown, Button } from "antd";
 import TextArea from "antd/es/input/TextArea";
 
-const getForm = (value, setValue, disabled = false) => {
+const getForm = (value, setValue, disabled = false, onEnter = () => {}) => {
   const handleFormInput = (e) => {
     setValue(e.target.value);
   };
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter" && !disabled) {
+      onEnter();
+    }
+  };
 
-  return <Input value={value} onChange={(e) => handleFormInput(e)} disabled={disabled} />;
+  return <Input value={value} onChange={(e) => handleFormInput(e)} onKeyDown={(e) => handleKeyPress(e)} disabled={disabled} />;
 };
 
-const getTextArea = (value, setValue, disabled = false) => {
+const getTextArea = (value, setValue, disabled = false, onEnter = () => {}) => {
   const handleFormInput = (e) => {
     setValue(e.target.value);
   };
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter" && !disabled) {
+      onEnter();
+    }
+  };
 
-  return <TextArea value={value} onChange={(e) => handleFormInput(e)} disabled={disabled} />;
+  return <TextArea value={value} onChange={(e) => handleFormInput(e)} onKeyDown={(e) => handleKeyPress(e)} disabled={disabled} />;
 };
 
-const getNumberForm = (value, setValue, disabled = false, semester = false) => {
+const getNumberForm = (value, setValue, disabled = false, semester = false, onEnter = () => {}) => {
   const handleFormInput = (e) => {
     const input = e.target.value;
     let regex = /^[0-9\b]+$/; // only allow digits and backspace
@@ -26,8 +36,13 @@ const getNumberForm = (value, setValue, disabled = false, semester = false) => {
       setValue(input);
     }
   };
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter" && !disabled) {
+      onEnter();
+    }
+  };
 
-  return <Input value={value} onChange={(e) => handleFormInput(e)} disabled={disabled} />;
+  return <Input value={value} onChange={(e) => handleFormInput(e)} onKeyDown={(e) => handleKeyPress(e)} disabled={disabled} />;
 };
 
 const getDatePicker = (value, setValue, disabled = false) => {

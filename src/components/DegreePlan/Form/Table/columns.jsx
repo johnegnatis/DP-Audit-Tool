@@ -62,7 +62,7 @@ export const getColumn = ({ onEdit, onMove, onCopy, onDelete, disabled, onLeveli
               title="Too many classes in this section. This class will not appear on the degree plan."
               className="tooltip-warning"
             >
-              <Icon icon={iconNames.warning} className="icon yellow xs" style={{marginLeft: '5px'}} />
+              <Icon icon={iconNames.warning} className="icon orange xs" style={{marginLeft: '5px'}} />
             </Tooltip>
           </div>
         );

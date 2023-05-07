@@ -16,6 +16,8 @@ export const iconNames = {
   settings: "material-symbols:settings",
   openFile: "fluent-emoji-high-contrast:open-file-folder",
   openDir: "material-symbols:folder-copy-outline",
+  dot: "entypo:dot-single",
+  loading: "eos-icons:loading",
 };
 export const settingsKeys = {
   defaultPathForDegreePlan: "default-path-for-degree-plan",
@@ -52,10 +54,10 @@ export const getNumberToString = (number, lowerCase = false) => {
   return numberStr;
 };
 export const disableType = {
-  move: 'move',
-  copy: 'copy',
-  none: '',
-}
+  move: "move",
+  copy: "copy",
+  none: "",
+};
 export const levelingOptions = [
   {
     label: "Completed",
@@ -83,11 +85,11 @@ export const levelingMap = {
 };
 
 export const classesDBRequestMap = {
-  get: 'get', 
-  insert: 'insert',
-  delete: 'delete',
-  update: 'update',
-}
+  get: "get",
+  insert: "insert",
+  delete: "delete",
+  update: "update",
+};
 
 export const tableTypes = {
   core: "core",
@@ -105,8 +107,7 @@ export const tableList = [
 ];
 export const tableNames = {
   core: "Core Courses",
-  following: "One of the Following Courses",
-  electives: "Approved 6000 Level Courses",
+  electives: "Elective Courses",
   additional: "Additional Electives",
   prerequisites: "Prerequisites",
 };

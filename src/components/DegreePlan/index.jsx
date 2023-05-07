@@ -62,12 +62,6 @@ const DegreePlan = ({ student, databaseProps }) => {
   // Database
   const { trackOptions } = databaseProps;
 
-  // CLASS LIST LOGIC
-  const handleDeleteFromClassList = useCallback((number) => {
-    deleteClass(number);
-    setRefetchClassList((prev) => !prev);
-  }, []);
-
   // ADD LOGIC
   const [addClassTable, setAddClassTable] = useState("");
   const [isSearch, setIsSearch] = useState(false);
@@ -102,6 +96,11 @@ const DegreePlan = ({ student, databaseProps }) => {
   const handleAddClassDrawerClose = useCallback(() => {
     setAddClassTable("");
   }, [classOptionProps]);
+  const handleDeleteFromClassList = useCallback((number) => {
+    deleteClass(number);
+    setRefetchClassList((prev) => !prev);
+    handleAddClassDrawerClose();
+  }, []);
 
   // EDIT LOGIC
   const [selectedClassForEdit, setSelectedClassForEdit] = useState(null);
@@ -371,11 +370,9 @@ const DegreePlan = ({ student, databaseProps }) => {
     const setter = getClassSetter(obj.class.type);
     if (!setter) return;
     setter((prev) => {
-      console.log(prev.filter((_, index) => index !== obj.index));
       return prev.filter((_, index) => index !== obj.index);
     });
   }, []);
-  console.log(formProps.additional);
   // LEVELING LOGIC
   const [selectedClassForLeveling, setSelectedClassForLeveling] = useState(null);
   const handleLevelingChange = useCallback((obj) => {

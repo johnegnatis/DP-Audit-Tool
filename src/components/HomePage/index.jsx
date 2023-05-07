@@ -2,84 +2,92 @@ import Logo from "../../assets/images/logo.png";
 import { Button, Tooltip } from "antd";
 import { Icon } from "@iconify/react";
 import { iconNames, pages } from "../../utils/constants";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { eel } from "../../utils/eel";
 import { handleError, sendError, sendLoading, sendSuccess } from "../../utils/methods";
 import { useGlobalState, setGlobalState } from "../GlobalState";
 import { getEelResponse } from "./apiHelper";
 import NavigationBar from "../NavigationBar";
 import SettingsForm from "./SettingsForm";
+import { status, statusMessage, getStatusIcon } from "./fileStatusHelpers";
 
 const HomePage = () => {
   const [globalStudents] = useGlobalState("students");
   const [fileStudentList, setFileStudentList] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [negativeIndex, setNegativeIndex] = useState(-1);
+  const [fileNameLoading, setFileNameLoading] = useState(false);
+  const uploadLoading = fileStudentList.find((obj) => obj.status === status.loading);
+  const allLoading = useMemo(() => fileNameLoading || uploadLoading, [fileNameLoading, uploadLoading]);
+  const key = "popup-upload";
+  const split = "(A+D++_WD*A_>";
 
   const handleUploadClick = useCallback(() => {
-    const key = "popup-upload";
-    if (loading) {
+    if (allLoading) {
       return;
     }
-    setLoading(true);
+    setFileNameLoading(true);
     sendLoading("Selecting Files", key);
     eel
       .getFilePaths()()
       .then((fileList) => {
-        // TODO: handle same file uploaded error
-        sendLoading("Parsing Transcripts", key);
-        const promises = fileList.map((file, index) => getEelResponse(file, negativeIndex - index));
-        setNegativeIndex((num) => num - promises.length);
-        Promise.all(promises).then((students) => {
-          const fails = [];
-          const fileStudentsToAdd = [];
-          students &&
-            students.forEach((studentObj, index) => {
-              if (!studentObj) {
-                fileStudentsToAdd.push({
-                  file: fileList[index],
-                  status: "error",
-                  student: null,
-                });
-                fails.push(fileList[index]);
-              } else {
-                fileStudentsToAdd.push({
-                  file: fileList[index],
-                  status: "success",
-                  student: studentObj,
-                });
-              }
-            });
-          setFileStudentList((arr) => [...fileStudentsToAdd, ...arr]);
-          setLoading(false);
-          if (fails.length > 0) {
-            sendError(
-              <div style={{ minWidth: "650px" }}>
-                <h3>The following file uploads were unsuccessful:</h3>
-                <ol>
-                  {fails.map((filename) => {
-                    const parts = filename.split("/");
-                    const fileName = parts[parts.length - 1];
-                    return (
-                      <li key={fileName} style={{ textAlign: "left", fontSize: "14px" }}>
-                        {fileName}
-                      </li>
-                    );
-                  })}
-                </ol>
-              </div>,
-              key
-            );
-          } else {
-            sendSuccess("Transcripts parsed successfully", key);
-          }
+        setFileNameLoading(false);
+        if (!fileList || fileList.length <= 0) return;
+        sendSuccess("Reading files", key);
+        setFileStudentList((prev) => {
+          const newStudents = fileList.map((fileName) => {
+            return {
+              file: fileName,
+              status: status.loading,
+              student: null,
+            };
+          });
+          return [...newStudents, ...prev];
         });
+
+        for (const file of fileList) {
+          getEelResponse(file)
+            .then((student) => {
+              setFileStudentList((prev) => {
+                const newList = [...prev];
+                const index = newList.findIndex((obj) => obj.file === file);
+                if (index < 0) return prev;
+                if (student && student.student && student.student.studentId) {
+                  const studentId = student.student.studentId;
+                  const studentIdsToCheck = [
+                    ...globalStudents.map((obj) => obj.student.studentId),
+                    ...newList.map((obj) => obj.student && obj.student.student.studentId),
+                  ];
+                  if (studentIdsToCheck.includes(studentId)) {
+                    newList[index].status = status.errorSameId;
+                    newList[index].file += split + Math.random();
+                  } else {
+                    newList[index].student = student;
+                    newList[index].status = status.success;
+                  }
+                } else {
+                  newList[index].status = status.error;
+                  newList[index].file += split + Math.random();
+                }
+                return newList;
+              });
+            })
+            .catch((e) => {
+              setFileStudentList((prev) => {
+                const newList = [...prev];
+                const index = newList.findIndex((obj) => obj.file === file);
+                newList[index].status = status.error;
+                newList[index].file += split + Math.random();
+                return newList;
+              });
+            });
+        }
       })
       .catch((e) => {
+        console.log(e);
         handleError(e, key);
-        setLoading(false);
+        setFileNameLoading(false);
+        return;
       });
-  }, [loading, eel, negativeIndex, setLoading]);
+  }, [fileNameLoading, eel, setFileNameLoading, globalStudents]);
 
   const handleCreateDocumentClick = () => {
     const tempStudents = fileStudentList
@@ -98,34 +106,25 @@ const HomePage = () => {
   };
 
   const getUploadBox = () => {
-    if (loading && fileStudentList.length <= 0) {
-      return (
-        <div onClick={handleUploadClick} className="upload-box">
-          <span>Loading...</span>
-        </div>
-      );
-    } else if (fileStudentList.length <= 0) {
-      return (
-        <div onClick={handleUploadClick} className="upload-box">
-          <Icon icon={iconNames.file} className="icon orange medium" />
-          <span className="info">Student Transcript or Degree Plan</span>
-          <span className="info-subtitle">Click to Upload.</span>
-        </div>
-      );
-    } else {
-      return (
-        <div className="upload-box-list">
-          {fileStudentList.map((fileObj, index) => {
-            const fileName = fileObj && fileObj.file.split("/")[fileObj.file.split("/").length - 1];
-            const status =
-              fileObj && fileObj.status === "success" ? (
-                <Icon icon={iconNames.checkbox} className="icon orange small" />
-              ) : (
-                <Icon icon={iconNames.redX} className="icon red small" />
-              );
+    return (
+      <div onClick={handleUploadClick} className="upload-box">
+        <Icon icon={iconNames.file} className="icon orange medium" />
+        <span className="info">Student Transcript or Degree Plan</span>
+        <span className="info-subtitle">Click to Upload.</span>
+      </div>
+    );
+  };
+  const getFileList = () => {
+    return (
+      <div className="file-list">
+        {fileStudentList &&
+          fileStudentList.map((fileObj, index) => {
+            const fileName = fileObj && fileObj.file.split("/")[fileObj.file.split("/").length - 1].split(split)[0];
+            const statusIcon = getStatusIcon(fileObj);
+            const isLoadingForCSS = fileObj.status === status.loading ? "loading" : "";
             return (
-              <span className="file-element border" key={index}>
-                {status}
+              <span className={`file-element border ${isLoadingForCSS}`} key={index}>
+                {statusIcon}
                 <span>{fileName}</span>
                 <Tooltip placement="right" title="Remove Student">
                   <Icon icon={iconNames.close} className="icon grey xs pointer" onClick={() => removeElement(fileObj.file)} />
@@ -133,20 +132,12 @@ const HomePage = () => {
               </span>
             );
           })}
-          <span className="file-element pointer" key={-1} onClick={() => handleUploadClick()}>
-            <Icon icon={iconNames.plus} className="icon grey small" />
-            <span>Add File</span>
-            <Icon icon={iconNames.checkbox} className="icon small hide" />
-          </span>
-        </div>
-      );
-    }
+      </div>
+    );
   };
 
   const [settingsOpen, setSettingsOpen] = useState(false);
-  const topRightIcon = (
-    <Icon icon={iconNames.settings} onClick={() => setSettingsOpen(true)} className="icon grey xs pointer" />
-  );
+  const topRightIcon = <Icon icon={iconNames.settings} onClick={() => setSettingsOpen(true)} className="icon grey xs pointer" />;
   const handleCloseSettings = () => {
     setSettingsOpen(false);
   };
@@ -160,7 +151,10 @@ const HomePage = () => {
             <img src={Logo} alt="UTD CS/SE Graduate Advising Degree Plan and Audit Tool Logo" />
           </div>
           <div className="title">UTD CS/SE Graduate Advising Degree Plan and Audit Tool</div>
-          {getUploadBox()}
+          <div className="container-upload">
+            {getUploadBox()}
+            {getFileList()}
+          </div>
         </div>
       </div>
       <footer>
@@ -173,9 +167,9 @@ const HomePage = () => {
             onClick={handleCreateDocumentClick}
             className="button orange-bg"
             size="large"
-            disabled={fileStudentList.length <= 0}
+            disabled={allLoading || (fileStudentList && fileStudentList.length <= 0)}
           >
-            CREATE DOCUMENTS
+            Create Documents
           </Button>
         </div>
       </footer>

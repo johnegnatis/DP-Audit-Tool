@@ -40,6 +40,7 @@ export function useTrackOptions(track) {
   const [followingOptions, setFollowingOptions] = useState([]);
   const [prerequisiteOptions, setPrerequisiteOptions] = useState([]);
   const [tableCounts, setTableCounts] = useState({});
+  const [degreePlanNotes, setDegreePlanNotes] = useState({});
   const [nOfTheFollowing, setNOfTheFollowing] = useState(0);
   const [loading, setLoading] = useState(false);
 
@@ -58,6 +59,7 @@ export function useTrackOptions(track) {
         setPrerequisiteOptions(getClassOptions(database, tableTypes.prerequisites));
         setNOfTheFollowing(database["N-of-the-following"] | 0);
         setTableCounts(pdfTypes[database["pdf-type"] || "0"]["pdf-table-size"]);
+        setDegreePlanNotes(database["notes"]);
         setLoading(false);
       })
       .catch((e) => {
@@ -77,5 +79,5 @@ export function useTrackOptions(track) {
     });
   }
 
-  return { loading, coreOptions, followingOptions, prerequisiteOptions, nOfTheFollowing, tableCounts };
+  return { loading, coreOptions, followingOptions, prerequisiteOptions, nOfTheFollowing, tableCounts, degreePlanNotes };
 }
