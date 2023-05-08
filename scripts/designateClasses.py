@@ -198,7 +198,7 @@ def designateClassesMethod(student_object):
             # ENSURE THAT SPECIAL TOPICS IS NOT A GRADED CLASS IN FOLLOWING
             if test_strings(class_obj.number, special_topics_in_computer_science) and class_obj.type == following_key:
                 replacement_classes.append(
-                    make_empty_class_from_existing(class_obj, class_obj.type, "See Above"))
+                    make_empty_class_from_existing(class_obj, class_obj.type))
                 class_obj.type = elective_key
                 continue
 
@@ -218,7 +218,7 @@ def designateClassesMethod(student_object):
                 if index == best_prerequisite_index:
                     class_obj.type = additional_key
                     replacement_classes.append(
-                        make_empty_class_from_existing(class_obj, prerequisite_key))
+                        make_empty_class_from_existing(class_obj, prerequisite_key, "See Above"))
 
                 class_list.append(class_obj)
 
