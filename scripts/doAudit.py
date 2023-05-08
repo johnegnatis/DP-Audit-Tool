@@ -129,7 +129,7 @@ def generateAudit(studentObject, destination):
         if course.leveling == 'Completed':
             if course.grade == 'See Above':
                 try:
-                    duplicate = [co for co in total_complete if co.number == course.number and co.grade != 'See Above'][0]
+                    duplicate = [co for co in total_complete if "".join(findall('\d+', co.number)) == "".join(findall('\d+', course.number)) and co.grade != 'See Above'][0]
                     para.add_run("\n" + c + " - " + course.leveling + ": " + duplicate.semester + ": " + duplicate.grade)
                 except:
                     para.add_run("\n" + c + " - " + course.leveling)
