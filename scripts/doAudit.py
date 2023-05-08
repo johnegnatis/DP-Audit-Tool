@@ -31,7 +31,6 @@ def doAuditMethod(studentObject):
 
 def generateAudit(studentObject, destination):
     # Class tracking for GPA
-    doc = ''
     try:
         core_complete = [course for course in studentObject.classes if course.grade and course.grade[0] != 'W' and (course.type == 'core' or course.type == 'following')]
         core_incomplete = [course for course in studentObject.classes if (not course.grade or course.grade[0] == 'W') and course.semester and (course.type == 'core' or course.type == 'following')]
@@ -127,7 +126,7 @@ def generateAudit(studentObject, destination):
             if course.leveling == 'Completed':
                 if course.grade == 'See Above':
                     try:
-                        duplicate = [co for co in total_complete if co.number == course.number and co.grade != 'See Above'][0]
+                        duplicate = [co for co in total_complete if "".join(findall('\d+', co.number)) == "".join(findall('\d+', course.number)) and co.grade != 'See Above'][0]
                         para.add_run("\n" + c + " - " + course.leveling + ": " + duplicate.semester + ": " + duplicate.grade)
                     except:
                         para.add_run("\n" + c + " - " + course.leveling)
@@ -136,55 +135,6 @@ def generateAudit(studentObject, destination):
 
             elif course.leveling == 'Waived':
                 para.add_run("\n" + c + " - " + course.leveling + ": " + course.semester)
-            else:
-                para.add_run('Computer Science')
-            para.add_run('\n\tTrack: ').bold = True
-            para.add_run(studentObject.track)
-
-
-        #GPA
-        core_complete.sort(key=lambda x: x.grade)
-        elective_complete.sort(key=lambda x: x.grade)
-        total_complete.sort(key=lambda x: x.grade)
-
-        core_complete = core_complete[:5]
-        elective_complete = elective_complete[:7]
-
-        core_gpa = getGPA(core_complete)
-        elective_gpa = getGPA(elective_complete)
-        combined_gpa = getGPA(total_complete)
-
-        para = doc.add_paragraph()
-        para.add_run('\nCore GPA: ').bold = True
-        para.add_run('%.3f' % core_gpa)
-        para.add_run('\nElective GPA: ').bold = True
-        para.add_run('%.3f' % elective_gpa)
-        para.add_run('\nCombined GPA: ').bold = True
-        para.add_run('%.3f' % combined_gpa)
-
-        # courses
-        para = doc.add_paragraph()
-        para.add_run('\nCore Courses: ').bold = True
-
-        cores = [course for course in studentObject.classes if course.type == 'core']
-        cores = cores + [course for course in studentObject.classes if course.semester and course.type == 'following']
-        para.add_run(", ".join([course.number.split("(")[0].strip() for course in cores]))
-
-
-        para.add_run('\nElective Courses: ').bold = True
-
-        electives = elective_complete + elective_incomplete
-        electives.sort(key=lambda x: x.number)
-        para.add_run(", ".join([course.number.split("(")[0].strip() for course in electives]))
-
-        # leveling courses (incomplete) NEED LIST OF LEVELING COURSES HERE
-        para = doc.add_paragraph()
-        para.add_run('\nLeveling Courses and Pre-requisites from Admission Letter:\n').bold = True
-        
-        for course in leveling_courses:
-            c = "".join(findall("[a-zA-Z]* *[0-9]*", course.number))
-            if course.leveling == 'Completed':
-                para.add_run("\n" + c + " - " + course.leveling + ": " + course.semester + ": " + course.grade)
             else:
                 para.add_run("\n" + c + " - " + course.leveling)
         
