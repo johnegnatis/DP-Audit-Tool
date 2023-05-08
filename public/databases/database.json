@@ -78,6 +78,10 @@
       ],
       "prerequisites": [
         {
+          "id": "CS 3341",
+          "name": "Probability & Statistics in CS and SE"
+        },
+        {
           "id": "CS 5303",
           "name": "Computer Science I"
         },
@@ -96,6 +100,15 @@
         {
           "id": "CS 5348",
           "name": "Operating System Concepts"
+        },
+        {
+          "id": "CS 5349",
+          "name": "Automata Theory"
+        },
+        {
+          "id": "CS 5354",
+          "alias": "SE 5354",
+          "name": "Software Engineering"
         },
         {
           "id": "CS 5390",
@@ -180,6 +193,19 @@
         {
           "id": "CS 5348",
           "name": "Operating System Concepts"
+        },
+        {
+          "id": "CS 5349",
+          "name": "Automata Theory"
+        },
+        {
+          "id": "CS 5354",
+          "alias": "SE 5354",
+          "name": "Software Engineering"
+        },
+        {
+          "id": "CS 5390",
+          "name": "Computer Networks"
         }
       ],
       "notes": {
@@ -226,6 +252,10 @@
       ],
       "prerequisites": [
         {
+          "id": "CS 3341",
+          "name": "Probability & Statistics in CS and SE"
+        },
+        {
           "id": "CS 5303",
           "name": "Computer Science I"
         },
@@ -244,6 +274,19 @@
         {
           "id": "CS 5348",
           "name": "Operating System Concepts"
+        },
+        {
+          "id": "CS 5349",
+          "name": "Automata Theory"
+        },
+        {
+          "id": "CS 5354",
+          "alias": "SE 5354",
+          "name": "Software Engineering"
+        },
+        {
+          "id": "CS 5390",
+          "name": "Computer Networks"
         }
       ],
       "notes": {
@@ -294,6 +337,10 @@
       ],
       "prerequisites": [
         {
+          "id": "CS 3341",
+          "name": "Probability & Statistics in CS and SE"
+        },
+        {
           "id": "CS 5303",
           "name": "Computer Science I"
         },
@@ -312,8 +359,22 @@
         {
           "id": "CS 5348",
           "name": "Operating System Concepts"
+        },
+        {
+          "id": "CS 5349",
+          "name": "Automata Theory"
+        },
+        {
+          "id": "CS 5354",
+          "alias": "SE 5354",
+          "name": "Software Engineering"
+        },
+        {
+          "id": "CS 5390",
+          "name": "Computer Networks"
         }
-      ],"notes": {
+      ],
+      "notes": {
         "core": ["15 Credit Hours", "3.19 Grade Point Average Required"],
         "elective": ["15 Credit Hours", "3.0 Grade Point Average"],
         "additional": ["3 Credit Hours"],
@@ -376,10 +437,20 @@
           "name": "Operating System Concepts"
         },
         {
+          "id": "CS 5349",
+          "name": "Automata Theory"
+        },
+        {
+          "id": "CS 5354",
+          "alias": "SE 5354",
+          "name": "Software Engineering"
+        },
+        {
           "id": "CS 5390",
           "name": "Computer Networks"
         }
-      ],"notes": {
+      ],
+      "notes": {
         "core": ["15 Credit Hours", "3.19 Grade Point Average Required"],
         "elective": ["15 Credit Hours", "3.0 Grade Point Average"],
         "additional": ["3 Credit Hours"],
@@ -435,6 +506,10 @@
       ],
       "prerequisites": [
         {
+          "id": "CS 3341",
+          "name": "Probability & Statistics in CS and SE"
+        },
+        {
           "id": "CS 5303",
           "name": "Computer Science I"
         },
@@ -455,10 +530,20 @@
           "name": "Operating System Concepts"
         },
         {
+          "id": "CS 5349",
+          "name": "Automata Theory"
+        },
+        {
+          "id": "CS 5354",
+          "alias": "SE 5354",
+          "name": "Software Engineering"
+        },
+        {
           "id": "CS 5390",
           "name": "Computer Networks"
         }
-      ],"notes": {
+      ],
+      "notes": {
         "core": ["15 Credit Hours", "3.19 Grade Point Average Required"],
         "elective": ["15 Credit Hours", "3.0 Grade Point Average"],
         "additional": ["3 Credit Hours"],
@@ -502,6 +587,10 @@
       ],
       "prerequisites": [
         {
+          "id": "CS 3341",
+          "name": "Probability & Statistics in CS and SE"
+        },
+        {
           "id": "CS 5303",
           "name": "Computer Science I"
         },
@@ -526,10 +615,16 @@
           "name": "Automata Theory"
         },
         {
+          "id": "CS 5354",
+          "alias": "SE 5354",
+          "name": "Software Engineering"
+        },
+        {
           "id": "CS 5390",
           "name": "Computer Networks"
         }
-      ],"notes": {
+      ],
+      "notes": {
         "core": ["15 Credit Hours", "3.19 Grade Point Average Required"],
         "elective": ["15 Credit Hours", "3.0 Grade Point Average"],
         "additional": ["3 Credit Hours"],
@@ -570,6 +665,10 @@
       "following": [],
       "prerequisites": [
         {
+          "id": "CS 3341",
+          "name": "Probability & Statistics in CS and SE"
+        },
+        {
           "id": "CS 5303",
           "name": "Computer Science I"
         },
@@ -590,8 +689,17 @@
           "name": "Operating System Concepts"
         },
         {
+          "id": "CS 5349",
+          "name": "Automata Theory"
+        },
+        {
           "id": "CS 5354",
+          "alias": "SE 5354",
           "name": "Software Engineering"
+        },
+        {
+          "id": "CS 5390",
+          "name": "Computer Networks"
         }
       ],
       "notes": {
@@ -599,7 +707,10 @@
         "elective": ["15 Credit Hours", "3.0 Grade Point Average"],
         "additional": ["3 Credit Hours"],
         "prerequisites": [],
-        "overall": ["May include any 6000 or 7000 level CS course without prior permission.", "CS6369 cannot be used on this degree plan"]
+        "overall": [
+          "May include any 6000 or 7000 level CS course without prior permission.",
+          "CS6369 cannot be used on this degree plan"
+        ]
       }
     }
   ]

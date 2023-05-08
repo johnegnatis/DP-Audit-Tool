@@ -29,6 +29,7 @@ const EditClass = ({ handleSubmit, classObj }) => {
             <Tooltip
               title="Leave blank to make this class only appear on the audit, but not on the degree plan. 
             Useful for adding leveling courses."
+              placement="bottom"
             >
               <Icon icon={iconNames.info} className="icon xxs orange" />
             </Tooltip>
