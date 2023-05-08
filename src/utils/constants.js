@@ -18,6 +18,7 @@ export const iconNames = {
   openDir: "material-symbols:folder-copy-outline",
   dot: "entypo:dot-single",
   loading: "eos-icons:loading",
+  info: 'mdi:information-variant-circle',
 };
 export const settingsKeys = {
   defaultPathForDegreePlan: "default-path-for-degree-plan",

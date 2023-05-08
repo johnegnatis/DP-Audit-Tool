@@ -72,6 +72,8 @@ def fillPDFForms(studentObject, path):
     j = 0
     class_data = studentObject.classes
     for i in class_data:
+        if (i.name == ""):
+            continue
         if (i.type == "core"):
             coreName[j] = (i.name)
             coreNum[j] = (i.number)
@@ -93,6 +95,8 @@ def fillPDFForms(studentObject, path):
     j = 0
     class_data = studentObject.classes
     for i in class_data:
+        if (i.name == ""):
+            continue
         if (i.type == "following"):
             followingName[j] = (i.name)
             followingNum[j] = (i.number)
@@ -114,6 +118,8 @@ def fillPDFForms(studentObject, path):
     j = 0
     class_data = studentObject.classes
     for i in class_data:
+        if (i.name == ""):
+            continue
         if (i.type == "electives"):
             electiveName[j] = (i.name)
             electiveNum[j] = (i.number)
@@ -135,6 +141,8 @@ def fillPDFForms(studentObject, path):
     j = 0
     class_data = studentObject.classes
     for i in class_data:
+        if (i.name == ""):
+            continue
         if (i.type == "additional"):
             addElectiveName[j] = (i.name)
             addElectiveNum[j] = (i.number)
@@ -156,10 +164,12 @@ def fillPDFForms(studentObject, path):
     j = 0
     class_data = studentObject.classes
     for i in class_data:
+        if (i.name == ""):
+            continue
         if (i.type == "prerequisites"):
             if(i.leveling != ''):
-                prereqName[j] = "***" + i.name + "***"
-                prereqNum[j] = "***" + i.number + "***"
+                prereqName[j] = "**" + i.name + "**"
+                prereqNum[j] = "**" + i.number + "**"
             else:
                 prereqName[j] = i.name
                 prereqNum[j] = i.number

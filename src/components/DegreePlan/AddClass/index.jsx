@@ -4,7 +4,7 @@ import react, { useMemo, useState } from "react";
 import { getSpan } from "../Form/gridLayout";
 import { getForm, getNumberForm } from "../Form/inputComponents";
 import { useClassForm } from "../../Hooks/degreePlanHooks";
-import { Button } from "antd";
+import { Button, Tooltip } from "antd";
 
 const AddClass = ({
   searchInput,
@@ -88,7 +88,19 @@ const AddClass = ({
       <br />
       <div className="class-form">
         <div className="row">
-          {getSpan("Course Title", false, false)}
+          {getSpan(
+            <div style={{ display: "flex", alignContent: "center" }}>
+              <span style={{ paddingRight: "10px" }}>Course Title</span>
+              <Tooltip
+                title="Leave blank to make this class only appear on the audit, but not on the degree plan. 
+            Useful for adding leveling courses."
+              >
+                <Icon icon={iconNames.info} className="icon xxs orange" />
+              </Tooltip>
+            </div>,
+            false,
+            false
+          )}
           {getForm(name, setName, false, onSubmitNewClass)}
         </div>
         <div className="row">

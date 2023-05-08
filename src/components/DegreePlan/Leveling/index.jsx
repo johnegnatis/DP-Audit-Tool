@@ -1,7 +1,9 @@
 import React from "react";
 import { getForm } from "../Form/inputComponents";
 import { getSpan } from "../Form/gridLayout";
-import { Button } from "antd";
+import { Icon } from "@iconify/react";
+import { iconNames } from "../../../utils/constants";
+import { Button, Tooltip } from "antd";
 import { useEditClass } from "../../Hooks/degreePlanHooks";
 import { getNumberForm } from "../Form/inputComponents";
 const EditClass = ({ handleSubmit, classObj }) => {
@@ -31,7 +33,19 @@ const EditClass = ({ handleSubmit, classObj }) => {
   return (
     <div className="class-form-root">
       <div className="row">
-        {getSpan("Course Title", false, false)}
+      {getSpan(
+            <div style={{ display: "flex", alignContent: "center" }}>
+              <span style={{ paddingRight: "10px" }}>Course Title</span>
+              <Tooltip
+                title="Leave blank to make this class only appear on the audit, but not on the degree plan. 
+            Useful for adding leveling courses."
+              >
+                <Icon icon={iconNames.info} className="icon xxs orange" />
+              </Tooltip>
+            </div>,
+            false,
+            false
+          )}
         {getForm(name, setName)}
       </div>
       <div className="row">

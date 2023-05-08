@@ -267,7 +267,7 @@ const Form = ({
         notes={prerequisiteNotes}
       />
     ),
-    [prerequisites, prerequisiteTableSize, prerequisiteOptions, prerequisiteNotes, ...sharedTableDependencies]
+    [prerequisites, handleLevelingChange, prerequisiteTableSize, prerequisiteOptions, prerequisiteNotes, ...sharedTableDependencies]
   );
   const { Panel } = Collapse;
   return (
