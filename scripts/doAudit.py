@@ -68,7 +68,7 @@ def generateAudit(studentObject, destination):
 
     inch = 914400
     tab_stops = para.paragraph_format.tab_stops
-    tab_stop = tab_stops.add_tab_stop(round(inch*4))
+    tab_stop = tab_stops.add_tab_stop(round(inch*3.5))
 
     para.add_run('Name: ').bold = True
     para.add_run(studentObject.name)
