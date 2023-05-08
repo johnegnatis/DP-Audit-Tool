@@ -85,7 +85,7 @@ def run_eel():
             eel.init('build')
             eel.start('index.html', host="localhost", port=EEL_PORT)
         except Exception as e:
-            print(e)
+            print("Something unexpected occurred in index.py.")
 
 if __name__ == '__main__':
     freeze_support()  # for pyinstaller on Windows

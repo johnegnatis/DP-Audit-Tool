@@ -14,7 +14,6 @@ def open_database():
                 f = open(test_dev)
         return load(f)
     except Exception as e:
-        print(e)
         raise Exception("Error: Open Database was unsuccessful. Check that databases/database.json exists and try again.")
 
 def get_options_for_frontend():

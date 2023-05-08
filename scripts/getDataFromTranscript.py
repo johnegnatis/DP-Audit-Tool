@@ -15,7 +15,7 @@ def getDataFromTranscriptMethod(file_path):
         studentObject = readStudentObject(file_path)
         return studentObject
     except Exception as e:
-        print(e)
+        # If this fails we assume it is transcript
         pass
 
     line_items = []
@@ -46,7 +46,6 @@ def getDataFromTranscriptMethod(file_path):
         print ('IOError thrown. File not found. Details: {ex}')
         raise Exception("Error: File could not be opened.")
     except Exception as e:
-        print(e)
         raise Exception("Error: Error parsing transcript.")
 
     # EXTRACTION:

@@ -41,7 +41,6 @@ def savePDFMethod(file_name, signature, flatten):
 
         return dir_to_save
     except Exception as e:
-        print(e)
         raise Exception("Error: Error while saving PDF.")
 
 def getDirectory(message="Select directory", default_path = None):

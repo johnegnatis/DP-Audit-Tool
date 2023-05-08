@@ -30,11 +30,11 @@ const getTextArea = (value, setValue, disabled = false, onEnter = () => {}) => {
 const getNumberForm = (value, setValue, disabled = false, semester = false, onEnter = () => {}) => {
   const handleFormInput = (e) => {
     const input = e.target.value;
-    let regex = /^[0-9\b]+$/; // only allow digits and backspace
-    if (semester) regex = /^[0-9\bFSfs]+$/;
-    if (regex.test(input) || input === "") {
-      setValue(input);
-    }
+    // let regex = /^[0-9\b]+$/; // only allow digits and backspace
+    // if (semester) regex = /^[0-9\bFSfs]+$/;
+    // if (regex.test(input) || input === "") {
+    setValue(input); // decide against restricting input
+    // }
   };
   const handleKeyPress = (e) => {
     if (e.key === "Enter" && !disabled) {

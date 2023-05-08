@@ -58,7 +58,6 @@ def is_prerequisite_higher_rank(class_one, class_two):
             return class_one.number == "CS 5343"  # prioritize algorithms
         return rank_one < rank_two
     except Exception as e:
-        print(e)
         return False
 
 # FINDS CLASS IN ONE OF THE TYPELISTS, CHANGES NAME
@@ -71,11 +70,13 @@ def assign_name(class_name, type_list):
             class_name.name = type_list[i]['name']
             break
 
+
 def get_alias(database_class):
     try:
         return database_class['alias']
     except KeyError:
         return ''
+
 
 def find_add_classes(replacement_classes, class_list, type_list, type_key):
     found = False
@@ -115,9 +116,13 @@ def append_class_grade_and_semester(old_obj, new_obj):
     old_obj.grade = new_grade + '/' + old_grade
     old_obj.semester = new_semester + '/' + old_semester
 
+    # we also need to place this in the higher precedence table
+    if (new_obj.type == core_key or new_obj.type == following_key):
+        old_obj.type = new_obj.type
 
-def make_empty_class_from_existing(class_obj, table):
-    return Class(class_obj.name, class_obj.number, '', '', '', '', table, '')
+
+def make_empty_class_from_existing(class_obj, table, note=''):
+    return Class(class_obj.name, class_obj.number, note, '', '', '', table, '')
 
 
 def designateClassesMethod(student_object):
@@ -193,7 +198,7 @@ def designateClassesMethod(student_object):
             # ENSURE THAT SPECIAL TOPICS IS NOT A GRADED CLASS IN FOLLOWING
             if test_strings(class_obj.number, special_topics_in_computer_science) and class_obj.type == following_key:
                 replacement_classes.append(
-                    make_empty_class_from_existing(class_obj, class_obj.type))
+                    make_empty_class_from_existing(class_obj, class_obj.type, "See Above"))
                 class_obj.type = elective_key
                 continue
 
@@ -204,8 +209,8 @@ def designateClassesMethod(student_object):
         for index, class_obj in enumerate(student_object.classes):
             if index in indexes:
                 # CHANGING THE CAPITALS - electives won't be in DB
+                class_obj.name = (class_obj.name).title()
                 if class_obj.type == elective_key:  # current class type == elective, make it title case; non-electives are handled above
-                    class_obj.name = (class_obj.name).title()
                     if test_strings(class_obj.number, special_topics_in_computer_science):
                         class_obj.name = class_obj.name.split('[')[0]
 
@@ -227,7 +232,6 @@ def designateClassesMethod(student_object):
         # print(f"{student_object.classes[i].type} {student_object.classes[i].name} {student_object.classes[i].number} {student_object.classes[i].grade} {student_object.classes[i].semester}")
         return student_object.packStudentObject()
     except Exception as e:
-        print(e)
         raise Exception("Error: Error At Track Selection.")
 
 

@@ -476,11 +476,10 @@ def fillPDFForms(studentObject, path):
     try:
         fillpdfs.write_fillable_pdf(base_dev + pdf_name, path, data_dict)
     except Exception as e:
-        print('dev', e)
         try:
             fillpdfs.write_fillable_pdf(base_prod + pdf_name, path, data_dict)
         except Exception as e:
-            print('prod', e)
+            raise Exception("Error:Could not write to PDF. Ensure the PDF specified in the database exists in /build/degreePlans")
 
 def getStudentFile(name):
     name = get_naming_convention(name)

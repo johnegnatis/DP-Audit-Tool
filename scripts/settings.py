@@ -15,7 +15,6 @@ def open_settings():
                 db = TinyDB(test_dev)
         return db
     except Exception as e:
-        print(e)
         raise Exception("Error: Error opening settings.json file.")
 
 def get_all_settings():
@@ -37,7 +36,6 @@ def settings(action, payload=[]):
         else:
             raise Exception("Error: Unsupported settings action.")
     except Exception as e:
-        print(e)
         raise Exception("Error: Database interaction failed.")
 
 # find keys in frontend constants.js
