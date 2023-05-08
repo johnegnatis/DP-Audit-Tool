@@ -39,9 +39,10 @@ def generateAudit(studentObject, destination):
     core_incomplete = [course for course in studentObject.classes if (not course.grade or course.grade[0] == 'W') and course.semester and (course.type == 'core' or course.type == 'following')]
 
     elective_complete = [course for course in studentObject.classes if course.grade and course.grade[0] != 'W' and (course.type == 'electives' or course.type == 'additional')]
-    elective_incomplete = [course for course in studentObject.classes if (not course.grade or course.grade[0] == 'W') and course.type == 'electives' or course.type == 'additional']
+    elective_incomplete = [course for course in studentObject.classes if (not course.grade or course.grade[0] == 'W') and (course.type == 'electives' or course.type == 'additional')]
 
     total_complete = [course for course in studentObject.classes if course.grade and course.grade[0] != 'W' and (is5000Level(course))]
+
     total_incomplete = [course for course in studentObject.classes if (not course.grade or course.grade[0] == 'W') and (course.type == 'core' or course.type == 'additional' or course.type == 'electives' or (course.type == 'following' and course.semester))]
 
     leveling_courses = [course for course in studentObject.classes if course.leveling]
@@ -268,6 +269,11 @@ def getGPA(completed_courses):
 def getTotalCredits(courses):
     sum = 0
     for course in courses:
+        if(course.grade):
+            grade = letterToGPA(course.grade.split('/')[-1].strip() )
+            if (grade == 'Ignore'):
+                continue
+
         course_number = "".join(findall('\d+', course.number))
 
         try:
