@@ -127,7 +127,17 @@ def generateAudit(studentObject, destination):
     for course in leveling_courses:
         c = "".join(findall("[a-zA-Z]* *[0-9]*", course.number))
         if course.leveling == 'Completed':
-            para.add_run("\n" + c + " - " + course.leveling + ": " + course.semester + ": " + course.grade)
+            if course.grade == 'See Above':
+                try:
+                    duplicate = [co for co in total_complete if co.number == course.number and co.grade != 'See Above'][0]
+                    para.add_run("\n" + c + " - " + course.leveling + ": " + duplicate.semester + ": " + duplicate.grade)
+                except:
+                    para.add_run("\n" + c + " - " + course.leveling)
+            else:
+                para.add_run("\n" + c + " - " + course.leveling + ": " + course.semester + ": " + course.grade)
+
+        elif course.leveling == 'Waived':
+            para.add_run("\n" + c + " - " + course.leveling + ": " + course.semester)
         else:
             para.add_run("\n" + c + " - " + course.leveling)
     
