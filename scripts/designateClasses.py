@@ -122,7 +122,7 @@ def append_class_grade_and_semester(old_obj, new_obj):
 
 
 def make_empty_class_from_existing(class_obj, table, note=''):
-    return Class(class_obj.name, class_obj.number, note, '', '', '', table, '')
+    return Class(class_obj.name, class_obj.number, '', '', note, '', table, '')
 
 
 def designateClassesMethod(student_object):

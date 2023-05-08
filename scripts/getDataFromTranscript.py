@@ -143,7 +143,7 @@ def getDataFromTranscriptMethod(file_path):
                 else:
                     blacklist.append(data(semester, course_prefix, course_code, course_name, attempted_credits, grade, transferOption))
     
-    studentObj = Student(student_name, student_id, True, False, semester_admitted, '', classes)
+    studentObj = Student(student_name, student_id, False, False, semester_admitted, '', classes)
 
     if not student_name or not student_id:
         raise Exception("Error: Could not get Student's name or ID from this PDF. This document is likely not a transcript.")
