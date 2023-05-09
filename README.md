@@ -25,7 +25,7 @@ $ yarn start -OR- yarn start:eel; yarn start:js; (splits up frontend and backend
 ```
 $ yarn clean (removes local files, kills ports just incase)
 $ yarn build-dev (builds with console, preffered because otherwise the port stays alive)
-
+```
 Alternatively, if you wish to hide the console you can run the following commands below.
 ```
 $ yarn clean
