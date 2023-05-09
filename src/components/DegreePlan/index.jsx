@@ -111,7 +111,10 @@ const DegreePlan = ({ student, databaseProps }) => {
       if (!setter) return;
       setter((prev) => {
         const newList = [...prev];
-        newList[selectedClassForEdit.index] = obj;
+        newList[selectedClassForEdit.index] = {
+          ...obj,
+          leveling: selectedClassForEdit.class.leveling,
+        };
         return newList;
       });
       sendSuccess("Course Was Edited Successfully!");
