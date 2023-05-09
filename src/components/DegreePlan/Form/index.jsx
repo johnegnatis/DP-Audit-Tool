@@ -267,8 +267,16 @@ const Form = ({
         notes={prerequisiteNotes}
       />
     ),
-    [prerequisites, handleLevelingChange, prerequisiteTableSize, prerequisiteOptions, prerequisiteNotes, ...sharedTableDependencies]
+    [
+      prerequisites,
+      handleLevelingChange,
+      prerequisiteTableSize,
+      prerequisiteOptions,
+      prerequisiteNotes,
+      ...sharedTableDependencies,
+    ]
   );
+  console.log(prerequisites.map(p => p.leveling));
   const { Panel } = Collapse;
   return (
     <div className="degree-plan">

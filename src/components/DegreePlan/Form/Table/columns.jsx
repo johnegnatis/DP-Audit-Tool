@@ -14,8 +14,8 @@ export const getColumn = ({ onEdit, onMove, onCopy, onDelete, disabled, onLeveli
     return (
       <Menu
         onClick={(item) => {
-          const { name, number, semester, transfer, grade, type } = record;
-          const obj = { name, number, semester, transfer, grade, type };
+          const { name, number, semester, transfer, grade, type, leveling } = record;
+          const obj = { name, number, semester, transfer, grade, type, leveling };
           const keyFunction = keyToFunctionMapping[item.key];
           keyFunction({
             class: obj,
@@ -62,7 +62,7 @@ export const getColumn = ({ onEdit, onMove, onCopy, onDelete, disabled, onLeveli
               title="Too many classes in this section. This class will not appear on the degree plan."
               className="tooltip-warning"
             >
-              <Icon icon={iconNames.warning} className="icon orange xs" style={{marginLeft: '5px'}} />
+              <Icon icon={iconNames.warning} className="icon orange xs" style={{ marginLeft: "5px" }} />
             </Tooltip>
           </div>
         );

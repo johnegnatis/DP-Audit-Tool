@@ -217,7 +217,7 @@ def designateClassesMethod(student_object):
                 # put best prerequisite in additional table
                 if index == best_prerequisite_index:
                     class_obj.type = additional_key
-                    replacement_classes.append(
+                    replacement_classes.insert(0,
                         make_empty_class_from_existing(class_obj, prerequisite_key, "See Above"))
 
                 class_list.append(class_obj)
