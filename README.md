@@ -1,6 +1,7 @@
 # Degree Plan and Audit Tool
 
 **Senior Project Team 6**
+
 Created by Zia Kim, John Egnatis, Sai Gonuguntla, Haniyyah Hamid, Areeba Nandwani, Jered Hightower
 
 ## Setup Development Environment
