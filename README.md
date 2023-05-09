@@ -25,13 +25,17 @@ $ yarn start -OR- yarn start:eel; yarn start:js; (splits up frontend and backend
 ```
 $ yarn clean (removes local files, kills ports just incase)
 $ yarn build-dev (builds with console, preffered because otherwise the port stays alive)
+```
 
 Alternatively, if you wish to hide the console you can run the following commands below.
+
 ```
 $ yarn clean
 $ yarn build
 ```
+
 - **Warning**, make sure you have these lines uncommented in ./index.py if you wish to use the 'yarn build' command.
+
 ```py
 sys.stdout = io.StringIO() # to fix --no console, must be the first three lines, so we cannot use NO_CONSOLE flag
 sys.stderr = io.StringIO() # https://github.com/python-eel/Eel/issues/654
