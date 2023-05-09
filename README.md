@@ -6,8 +6,11 @@ Created by Zia Kim, John Egnatis, Sai Gonuguntla, Haniyyah Hamid, Areeba Nandwan
 
 ## Setup Development Environment
 
-- You'll need to have installed Nodejs 19.8.1 (https://nodejs.org/en/)
-- You’ll need to have Python >= 3.6, Eel, pyinstaller.
+**Requirements**
+- Have installed Nodejs 19.8.1 (https://nodejs.org/en/)
+- Have installed NPM package manager (https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
+- Have yarn installed (install through npm -OR- https://yarnpkg.com/)
+- Have Python >= 3.6, Eel, pyinstaller.
 
 ```
 $ git clone --recurse-submodules https://github.com/johnegnatis/DP-Audit-Tool.git
