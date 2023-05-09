@@ -10,7 +10,7 @@ Created by Zia Kim, John Egnatis, Sai Gonuguntla, Haniyyah Hamid, Areeba Nandwan
 - You’ll need to have Python >= 3.6, Eel, pyinstaller.
 
 ```
-$ git clone --recurse-submodules https://github.com/johnegnatis/Senior-Project.git
+$ git clone --recurse-submodules https://github.com/johnegnatis/DP-Audit-Tool.git
 $ pip install -e ./Eel ( installs our edited version of the Eel library )
 $ pip install <all other dependencies>
 $ yarn install
